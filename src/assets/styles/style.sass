@@ -1,0 +1,88 @@
+@import 'normalize.css'
+@import 'mixins.sass'
+@import 'animations.sass'
+@import 'buttons.sass'
+@import 'steps.sass'
+@import 'popup.sass'
+@import 'mainPage.sass'
+
+.clear-button
+  width: 40px
+  height: 40px
+  position: fixed
+  top: 10px
+  left: 10px
+  background: #f44250
+  color: #ffffff
+  text-align: center
+  line-height: 40px
+  cursor: pointer
+  font-size: 2rem
+  border-radius: 5px
+
+.log-button 
+  width: 40px
+  height: 40px
+  position: fixed
+  top: 10px
+  left: 60px
+  background: #369619
+  color: #ffffff
+  text-align: center
+  line-height: 40px
+  cursor: pointer
+  font-size: 2rem
+  border-radius: 5px
+
+.hidden
+  display: none
+
+.toast-message
+  line-height: 1.2
+  font-size: 1.1rem
+  font-weight: 400
+
+*:focus
+  outline: none !important
+
+html
+  padding: 0
+  font-family: 'Roboto', sans-serif
+  font-size: 12px !important
+
+body
+  background: #e6e6e6
+  overflow-x: hidden
+
+// Universal schedule styles for registration and settings divs
+.schedule
+  text-align: left
+
+  .title
+    font-size: 1.3rem
+    color: #4D4D4D
+    margin: 0 0 5px -20px
+  
+  .list
+    width: 80%
+    margin: 10px auto
+    font-size: 1.2rem
+    color: #666
+    padding-left: 10px
+
+    label
+      cursor: pointer
+      position: relative
+      top: -2px
+      left: 8px
+  
+  .blue-input
+    color: #3FA9F5
+    width: 24px
+    text-align: center
+    position: relative
+    top: -2px
+    left: 5px
+
+    &::placeholder
+      color: inherit

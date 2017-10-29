@@ -1,0 +1,202 @@
+
+.main-page
+  &.appear
+    header
+      animation: mainPageSlideDown 1s ease-out
+    .body
+      animation: mainPageSlideUp 1s ease-out
+
+  header
+    color: #333333
+    background: #ffffff
+    min-height: 300px
+    padding: 20px 0 0 0
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(50, 50, 50, 0.3)
+    -moz-box-shadow:    0px 5px 10px 0px rgba(50, 50, 50, 0.3)
+    box-shadow:         0px 5px 10px 0px rgba(50, 50, 50, 0.3)
+
+    .logo
+      display: block
+      margin: 0 auto
+      position: relative
+      left: -10px
+
+    .header-panel
+      margin-top: 100px
+
+      // Greeting section
+      .greeting
+        text-align: center
+        font-size: 3.3rem
+        font-weight: bold
+
+        .help-button
+          position: relative
+          top: -30px
+          cursor: pointer
+
+      // Timer section
+      .timer-container
+        position: relative
+        top: -38px
+        text-align: center
+        
+        .title
+          position: relative
+          top: 20px
+          font-size: 2rem
+          font-weight: bold
+
+        .timer
+          font-size: 3.3rem
+          font-weight: 300
+          color: #E20158
+      
+      // Progress section
+      .progress-container
+        position: relative
+        top: -20px
+        
+        .title
+          text-align: center
+          position: relative
+          font-size: 2rem
+          font-weight: bold
+        
+        .progress-bar-full
+          background: #CCCCCC
+          margin: 0 auto
+          height: 30px     
+          width: 80%
+          +border-radius(8px)
+
+          .bar
+            height: inherit
+            width: 40%
+            background: #29abe2
+            background: -moz-linear-gradient(left, #29abe2 0%, #0071bc 100%)
+            background: -webkit-linear-gradient(left, #29abe2 0%,#0071bc 100%)
+            background: linear-gradient(to right, #29abe2 0%,#0071bc 100%)
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#29abe2', endColorstr='#0071bc',GradientType=1 )
+            +border-radius(8px)
+
+          .text
+            position: absolute
+            left: 48%
+            top: 46%
+            text-align: center
+            color: #666
+            font-size: 1.4rem              
+            font-weight: 600
+        
+        .note
+          text-align: center
+          color: #aaa
+          font-size: 1.1rem
+          font-weight: 600
+
+  .body
+    margin-top: -70px
+    .panel
+      +border-radius(4px)
+      padding: 0 0 10px 0
+
+      &.panel--blue
+        .header
+          background: #128BCD
+
+      &.panel--gray
+        .header
+          background: #B3B3B3
+
+      .header
+        +top-border-radius(4px)
+        background: #4D4D4D
+        text-align: center
+        font-size: 2rem
+        font-weight: 400
+        color: #fff
+        height: 45px
+        width: 100%
+
+      .content
+        color: #4d4d4d
+        text-align: center
+        font-size: 1.3rem
+        font-weight: 400
+        padding: 10px
+
+    .achievements
+      .list
+        .item
+          cursor: pointer
+          margin: 5px 0 0 20px
+          width: 100px
+          height: 100px
+
+          &.locked
+            -webkit-filter: grayscale(100%)
+            filter: grayscale(100%)
+
+    .stats
+      .content
+        font-size: 1.3rem
+        font-weight: 500
+        padding: 15px
+        text-align: left
+        clear: both
+
+        .important
+          clear: both
+          color: #666
+
+          &:nth-child(2)
+            padding: 5px 0
+            border-top: 1px solid #ddd
+            border-bottom: 1px solid #ddd
+
+        .value
+          color: #00BF79
+          font-weight: 600
+
+        .group
+          display: inline-block
+          box-sizing: border-box
+          vertical-align: top
+          margin: 10px 10px 0 0
+          width: 45%
+          font-size: 1.2rem
+
+          &:nth-child(3)
+            padding-right: 10px
+            border-right: 1px solid #ccc
+
+          .item
+            clear: both
+            width: 100%
+
+            .name
+              color: #808080
+              float: left
+              
+            .value
+              float: right
+  footer
+    text-align: center
+    padding: 0 0 15px 0
+
+    .text
+      color: #333333
+      font-weight: 600
+      font-size: 1.6rem
+      
+    .note
+      position: relative
+      top: -7px
+      color: #999
+      font-weight: 400        
+      font-size: 1.1rem
+    
+    .socials
+      a
+        margin-right: 1px 

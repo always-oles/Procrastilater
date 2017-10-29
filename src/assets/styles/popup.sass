@@ -1,0 +1,111 @@
+$popup-border-radius: 7px
+
+.popup-container
+    position: fixed
+    display: flex    
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 1000
+    background: rgba(0, 0, 0, 0.7)
+    align-items: flex-start
+    justify-content: flex-end
+
+    &.fadeIn
+        display: flex
+        animation: fadeIn 0.5s
+
+    .popup
+        position: relative
+        margin: 10px 10px 0 0
+        width: 400px
+        height: 400px
+        background: #ffffff
+        +border-radius($popup-border-radius)
+        z-index: 1001
+
+        &.flyIn
+            display: block
+            animation: flyIn 1s ease
+
+        .main-content
+            text-align: center
+            padding: 20px
+            color: #333333
+
+            .icon
+                padding: 10px 0
+                text-align: center
+                img
+                    width: 100px
+                    height: 100px
+
+            .alarm
+                animation: spin 1.2s ease-in-out infinite
+
+            .title
+                padding: 15px 0
+                font-size: 2.2rem
+                font-weight: 700
+            .text
+                padding: 0 10px
+                font-size: 1.3rem
+                font-weight: 400
+
+        .buttons
+            +bottom-border-radius($popup-border-radius)
+            display: flex
+            align-items: center
+            justify-content: space-evenly
+            height: 60px
+            position: absolute
+            bottom: -10px
+            width: 100%
+            color: #ffffff
+
+            button
+                box-sizing: border-box
+                width: 33.3%
+                text-align: center
+                height: 50px
+                outline: none
+                color: #ffffff
+                background: inherit     
+                font-size: 1.3rem
+                font-weight: 400
+                transition: transform 0.2s
+                border: 0    
+
+                &.left
+                    +bottom-left-border-radius($popup-border-radius)
+                &.right
+                    +bottom-right-border-radius($popup-border-radius)
+
+                &.accept
+                    background: #39B54A
+                    &:hover
+                        background: lighten(#39B54A, 7%)
+                    &:active
+                        background: darken(#39B54A, 5%)
+                        transform: translateY(1px)
+
+                &.reshuffle
+                    background: #F79F1E
+                    &:hover
+                        background: lighten(#F79F1E, 7%)
+                    &:active
+                        background: darken(#F79F1E, 5%)
+                        transform: translateY(1px)
+                
+                &.postpone
+                    background: #AA0034
+                    &:hover
+                        background: lighten(#AA0034, 7%)
+                    &:active
+                        background: darken(#AA0034, 5%)
+                        transform: translateY(1px)
+
+.popup-container,
+.popup
+    display: none

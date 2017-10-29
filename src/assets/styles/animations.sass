@@ -1,0 +1,90 @@
+@keyframes spin 
+    0%
+        transform: rotate(-15deg)
+    25%
+        transform: rotate(15deg)
+    50%
+        transform: rotate(-5deg)
+    75%
+        transform: rotate(5deg)
+    100%
+        transform: rotate(-15deg)
+
+@keyframes flyIn 
+    0%
+        transform: translateX(1000px)
+    50%
+        transform: translateX(-50px)
+    100%
+        transform: translateX(0px)
+
+@keyframes fadeIn
+    from 
+        opacity: 0
+    to   
+        opacity: 1
+
+@keyframes fadeOut
+    from 
+        opacity: 1
+    to   
+        opacity: 0
+
+@keyframes dropFromTop 
+    0%
+        transform: translateY(-200px)
+    50%
+        transform: translateY(50px)
+    100%
+        transform: translateY(0px)
+
+@keyframes exitToLeft
+    from 
+        transform: translateX(0px)
+    to   
+        transform: translateX(-2000px)
+
+@keyframes exitToRight
+    from 
+        transform: translateX(0px)
+    to   
+        transform: translateX(2000px)
+
+@keyframes enterFromRight
+    from 
+        transform: translateX(2000px)
+    to   
+        transform: translateX(0px)
+
+@keyframes enterFromLeft
+    from 
+        transform: translateX(-2000px)
+    to   
+        transform: translateX(0px)
+
+@keyframes slideUp
+    from 
+        transform: translateY(0px)
+    to   
+        transform: translateY(-1000px)
+
+
+@keyframes mainPageSlideDown
+    0%
+        opacity: 0
+        transform: translateY(-1000px)
+    80%
+        opacity: 0.3
+    100%
+        opacity: 1
+        transform: translateY(0px)
+
+@keyframes mainPageSlideUp
+    0%
+        opacity: 0
+        transform: translateY(2000px)
+    80%
+        opacity: 0.3
+    100%
+        opacity: 1
+        transform: translateY(0px)

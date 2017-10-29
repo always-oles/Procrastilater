@@ -1,0 +1,57 @@
+.buttons-container
+    margin: 20px auto 0
+    display: flex
+    justify-content: center
+
+.button-save
+    +border-radius(4px)
+    display: block
+    margin: 10px auto 0px auto
+    background: #00BF41
+    border: none     
+    color: #ffffff
+    font-size: 1.5rem
+    font-weight: 500
+    min-width: 130px
+    min-height: 35px
+    box-shadow: 0px 4px 18px -2px rgba(0,0,0,0.3)
+    transition: background 0.7s
+
+    &:hover
+        background: lighten(#00BF41, 3%)
+
+    &:active
+        box-shadow: none
+        border: darken(#00BF41, 3%)
+        background: darken(#00BF41, 3%)
+        transform: translateY(1px)
+
+    &.locked
+        background: #777777
+        &:hover,
+        &:active
+            background: #777777
+            transform: none
+            box-shadow: 0px 4px 18px -2px rgba(0,0,0,0.3)
+
+.button-back
+    +border-radius(4px)
+    display: block
+    margin: 10px auto 0px auto
+    background: #999999
+    border: none     
+    color: #ffffff
+    font-size: 1.5rem
+    font-weight: 500
+    min-width: 130px
+    min-height: 35px
+    box-shadow: 0px 4px 18px -2px rgba(0,0,0,0.3)
+
+    &:hover
+        background: lighten(#999999, 2%)
+
+    &:active
+        box-shadow: none
+        border: darken(#999999, 2%)
+        background: darken(#999999, 2%)
+        transform: translateY(1px)

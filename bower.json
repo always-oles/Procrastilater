@@ -1,0 +1,23 @@
+{
+  "name": "procrastilater",
+  "description": "",
+  "main": "src/index.js",
+  "authors": [
+    "Oles Bolotniuk"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/always-oles/Procrastilater",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-beta",
+    "toastr": "^2.1.3",
+    "moment": "^2.19.1"
+  }
+}
