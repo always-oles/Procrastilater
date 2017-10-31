@@ -44,6 +44,23 @@ export default {
         chrome.storage.local.set({'state': state}, () => {
             if (callback) callback();
         });
+    },
+
+    generateTimer: () => {
+        chrome.storage.local.get('state', (result) => {
+
+            result.state.nextPopup = moment().add('60', 'seconds').valueOf();
+
+            chrome.storage.local.set({'popupData': {
+                name: 'Тестовая закладка епте',
+                id: 1,
+                url: 'http://google.com.ua?q=beps'
+            }});
+
+            chrome.storage.local.set({'state': result.state}, () => {
+                console.log('setting state to', result.state);
+                window.location.reload();
+            });
+        });
     }
 }
-

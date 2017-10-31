@@ -5,6 +5,7 @@ import * as stepsActions from '../actions/StepsActions';
 
 import BookmarksList from './BookmarksList';
 import Timer from './Timer';
+import Review from './Review';
 
 import Logo from '../assets/images/logo.svg';
 import HelpButton from '../assets/images/help-button.svg';
@@ -13,13 +14,12 @@ import AchievementFolder from '../assets/images/achievement-folder.svg';
 import AchievementLazy   from '../assets/images/achievement-lazy.svg';
 import AchievementMedal  from '../assets/images/achievement-medal.svg';
 import AchievementSocial from '../assets/images/achievement-social.svg';
+import AchievementReviewer from '../assets/images/achievement-reviewer.svg';
 
 class MainPage extends React.Component {
 
-    constructor() {
-        super();
-
-        console.log( moment().add(10, 'minutes').format('dddd, MMMM Do YYYY, h:mm:ss a') );
+    componentDidMount(){
+        console.log(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -46,7 +46,7 @@ class MainPage extends React.Component {
                         <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <img class='help-button' src={HelpButton}/> </div>
                         <div class='col-sm-4 timer-container'>
                             <div class='title'>Next bookmark will appear in:</div>
-                            <Timer></Timer>
+                            <Timer nextPopup = {this.props.global.nextPopup}></Timer>
                         </div>
                         <div class='col-sm-4 progress-container'>
                             <div class='title'>Your overall progress:</div>
@@ -65,7 +65,7 @@ class MainPage extends React.Component {
                             <div class='panel'>
                                 <div class='header'>Folders</div>
                                 <div class='content'>
-                                    Select folders where I should take bookmarks from:
+                                    Change folders where I should take bookmarks from:
                                     <BookmarksList></BookmarksList>
                                     <button class='button-save'>Save</button>
                                 </div>
@@ -109,6 +109,8 @@ class MainPage extends React.Component {
 
                                 <button class='button-save'>Save</button>
                             </div>
+
+                            <Review userName = {this.props.global.userName} ></Review>
                         </div>
 
                         <div class='col-sm-4'>
@@ -117,9 +119,10 @@ class MainPage extends React.Component {
                                 <div class='list'>
                                     <img class='item locked' src={AchievementFinger} title="You've opened more than 20 bookmarks manually!" alt="You've opened more than 20 bookmarks manually!"/>
                                     <img class='item locked' src={AchievementFolder} title="You've visited more than 20 bookmarks already!" alt="You've visited more than 20 bookmarks already!"/>
-                                    <img class='item locked' src={AchievementLazy}   title="Ahh... You've postponed more than 10 bookmarks already" alt="Ahh... You've postponed more than 10 bookmarks already"/>
+                                    <img class='item locked opacity-06' src={AchievementLazy}   title="Ahh... You've postponed more than 10 bookmarks already" alt="Ahh... You've postponed more than 10 bookmarks already"/>
                                     <img class='item locked' src={AchievementMedal}  title="You've added more than 40 bookmarks to shuffle!" alt="You've added more than 40 bookmarks to shuffle!"/>
-                                    <img class='item locked' src={AchievementSocial} title="You've shared ProcrastiLater in 2 social networks!" alt="You've shared ProcrastiLater in 2 social networks!"/>
+                                    <img class='item locked opacity-06' src={AchievementSocial} title="You've shared ProcrastiLater in 2 social networks!" alt="You've shared ProcrastiLater in 2 social networks!"/>
+                                    <img class='item locked opacity-05' src={AchievementReviewer} title="You've sent your review to developer!" alt="You've sent your review to developer!"/>
                                 </div>
                             </div>
 

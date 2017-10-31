@@ -25,7 +25,7 @@
   height: 40px
   position: fixed
   top: 10px
-  left: 60px
+  left: 55px
   background: #369619
   color: #ffffff
   text-align: center
@@ -33,6 +33,21 @@
   cursor: pointer
   font-size: 2rem
   border-radius: 5px
+
+.misc-button 
+  width: 40px
+  height: 40px
+  position: fixed
+  top: 10px
+  left: 100px
+  background: #2869e2
+  color: #ffffff
+  text-align: center
+  line-height: 40px
+  cursor: pointer
+  font-size: 2rem
+  border-radius: 5px
+
 
 .hidden
   display: none
@@ -86,3 +101,76 @@ body
 
     &::placeholder
       color: inherit
+
+// Universal styles for folders list component
+.main-page 
+  .bookmarks-list
+    max-height: 400px
+
+.bookmarks-list
+  margin: 10px auto
+  overflow-y: scroll
+  max-height: 250px
+  border: 1px solid #ddd
+  list-style: none
+  padding: 2px 12px
+  
+  li
+    display: block
+    cursor: pointer
+    padding-left: 10px
+    text-align: left
+    &:hover
+      color: #000 
+    &.hidden
+      display: none
+    &.selected
+      background: #3FA9F5
+      &:hover
+        color: inherit
+
+  [data-type='folder']
+    cursor: pointer
+    font-size: 1.2rem
+    font-weight: 400
+
+    .folder-icon
+      display: inline-block
+      position: relative
+      top: 5px
+      left: -5px
+      background: url(../images/folder_closed.svg) no-repeat
+      width: 24px
+      height: 24px
+    &.opened
+      .folder-icon
+        background: url(../images/folder_opened.svg) no-repeat
+
+  [data-type='page']
+    font-size: 1.1rem
+    font-weight: 400
+    padding-left: 10px
+    border-left: 1px solid #ddd
+
+    .page-icon
+      display: inline-block
+      position: relative
+      top: 2px
+      left: -8px
+      background: url(../images/page.svg) no-repeat
+      width: 15px
+      height: 15px
+
+::-webkit-scrollbar-track
+	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2)
+	background-color: #F5F5F5
+
+::-webkit-scrollbar
+	width: 7px
+	background-color: #F5F5F5
+
+::-webkit-scrollbar-thumb
+	background-color: #bbb
+
+.clickable
+  cursor: pointer

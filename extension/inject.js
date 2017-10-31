@@ -19,6 +19,12 @@
 
 (function() {
 
+    // check if we added a popup for this tab already
+    if (document.querySelectorAll(".pl-popup-container").length > 0) {
+      console.log('added')
+      return;
+    }
+
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
@@ -211,7 +217,7 @@
           <div class='pl-main-content'>
               <div class='pl-icon'><img src=${chrome.extension.getURL('images/alarm.svg')} class='pl-alarm'/></div>
               <div class='pl-title'>Time has come!</div>
-              <div class='pl-text'>The magic shuffle suggests you opening the "Как приготовить бепса в духовке" bookmark. Do you agree? </div>
+              <div class='pl-text'>The magic shuffle suggests you opening the "<span class='pl-bookmark-title'></span>" bookmark. Do you agree? </div>
           </div>
 
           <div class='pl-buttons'>
@@ -222,17 +228,39 @@
       </div>
     `;
 
-    var accept = div.querySelectorAll(".pl-accept")[0];
-    accept.addEventListener('click', (e) => {
-      console.log('yee boii', e)
+    let titleContainer = div.querySelectorAll(".pl-bookmark-title")[0],
+        url = null,
+        id = null;
+
+    // get data for current popup
+    chrome.storage.local.get('popupData', (result) => {
+
+      // set bookmark name
+      titleContainer.innerHTML = result.popupData.name;
+      id = result.popupData.id;
+      url = result.popupData.url;
     });
 
+    // accept button container
+    var accept = div.querySelectorAll(".pl-accept")[0];
+
+    // accept click handler
+    accept.addEventListener('click', (e) => {
+      chrome.runtime.sendMessage({ action: "openTab", url });
+    });
+
+    // reshuffle button container
     var reshuffle = div.querySelectorAll(".pl-reshuffle")[0];
+
+    // reshuffle click handler
     reshuffle.addEventListener('click', (e) => {
       console.log('yee boii', e)
     });
 
+    // postpone button container
     var postpone = div.querySelectorAll(".pl-postpone")[0];
+
+    // postpone click handler
     postpone.addEventListener('click', (e) => {
       console.log('yee boii', e)
     });

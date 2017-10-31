@@ -7,6 +7,8 @@ import API from '../api';
 const defaultInitialState = {
     step: 1,
     stepPhase: 'active',
+
+    userId: null,
     userName: '',
     foldersIds: [],
     scheduleFrequency: null,
@@ -38,6 +40,7 @@ export default function configureStore(callback) {
         if ( !state ) {
             state = defaultInitialState;
         }
+        
 
         // create actual store
         store = createStore(

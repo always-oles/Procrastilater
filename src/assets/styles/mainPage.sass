@@ -100,6 +100,15 @@
     .panel
       +border-radius(4px)
       padding: 0 0 10px 0
+      margin-bottom: 30px
+      transition: height 1s ease
+
+      &.collapsed
+        padding: 0
+        .slidable 
+          display: none
+        .header
+          border-radius: 4px
 
       &.panel--blue
         .header
@@ -113,24 +122,22 @@
         +top-border-radius(4px)
         background: #4D4D4D
         text-align: center
-        font-size: 2rem
+        font-size: 1.8rem
         font-weight: 400
         color: #fff
-        height: 45px
+        height: 40px
         width: 100%
 
       .content
         color: #4d4d4d
         text-align: center
-        font-size: 1.3rem
+        font-size: 1.2rem
         font-weight: 400
-        padding: 10px
-
+        padding: 10px 0 0
     .achievements
       .list
         .item
-          cursor: pointer
-          margin: 5px 0 0 20px
+          margin: 5px 0 0 12px
           width: 100px
           height: 100px
 
@@ -138,6 +145,10 @@
             -webkit-filter: grayscale(100%)
             filter: grayscale(100%)
 
+            &.opacity-06
+              opacity: 0.6
+            &.opacity-05
+              opacity: 0.5
     .stats
       .content
         font-size: 1.3rem
@@ -181,6 +192,35 @@
               
             .value
               float: right
+    .review
+      .title
+        padding: 15px 20px 5px
+        font-size: 1.1rem
+      form
+        padding: 5px 20px
+
+        label
+          display: block
+          font-weight: 500
+          font-size: 1.1rem
+        input,
+        textarea
+          display: block
+          font-size: inherit
+
+        input
+          min-width: 200px
+          margin-bottom: 20px
+
+        textarea
+          resize: none
+          padding: 10px
+          margin: 0 auto 20px
+          width: 100%
+          border: 1px solid #cccccc
+          min-height: 100px
+
+
   footer
     text-align: center
     padding: 0 0 15px 0

@@ -29,6 +29,17 @@ class LogButton extends React.Component {
     }
 }
 
+class MiscButton extends React.Component {
+    onClick() {
+        API.generateTimer();
+    }
+
+    render() {
+        return (
+            <div class='misc-button' onClick = {this.onClick}>!</div>
+        );
+    }
+}
 
 export default class App extends React.Component {
     render() {
@@ -39,6 +50,7 @@ export default class App extends React.Component {
                 <MainPage></MainPage>
                 <ClearButton></ClearButton>
                 <LogButton></LogButton>
+                <MiscButton></MiscButton>
             </div>
         );
     }

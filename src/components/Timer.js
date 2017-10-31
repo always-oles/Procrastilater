@@ -2,26 +2,19 @@
 
 import React from 'react';
 import API from '../api';
+import PropTypes from 'prop-types';
 
 export default class Timer extends React.Component {
-
-    constructor() {
-        super();
+    componentWillMount() {    
+        this.interval = setInterval(this.tick.bind(this), 1000); 
         this.state = {
-            willEnd: moment().add(1, 'minute'),
-            output: '00:00:00'
+            output: this.getOutput(this.props.nextPopup)
         }
-
-        this.interval = setInterval(this.tick.bind(this), 1000);
     }
 
-    componentWillMount() {
-        this.setState({ output: this.getOutput() });        
-    }
-
-    getOutput() {
+    getOutput(ends) {
         // difference between next bookmark time expiration and now
-        let difference = moment(this.state.willEnd, "DD/MM/YYYY HH:mm:ss").diff(moment());
+        let difference = moment(ends).diff(moment());
         let duration = moment.duration(difference);
 
         // add leading zero to hours if needed
@@ -34,7 +27,7 @@ export default class Timer extends React.Component {
     }
 
     tick() {
-        this.setState({ output: this.getOutput() });
+        this.setState({ output: this.getOutput(this.props.nextPopup) });
     }
 
     render() {  
@@ -42,4 +35,8 @@ export default class Timer extends React.Component {
             <div class='timer'>{ this.state.output }</div>
         )
     }
+}
+
+Timer.propTypes = {
+    nextPopup: PropTypes.number.isRequired
 }
