@@ -94,3 +94,37 @@
         height: 0
     to   
         height: 100%
+
+@keyframes jump
+    0%
+        transform: translateY(0)
+    25%
+        transform: translateY(-2px)   
+    75%
+        transform: translateY(2px)             
+    100%
+        transform: translateY(0px)
+
+@keyframes turn
+    0%
+        transform: rotate(0)
+    100%
+        transform: rotate(180deg)
+
+@keyframes turnBack
+    0%
+        transform: rotate(180deg)
+    100%
+        transform: rotate(0)
+
+@keyframes conversationAppear
+    0%
+        transform: translateY(30px)              
+    100%
+        transform: translateY(0px) 
+
+@keyframes conversationDisappear
+    0%
+        transform: translateY(0)              
+    100%
+        transform: translateY(30px)  

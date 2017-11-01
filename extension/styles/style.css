@@ -541,6 +541,40 @@ template {
   to {
     height: 100%; } }
 
+@keyframes jump {
+  0% {
+    transform: translateY(0); }
+  25% {
+    transform: translateY(-2px); }
+  75% {
+    transform: translateY(2px); }
+  100% {
+    transform: translateY(0px); } }
+
+@keyframes turn {
+  0% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(180deg); } }
+
+@keyframes turnBack {
+  0% {
+    transform: rotate(180deg); }
+  100% {
+    transform: rotate(0); } }
+
+@keyframes conversationAppear {
+  0% {
+    transform: translateY(30px); }
+  100% {
+    transform: translateY(0px); } }
+
+@keyframes conversationDisappear {
+  0% {
+    transform: translateY(0); }
+  100% {
+    transform: translateY(30px); } }
+
 .buttons-container {
   margin: 20px auto 0;
   display: flex;
@@ -1029,23 +1063,78 @@ template {
           float: left; }
         .main-page .body .stats .content .group .item .value {
           float: right; }
-  .main-page .body .review .title {
+
+.main-page .conversation-icon {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 999; }
+  .main-page .conversation-icon img {
+    width: 60px;
+    height: 60px; }
+  .main-page .conversation-icon:hover {
+    animation: jump 1s infinite linear; }
+  .main-page .conversation-icon.activated {
+    animation: turn 0.4s ease-out forwards;
+    filter: grayscale(100%); }
+  .main-page .conversation-icon.deactivated {
+    animation: turnBack 0.4s ease-out forwards; }
+
+.main-page .conversation-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 9998;
+  cursor: pointer; }
+  .main-page .conversation-container.fadeIn {
+    animation: fadeIn 1s ease-out; }
+  .main-page .conversation-container.fadeOut {
+    animation: fadeOut 1s ease-out forwards; }
+
+.main-page .panel.review {
+  position: fixed;
+  bottom: 40px;
+  right: 70px;
+  z-index: 9999;
+  width: 25%;
+  cursor: default; }
+  .main-page .panel.review.appear {
+    animation: conversationAppear 1s ease-out; }
+  .main-page .panel.review.disappear {
+    animation: conversationDisappear 1s ease-out; }
+  .main-page .panel.review .header {
+    background: #3ca1fc;
+    color: #fff;
+    font-weight: 500; }
+    .main-page .panel.review .header .close {
+      display: block;
+      position: absolute;
+      right: 5px;
+      top: -2px;
+      color: #ffffff;
+      font-size: 0.7rem;
+      opacity: 0.4; }
+  .main-page .panel.review .title {
     padding: 15px 20px 5px;
     font-size: 1.1rem; }
-  .main-page .body .review form {
+  .main-page .panel.review form {
     padding: 5px 20px; }
-    .main-page .body .review form label {
+    .main-page .panel.review form label {
       display: block;
       font-weight: 500;
       font-size: 1.1rem; }
-    .main-page .body .review form input,
-    .main-page .body .review form textarea {
+    .main-page .panel.review form input,
+    .main-page .panel.review form textarea {
       display: block;
       font-size: inherit; }
-    .main-page .body .review form input {
+    .main-page .panel.review form input {
       min-width: 200px;
       margin-bottom: 20px; }
-    .main-page .body .review form textarea {
+    .main-page .panel.review form textarea {
       resize: none;
       padding: 10px;
       margin: 0 auto 20px;

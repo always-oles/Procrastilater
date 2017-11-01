@@ -192,34 +192,89 @@
               
             .value
               float: right
-    .review
-      .title
-        padding: 15px 20px 5px
+
+  .conversation-icon
+    position: fixed
+    bottom: 10px
+    right: 10px
+    cursor: pointer
+    z-index: 999
+    img
+      width: 60px
+      height: 60px
+    &:hover
+      animation: jump 1s infinite linear
+    &.activated
+      animation: turn 0.4s ease-out forwards
+      filter: grayscale(100%)
+    &.deactivated
+      animation: turnBack 0.4s ease-out forwards
+
+  .conversation-container
+    width: 100vw
+    height: 100vh
+    position: fixed
+    top: 0
+    left: 0
+    background: rgba(255,255,255,0.8)
+    z-index: 9998
+    cursor: pointer
+    &.fadeIn
+      animation: fadeIn 1s ease-out
+    &.fadeOut
+      animation: fadeOut 1s ease-out forwards
+
+  .panel.review
+    position: fixed
+    bottom: 40px
+    right: 70px
+    z-index: 9999
+    width: 25%
+    cursor: default
+    &.appear
+      animation: conversationAppear 1s ease-out
+    &.disappear
+      animation: conversationDisappear 1s ease-out
+
+    .header
+        background: #3ca1fc
+        color: #fff
+        font-weight: 500
+        .close
+          display: block
+          position: absolute
+          right: 5px
+          top: -2px
+          color: #ffffff
+          font-size: 0.7rem
+          opacity: 0.4
+
+    .title
+      padding: 15px 20px 5px
+      font-size: 1.1rem
+    form
+      padding: 5px 20px
+
+      label
+        display: block
+        font-weight: 500
         font-size: 1.1rem
-      form
-        padding: 5px 20px
+      input,
+      textarea
+        display: block
+        font-size: inherit
 
-        label
-          display: block
-          font-weight: 500
-          font-size: 1.1rem
-        input,
-        textarea
-          display: block
-          font-size: inherit
+      input
+        min-width: 200px
+        margin-bottom: 20px
 
-        input
-          min-width: 200px
-          margin-bottom: 20px
-
-        textarea
-          resize: none
-          padding: 10px
-          margin: 0 auto 20px
-          width: 100%
-          border: 1px solid #cccccc
-          min-height: 100px
-
+      textarea
+        resize: none
+        padding: 10px
+        margin: 0 auto 20px
+        width: 100%
+        border: 1px solid #cccccc
+        min-height: 100px
 
   footer
     text-align: center

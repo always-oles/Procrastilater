@@ -5,7 +5,7 @@ import * as stepsActions from '../actions/StepsActions';
 
 import BookmarksList from './BookmarksList';
 import Timer from './Timer';
-import Review from './Review';
+import Conversation from './Conversation';
 
 import Logo from '../assets/images/logo.svg';
 import HelpButton from '../assets/images/help-button.svg';
@@ -109,8 +109,6 @@ class MainPage extends React.Component {
 
                                 <button class='button-save'>Save</button>
                             </div>
-
-                            <Review userName = {this.props.global.userName} ></Review>
                         </div>
 
                         <div class='col-sm-4'>
@@ -177,6 +175,8 @@ class MainPage extends React.Component {
                         </div>
                     </div>
 
+                    <Conversation userName = {this.props.global.userName} ></Conversation>
+                    
                     <footer>
                         <div class='text'>If you like Procrastilater - share it with friends! </div>
                         <div class='note'>You will get an achievement if you'll share it in 2 social networks!</div>
