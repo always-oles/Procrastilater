@@ -1,9 +1,11 @@
+/* global Set:{}, toastr: {}, chrome: {} */
+
 import React from 'react';
 import { sortBy } from 'Lodash';
 
 export default class FoldersList extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
 
     this.state = {  
       list: [],
@@ -12,7 +14,10 @@ export default class FoldersList extends React.Component {
 
     this.list = [];
     this.keyWords = ['speed dials', 'bin'];
-    this.selectedFoldersSet = new Set();
+    this.notifyTimeout = null;
+    
+    // if folders ids passed - use them as already in set
+    this.selectedFoldersSet = new Set(props.foldersIds || []);
     
     // bind funcs
     this.handleClick = this.handleClick.bind(this);
@@ -29,9 +34,24 @@ export default class FoldersList extends React.Component {
     } else {
       this.selectedFoldersSet.add( e.target.getAttribute('id') );
     }
-    
-      // update
-    this.props.saveFolders( Array.from(this.selectedFoldersSet) );    
+
+    // update
+    this.props.saveFolders( Array.from(this.selectedFoldersSet) );
+
+    // if need to notify user with a toast
+    if ( this.props.notify === true ) {
+
+      toastr.remove();
+
+      clearTimeout(this.notifyTimeout);
+
+      // debounce notification
+      this.notifyTimeout = setTimeout(() => {
+        toastr.success('Saved new folders selection', null, {
+          positionClass: 'toast-bottom-left'
+        });
+      }, 500);
+    }
 
     // toggle blue background class
     e.target.classList.toggle('selected');
@@ -39,22 +59,22 @@ export default class FoldersList extends React.Component {
 
   /**
    * Called when user clicked on "create extension folder"
-   * @argument {integer} id of new bookmark to make it selected
    */
   rebuildTree(id) {
 
     // reset state
     this.setState({
       list: [],
-      noBookmarks: false,
-      selected: id
+      noBookmarks: false
     });
 
     // add new folder to selected SET
-    this.selectedFoldersSet.add(id);
-
-    // save folder because its selected
-    this.props.saveFolders( Array.from(this.selectedFoldersSet) );
+    if (id) {
+        this.selectedFoldersSet.add(id);
+      
+        // save folder because its selected
+        this.props.saveFolders( Array.from(this.selectedFoldersSet) );
+    }
 
     this.list = [];
     this.getBookmarkTree();
@@ -77,8 +97,8 @@ export default class FoldersList extends React.Component {
     // sort tree as pages first, folders last
     tree = sortBy(tree, [ 'title', 'index' ]).reverse();
 
-    // incrementing margin-left for each new level
-    const levelMargin = 10;
+    // incrementing padding-left for each new level
+    const levelPadding = 10;
 
     tree.forEach( item => {
 
@@ -93,7 +113,7 @@ export default class FoldersList extends React.Component {
       }
 
       let divStyle = {
-        marginLeft: level * levelMargin // will skip 0,1 levels
+        paddingLeft: level * levelPadding // will skip 0,1 levels
       };
 
       let folderIcon = '',
@@ -101,7 +121,7 @@ export default class FoldersList extends React.Component {
           selected = '';
 
       // if we have selected folder already - check if it's it
-      if (this.state.selected && this.state.selected == item.id) {
+      if ( this.selectedFoldersSet.has(item.id) ) {
         selected = 'selected';
       }
 
@@ -112,7 +132,7 @@ export default class FoldersList extends React.Component {
       }
 
       this.list.push(
-        <li style={divStyle} id={item.id} data-type={type} className={ 'parent-'+item.parentId + ' ' + selected } key={item.id} onClick={ this.handleClick }>
+        <li style={divStyle} id={item.id} data-id={item.id} data-type={type} className={ 'parent-'+item.parentId + ' ' + selected } key={item.id} onClick={ this.handleClick }>
           { folderIcon }
           {item.title}
         </li>

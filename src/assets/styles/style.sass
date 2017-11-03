@@ -48,13 +48,23 @@
   font-size: 2rem
   border-radius: 5px
 
+.blurred
+  animation: blur 1.5s forwards
 
+.deblurred
+  animation: deblur 1.5s forwards
+  
 .hidden
   display: none
 
+.toast
+  width: auto !important
+  background-size: 15px
+  padding-left: 40px !important
+
 .toast-message
   line-height: 1.2
-  font-size: 1.1rem
+  font-size: 1.2rem
   font-weight: 400
 
 *:focus
@@ -65,9 +75,9 @@ html
   font-family: 'Roboto', sans-serif
   font-size: 12px !important
 
-body
-  background: #e6e6e6
-  overflow-x: hidden
+  body
+    background: #e6e6e6
+    overflow-x: hidden
 
 // Universal schedule styles for registration and settings divs
 .schedule
@@ -105,7 +115,7 @@ body
 // Universal styles for folders list component
 .main-page 
   .bookmarks-list
-    max-height: 400px
+    max-height: 495px
 
 .bookmarks-list
   margin: 10px auto
@@ -113,7 +123,7 @@ body
   max-height: 250px
   border: 1px solid #ddd
   list-style: none
-  padding: 2px 12px
+  padding: 0
   
   li
     display: block
@@ -138,7 +148,8 @@ body
       display: inline-block
       position: relative
       top: 5px
-      left: -5px
+      left: 5px
+      margin-right: 10px
       background: url(../images/folder_closed.svg) no-repeat
       width: 24px
       height: 24px

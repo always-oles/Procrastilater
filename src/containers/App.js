@@ -1,9 +1,12 @@
+/* global $:jQuery */
+
 import React from 'react';
 import Steps from '../components/Steps';
 import MainPage from '../components/MainPage';
-
-
 import API from '../api';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as stepsActions from '../actions/StepsActions';
 
 class ClearButton extends React.Component {
     onClick() {
@@ -41,13 +44,38 @@ class MiscButton extends React.Component {
     }
 }
 
-export default class App extends React.Component {
+class App extends React.Component {
+    constructor() {
+        super();
+
+        // goes true if user switched from step3 to main page to animate it's appearance
+        this.needToAnimate = false;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // if user has finished the last step
+        if (nextProps.global.stepPhase == 'done' && nextProps.global.step == '3') {
+            this.props.stepsActions.setStep(-1);
+            this.needToAnimate = true;
+        }
+    }
+
     render() {
-        // add if user is signed = open main screen, else steps
+        let component = null;
+
+        // render steps or main page
+        if ( this.props.global.step > 0 ) {
+            component = <Steps/>;
+        } else {
+            component = (<MainPage 
+                ref='mainPage'
+                needToAnimate = {this.needToAnimate}
+            />);
+        }
+        
         return (
             <div>
-                <Steps></Steps>
-                <MainPage></MainPage>
+                { component }
                 <ClearButton></ClearButton>
                 <LogButton></LogButton>
                 <MiscButton></MiscButton>
@@ -55,3 +83,8 @@ export default class App extends React.Component {
         );
     }
 }
+
+export default connect( 
+    (state) => ({global: state.global}),
+    (dispatch) => ({ stepsActions: bindActionCreators(stepsActions, dispatch) })
+ )(App);

@@ -1,3 +1,4 @@
+import { saveFolders, setSchedule } from '../actions/StepsActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -6,6 +7,9 @@ import * as stepsActions from '../actions/StepsActions';
 import BookmarksList from './BookmarksList';
 import Timer from './Timer';
 import Conversation from './Conversation';
+
+import FolderSelectionComponent from './FolderSelectionComponent';
+import ScheduleComponent from './ScheduleComponent';
 
 import Logo from '../assets/images/logo.svg';
 import HelpButton from '../assets/images/help-button.svg';
@@ -17,24 +21,23 @@ import AchievementSocial from '../assets/images/achievement-social.svg';
 import AchievementReviewer from '../assets/images/achievement-reviewer.svg';
 
 class MainPage extends React.Component {
-
     componentDidMount(){
-        console.log(this.props);
+        this.animate = this.animate.bind(this);
+
+        // if user switched to main page from steps - need to animate goes true
+        if (this.props.needToAnimate) {
+            this.animate();
+        }
     }
 
-    componentWillReceiveProps(nextProps) {
-        // if user is done with the steps
-        if (nextProps.global.stepPhase == 'done' && nextProps.global.step == '3') {
-            // add animation for main page
-            this.refs.mainPage.classList.add('appear');
-
-            // set step to -1
-            this.props.stepsActions.setStep(-1);     
-            
-            setTimeout(() => {
-                this.refs.mainPage.classList.remove('appear');
-            }, 1000);
-        }
+    // appear like from top and bottom
+    animate() {
+        // add animation for main page
+        this.refs.mainPage.classList.add('appear');
+        
+        setTimeout(() => {
+            this.refs.mainPage.classList.remove('appear');
+        }, 1000);
     }
 
     render() {
@@ -62,53 +65,21 @@ class MainPage extends React.Component {
                 <div class='body'>
                     <div class='col-sm-12'>
                         <div class='col-sm-4'>
-                            <div class='panel'>
-                                <div class='header'>Folders</div>
-                                <div class='content'>
-                                    Change folders where I should take bookmarks from:
-                                    <BookmarksList></BookmarksList>
-                                    <button class='button-save'>Save</button>
-                                </div>
-                            </div>
+                            <FolderSelectionComponent
+                                foldersIds  = { this.props.global.foldersIds }
+                                saveFolders = { this.props.stepsActions.saveFolders }
+                            >
+                            </FolderSelectionComponent>
                         </div>
 
                         <div class='col-sm-4'>
-                            <div class='panel schedule'>
-                                <div class='header'>Schedule</div>
-                                <div class='list'>
-                                    <div class='title'>Reminder will appear:</div>
-
-                                    <input type='radio' defaultChecked='1' name='schedule' id='times' /> 
-                                    <input type='text' class='blue-input' placeholder='N' maxLength='2' /> 
-                                    <label for='times'>times a day</label><br/>
-
-                                    <input type='radio' name='schedule' id='everyday'/> 
-                                    <label for='everyday'>every day</label><br/>
-
-                                    <input type='radio' name='schedule' id='2days'/> 
-                                    <label for='2days'>every 2 days</label><br/>
-
-                                    <input type='radio' name='schedule' id='manually'/>
-                                    <label for='manually'>I will open bookmarks manually</label>
-                                </div>
-
-                                <div class='list'>
-                                    <div class='title'>Period:</div>
-                                    <input type='radio' defaultChecked='1' name='period' id='612' /> 
-                                    <label for='612'>6:00 - 12:00</label><br/>
-
-                                    <input type='radio' name='period' id='1218' />  
-                                    <label for='1218'>12:00 - 18:00</label><br/>
-
-                                    <input type='radio' name='period' id='180'/>
-                                    <label for='180'>18:00 - 0:00</label><br/>
-
-                                    <input type='radio' name='period' id='random' /> 
-                                    <label for='random'>totally random</label>
-                                </div>
-
-                                <button class='button-save'>Save</button>
-                            </div>
+                            <ScheduleComponent 
+                                ref                 = 'scheduleComponent'
+                                scheduleFrequency   = { this.props.global.scheduleFrequency }
+                                schedulePeriod      = { this.props.global.schedulePeriod }
+                                scheduleTimes       = { this.props.global.scheduleTimes }
+                                setSchedule         = { this.props.stepsActions.setSchedule }
+                            ></ScheduleComponent>
                         </div>
 
                         <div class='col-sm-4'>
@@ -175,8 +146,6 @@ class MainPage extends React.Component {
                         </div>
                     </div>
 
-                    <Conversation userName = {this.props.global.userName} ></Conversation>
-                    
                     <footer>
                         <div class='text'>If you like Procrastilater - share it with friends! </div>
                         <div class='note'>You will get an achievement if you'll share it in 2 social networks!</div>
@@ -190,6 +159,8 @@ class MainPage extends React.Component {
                         </div>
                     </footer>
                 </div>
+
+                <Conversation userName = {this.props.global.userName} ></Conversation>
             </div>
         )
     }

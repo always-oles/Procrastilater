@@ -1,3 +1,5 @@
+/* global toastr: {} */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import BookmarksList from './BookmarksList';
@@ -80,7 +82,11 @@ export default class Steps extends React.Component {
                     folder where you can store new postponed bookmarks.
                 </div> 
                 
-                <BookmarksList ref = 'bookmarksListComponent' saveFolders = { this.props.saveFolders }></BookmarksList>
+                <BookmarksList 
+                    ref = 'bookmarksListComponent' 
+                    saveFolders = { this.props.saveFolders }
+                    foldersIds = { this.props.foldersIds }  
+                ></BookmarksList>
 
                 <div class='buttons-container'>
                     <button class='button-back' onClick = { this.onPreviousClick }>Back</button>

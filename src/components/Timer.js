@@ -38,5 +38,5 @@ export default class Timer extends React.Component {
 }
 
 Timer.propTypes = {
-    nextPopup: PropTypes.number.isRequired
+    nextPopup: PropTypes.number
 }

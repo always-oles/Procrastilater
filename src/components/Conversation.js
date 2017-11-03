@@ -19,32 +19,32 @@ export default class Conversation extends React.Component {
 
         // container
         this.refs.container.classList.remove('hidden');
-        this.refs.container.classList.add('fadeIn');
 
         // form
         this.refs.conversation.classList.add('appear');
+
+        $('.body, header').addClass('blurred');
     }
 
     close() {
+        $('.body, header').removeClass('blurred').addClass('deblurred');
+
         // icon
         this.refs.icon.classList.add('deactivated');
-
-        // container (half visible white)
-        this.refs.container.classList.remove('fadeIn');
-        this.refs.container.classList.add('fadeOut');
 
         // form
         this.refs.conversation.classList.remove('appear');
         this.refs.conversation.classList.add('disappear');
 
         setTimeout(() => {
+            $('.body, header').removeClass('deblurred');
+
             // icon
             this.refs.icon.classList.remove('activated');
             this.refs.icon.classList.remove('deactivated');
 
             // container
             this.refs.container.classList.add('hidden');
-            this.refs.container.classList.remove('fadeOut');
 
             // form
             this.refs.conversation.classList.remove('disappear');
@@ -62,7 +62,7 @@ export default class Conversation extends React.Component {
     body() {
         return (
             <div class = 'slidable' id = 'slidable-review-container'>
-                <div class='title'>Send us your thoughts about this app and how can we improve it</div>
+                <div class='title'>We would like to hear how can we improve your experience. Feel free to send us your thoughts</div>
                 <form>
                     <label>Letter from:</label>
                     <input type='text' value={this.props.userName} disabled/>
