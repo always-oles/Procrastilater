@@ -12,6 +12,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
+      "helpers.js",
       "background.js"
     ],
     "persistent": true

@@ -29,6 +29,16 @@ export default class FoldersList extends React.Component {
   handleClick(e) {
     // if it's selected already
     if (e.target.classList.contains('selected')) {
+
+      // show error if user deselected all bookmarks
+      if ( this.props.notify === true && Array.from(this.selectedFoldersSet).length == 1 ) {
+        toastr.remove();
+        toastr.error('You must have at least 1 folder with bookmarks selected', null, {
+          positionClass: 'toast-bottom-left'
+        });
+        return;
+      }
+
       // remove it from set
       this.selectedFoldersSet.delete( e.target.getAttribute('id') );
     } else {

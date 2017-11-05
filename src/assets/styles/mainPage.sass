@@ -72,7 +72,6 @@
 
           .bar
             height: inherit
-            width: 40%
             background: #29abe2
             background: -moz-linear-gradient(left, #29abe2 0%, #0071bc 100%)
             background: -webkit-linear-gradient(left, #29abe2 0%,#0071bc 100%)
@@ -85,7 +84,7 @@
             left: 48%
             top: 46%
             text-align: center
-            color: #666
+            color: #333
             font-size: 1.4rem              
             font-weight: 600
         
@@ -115,11 +114,13 @@
 
       &.panel--blue
         .header
+          color: #eee
           background: #128BCD
 
       &.panel--gray
         .header
-          background: #B3B3B3
+          color: #333333
+          background: #ccc 
       
       .check 
         display: none
@@ -130,7 +131,7 @@
         text-align: center
         font-size: 1.8rem
         font-weight: 400
-        color: #fff
+        color: #ddd
         height: 40px
         width: 100%
 
@@ -159,18 +160,15 @@
       .content
         font-size: 1.3rem
         font-weight: 500
-        padding: 15px
+        padding: 10px 15px
         text-align: left
         clear: both
 
         .important
           clear: both
           color: #666
-
-          &:nth-child(2)
-            padding: 5px 0
-            border-top: 1px solid #ddd
-            border-bottom: 1px solid #ddd
+          border-bottom: 1px solid #ddd
+          padding: 5px 0
 
         .value
           color: #00BF79

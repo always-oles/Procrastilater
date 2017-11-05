@@ -4,27 +4,16 @@ import {
     SET_USERNAME,
     SAVE_FOLDERS,
     CREATE_CUSTOM_FOLDER,
-    SET_SCHEDULE
+    SET_SCHEDULE,
+    SET_TEMPO
 } from '../constants';
 
-const initialState = {
-    // step: 1,
-    // stepPhase: 'active',
-    // userName: '',
-    // foldersIds: [],
-    // scheduleFrequency: null,
-    // schedulePeriod: null,
-    // scheduleTimes: null,
-
-    // popupShown: false,
-    // popupShownTime: null,
-    // nextPopup: null
-};
- 
-export default function global(state = initialState, action) {
+export default function global(state = {}, action) {
     switch (action.type) {
         case SET_STEP:
-            return { ...state, step: action.payload }            
+            return { ...state, step: action.payload }      
+        case SET_TEMPO:
+            return { ...state, tempo: action.payload }      
         case SET_STEP_PHASE:
             return { ...state, stepPhase: action.payload }
         case SET_USERNAME:

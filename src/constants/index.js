@@ -20,3 +20,5 @@ export const SCHEDULE = {
 }
 
 export const SET_SCHEDULE = 'SET_SCHEDULE';
+export const SET_TEMPO = 'SET_TEMPO';
+export const UPDATE_BOOKMARKS_STATS = 'UPDATE_BOOKMARKS_STATS';

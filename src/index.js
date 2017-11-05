@@ -16,7 +16,7 @@ configureStore( store => {
      * Subscribe to store state change to update state in chrome storage
      */
     store.subscribe( () => {
-        API.setState(store.getState().global);
+        API.setState(store.getState());
     });
 
     render(

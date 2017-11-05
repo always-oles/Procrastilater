@@ -1,29 +1,59 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
-import global from '../reducers/globalReducer';
 import API from '../api';
 
+// reducers
+import global from '../reducers/globalReducer';
+import stats from '../reducers/statsReducer';
+import achievements from '../reducers/achievementsReducer';
+import popups from '../reducers/popupsReducer';
+
 const defaultInitialState = {
-    step: 1,
-    stepPhase: 'active',
+    global: {
+        step: 1,
+        stepPhase: 'active',
+        userName: '',
+    
+        foldersIds: [],
+        visitedIds: [],
+        allVisitedIds: [],
+    
+        scheduleFrequency: null,
+        schedulePeriod: null,
+        scheduleTimes: null,
+        tempo: null
+    },
 
-    userId: null,
-    userName: '',
-    foldersIds: [],
-    scheduleFrequency: null,
-    schedulePeriod: null,
-    scheduleTimes: null,
+    achievements: {       
+        manualOpener:   false,
+        visitor:        false,
+        postponer:      false,
+        addedLots:      false,
+        social:         false,
+        reviewer:       false
+    },
 
-    popupShown: false,
-    popupsToday: 0,
-    popupShownTime: null,
-    nextPopup: null
+    popups: {
+        lastPopupTime: null,
+        nextPopupTime: null,
+        popupIsShowing: false,
+        popupsToday:0
+    },
+
+    stats: {
+        bookmarksCount: 0, 
+        bookmarksVisited: 0, 
+        bookmarksVisitedManually: 0,
+        bookmarksPostponed: 0,
+        shared: 0,
+        totalBookmarks: 0, 
+        totalUsers: 1
+    }
 }
 
 /**
- * We are configuring our store and trying to get default values from chrome storage, 
- * then call a callback
+ * Configure store and try to get values from storage if they exist, otherwise take defaults
  * @param {func} callback 
  */
 export default function configureStore(callback) {
@@ -40,30 +70,23 @@ export default function configureStore(callback) {
         if ( !state ) {
             state = defaultInitialState;
         }
-        
 
         // create actual store
         store = createStore(
             combineReducers({
-                global
+                global,
+                stats,
+                achievements,
+                popups
             }), 
-            {
-                global: state
-            },
+            state,
             applyMiddleware(thunk, logger)
         );
 
         // we are ready, return store
         callback(store);
     });
-
-    if (module.hot) {
-        module.hot.accept('../reducers', () => {
-            const nextRootReducer = require('../reducers')
-            store.replaceReducer(nextRootReducer)
-        })
-    }
-
+    
     return store;
 }
 

@@ -964,7 +964,6 @@ template {
         border-radius: 8px; }
         .main-page header .header-panel .progress-container .progress-bar-full .bar {
           height: inherit;
-          width: 40%;
           background: #29abe2;
           background: -moz-linear-gradient(left, #29abe2 0%, #0071bc 100%);
           background: -webkit-linear-gradient(left, #29abe2 0%, #0071bc 100%);
@@ -979,7 +978,7 @@ template {
           left: 48%;
           top: 46%;
           text-align: center;
-          color: #666;
+          color: #333;
           font-size: 1.4rem;
           font-weight: 600; }
       .main-page header .header-panel .progress-container .note {
@@ -1007,9 +1006,11 @@ template {
       .main-page .body .panel.collapsed .header {
         border-radius: 4px; }
     .main-page .body .panel.panel--blue .header {
+      color: #eee;
       background: #128BCD; }
     .main-page .body .panel.panel--gray .header {
-      background: #B3B3B3; }
+      color: #333333;
+      background: #ccc; }
     .main-page .body .panel .check {
       display: none; }
     .main-page .body .panel .header {
@@ -1023,7 +1024,7 @@ template {
       text-align: center;
       font-size: 1.8rem;
       font-weight: 400;
-      color: #fff;
+      color: #ddd;
       height: 40px;
       width: 100%; }
     .main-page .body .panel .content {
@@ -1046,16 +1047,14 @@ template {
   .main-page .body .stats .content {
     font-size: 1.3rem;
     font-weight: 500;
-    padding: 15px;
+    padding: 10px 15px;
     text-align: left;
     clear: both; }
     .main-page .body .stats .content .important {
       clear: both;
-      color: #666; }
-      .main-page .body .stats .content .important:nth-child(2) {
-        padding: 5px 0;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd; }
+      color: #666;
+      border-bottom: 1px solid #ddd;
+      padding: 5px 0; }
     .main-page .body .stats .content .value {
       color: #00BF79;
       font-weight: 600; }
@@ -1263,7 +1262,7 @@ template {
 
 .toast-message {
   line-height: 1.2;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400; }
 
 *:focus {

@@ -1,4 +1,4 @@
-/*global chrome:{}*/
+/*global chrome:{}, getRandomToken: function*/
 
 let nextPopup = null,
 	intervalHolder = null;
@@ -6,7 +6,7 @@ let nextPopup = null,
 chrome.storage.local.get('state', (result) => {
 
 	// get next popup time or make it now
-	nextPopup = result.state.nextPopup || +new Date();
+	nextPopup = (result.state && result.state.nextPopup) || +new Date();
 
 	// launch time checker
 	//intervalHolder = setInterval(checkTime, 1000);
@@ -57,3 +57,21 @@ chrome.runtime.onMessage.addListener(
 //         // incognito, top, left, ...
 //     });
 // });
+
+
+/**
+ * Once extension is installed - generate unique token for user
+ */
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason == 'install') {
+		chrome.storage.local.set({ 'token' : getRandomToken()});
+    } else {
+		chrome.storage.local.get( 'token', (result) => {
+			if ( !result.token ) {
+				chrome.storage.local.set({ 'token' : getRandomToken()});
+			}
+		});
+	}
+});
+
+
