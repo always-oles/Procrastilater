@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as stepsActions from '../actions/StepsActions';
+import * as globalActions from '../actions/GlobalActions';
 
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -12,8 +12,8 @@ class Steps extends React.Component {
     constructor(props) {
         super(props);
         
-        parent.setStep = this.props.stepsActions.setStep;
-        parent.setStepPhase = this.props.stepsActions.setStepPhase;
+        parent.setStep = this.props.globalActions.setStep;
+        parent.setStepPhase = this.props.globalActions.setStepPhase;
     }
 
     // every step inherits this
@@ -100,7 +100,7 @@ class Steps extends React.Component {
 
     render() {
         const { step, foldersIds, stepPhase } = this.props.global;
-        const { setUsername, saveFolders, createCustomFolder, setSchedule } = this.props.stepsActions;
+        const { setUsername, saveFolders, createCustomFolder, setSchedule } = this.props.globalActions;
             
         return (
             <div class= { step == -1 ? 'hidden' :'steps' } >
@@ -153,7 +153,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        stepsActions: bindActionCreators(stepsActions, dispatch)
+        globalActions: bindActionCreators(globalActions, dispatch)
     }
 }
 

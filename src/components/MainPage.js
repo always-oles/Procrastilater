@@ -1,7 +1,8 @@
+import { resetReceivedAchievement } from '../actions/GlobalActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as stepsActions from '../actions/StepsActions';
+import * as globalActions from '../actions/GlobalActions';
 
 // Widgets
 import Timer from './Timer';
@@ -11,6 +12,7 @@ import ScheduleComponent from './ScheduleComponent';
 import AchievementsComponent from './AchievementsComponent';
 import StatsComponent from './StatsComponent';
 import ProgressComponent from './ProgressComponent';
+import ShareComponent from './ShareComponent';
 
 // SVG images
 import Logo from '../assets/images/logo.svg';
@@ -66,7 +68,7 @@ class MainPage extends React.Component {
                         <div class='col-sm-4'>
                             <FolderSelectionComponent
                                 foldersIds  = { this.props.global.foldersIds }
-                                saveFolders = { this.props.stepsActions.saveFolders }
+                                saveFolders = { this.props.globalActions.saveFolders }
                             />
                         </div>
 
@@ -76,12 +78,16 @@ class MainPage extends React.Component {
                                 scheduleFrequency   = { this.props.global.scheduleFrequency }
                                 schedulePeriod      = { this.props.global.schedulePeriod }
                                 scheduleTimes       = { this.props.global.scheduleTimes }
-                                setSchedule         = { this.props.stepsActions.setSchedule }
+                                setSchedule         = { this.props.globalActions.setSchedule }
                             />
                         </div>
 
                         <div class='col-sm-4'>
-                            <AchievementsComponent achievements = { this.props.achievements } />
+                            <AchievementsComponent 
+                                achievements = { this.props.achievements }
+                                resetReceivedAchievement = { this.props.globalActions.resetReceivedAchievement }
+                                justReceived = { this.props.global.justReceived }
+                            />
                             <StatsComponent 
                                 stats = { this.props.stats }
                                 global = { this.props.global }
@@ -95,19 +101,16 @@ class MainPage extends React.Component {
                         <div class='note'>You will get an achievement if you'll share it at least in 2 social networks!<br/>
                             It is a <a href='https://github.com/always-oles/Procrastilater' target='_blank'>free open source</a> project.
                         </div>
-                        <div class='socials'>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/facebook.png" alt="Facebook"/></a>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/telegram/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/telegram.png" alt="Telegram"/></a>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/twitter.png" alt="Twitter"/></a>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/vk/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/vk.png" alt="Vkontakte"/></a>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/email/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/email.png" alt="Email"/></a>
-                            <a href="https://api.addthis.com/oexchange/0.8/forward/google_plusone_share/offer?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&pubid=ra-42fed1e187bae420&title=&ct=1" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/google_plusone_share.png" alt="Google+"/></a>                        
-                        </div>
-
+                        <ShareComponent
+                            sharedInSocial = { this.props.globalActions.sharedInSocial }
+                        />
                     </footer>
                 </div>
 
-                <ConversationComponent userName = {this.props.global.userName} />
+                <ConversationComponent 
+                    userName = {this.props.global.userName}
+                    sendMessage = {this.props.globalActions.sendMessage}
+                />
             </div>
         )
     }   
@@ -124,7 +127,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        stepsActions: bindActionCreators(stepsActions, dispatch)
+        globalActions: bindActionCreators(globalActions, dispatch)
     }
 }
 

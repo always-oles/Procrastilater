@@ -3,14 +3,63 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ConversationIcon from '../assets/images/conversation-icon.svg';
+import Check from '../assets/images/check-with-round.svg';
 
 export default class ConversationComponent extends React.Component {
     constructor() {
-        super();       
-        this.header = this.header.bind(this);
-        this.body = this.body.bind(this);
+        super();     
+        
+        // locked submit button by default
+        this.state = {
+            locked: true
+        };
+
         this.onIconClick = this.onIconClick.bind(this);
         this.close = this.close.bind(this);
+        this.onSendClick = this.onSendClick.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
+    }
+
+    onSendClick(e) {
+        if (e) e.preventDefault();
+        this.setState({locked: true});
+
+        this.props.sendMessage({
+            'fromName':     this.refs.userName.value,
+            'fromEmail':    this.refs.userEmail.value,
+            'text':         this.refs.text.value,
+        }, () => {
+            // unlock send button
+            this.setState({locked: false});
+
+            // reset inputs
+            this.refs.userEmail.value = '';
+            this.refs.text.value = '';
+
+            // show success message
+            $('.success-container')
+                .css('display', 'flex')
+                .hide()
+                .fadeIn()
+                .delay(1500)
+                .fadeOut();
+        });
+    }
+
+    onTextChange(e) {
+        if (e.target.value.length > 2) {
+            this.setState({locked: false});
+        } else {
+            this.setState({locked: true});
+        }
+    }
+
+    onKeyDown(e) {
+        // send message upon ctrl+enter click
+        if (e.ctrlKey && e.keyCode == 13 && !this.state.locked) {
+            this.onSendClick();
+        }
     }
 
     onIconClick() {
@@ -18,17 +67,13 @@ export default class ConversationComponent extends React.Component {
         this.refs.icon.classList.add('activated');
 
         // container
-        this.refs.container.classList.remove('hidden');
+        $(this.refs.container).fadeIn();
 
         // form
         this.refs.conversation.classList.add('appear');
-
-        $('.body, header').addClass('blurred');
     }
 
     close() {
-        $('.body, header').removeClass('blurred').addClass('deblurred');
-
         // icon
         this.refs.icon.classList.add('deactivated');
 
@@ -36,57 +81,50 @@ export default class ConversationComponent extends React.Component {
         this.refs.conversation.classList.remove('appear');
         this.refs.conversation.classList.add('disappear');
 
-        setTimeout(() => {
-            $('.body, header').removeClass('deblurred');
+        // container
+        $(this.refs.container).fadeOut(1000);
 
+        setTimeout(() => {
             // icon
             this.refs.icon.classList.remove('activated');
             this.refs.icon.classList.remove('deactivated');
-
-            // container
-            this.refs.container.classList.add('hidden');
 
             // form
             this.refs.conversation.classList.remove('disappear');
         }, 1000);
     }
 
-    header() {
-        return <div class='header'> Let's talk <span class='close' onClick = {this.close}>✕</span></div>;
-    }
-
-    prevent(e) {
-        e.stopPropagation();
-    }
-
-    body() {
-        return (
-            <div class = 'slidable' id = 'slidable-review-container'>
-                <div class='title'>We would like to hear how can we improve your experience. Feel free to send us your thoughts!</div>
-                <form>
-                    <label>Letter from:</label>
-                    <input type='text' value={this.props.userName} disabled/>
-
-                    <label>How can we answer you?</label>
-                    <input type='email' name='email' placeholder='Email' />
-
-                    <label>What do you think, what you suggest?</label>
-                    <textarea name='letter'></textarea>
-
-                    <button class='button-send'>Send</button>
-                </form>
-            </div>
-        );
-    }
 
     render() {
         return(
             <div>
                 <div class = 'conversation-icon' ref='icon' onClick = {this.onIconClick}> <img src={ConversationIcon} /> </div>
-                <div class = 'conversation-container hidden' ref='container' onClick = {this.close} >
-                    <div class = 'panel review' ref='conversation' onClick = {this.prevent}>
-                        < this.header />
-                        < this.body />
+                <div class = 'conversation-container' ref='container' onClick = {this.close} >
+                    <div class = 'panel conversation' ref='conversation' onClick = { (e) => e.stopPropagation() }>
+                        <div class='header'> Let's talk <span class='close' onClick = {this.close}>✕</span></div>
+                        
+                        <div class = 'slidable'>
+                            <div class='title'>We would like to know how can we improve your experience. Feel free to send us your thoughts!</div>
+                            <form>
+                                <label>Letter from:</label>
+                                <input type='text' value={this.props.userName} disabled ref='userName'/>
+            
+                                <label title='Can be blank'>How can we answer you?</label>
+                                <input type='email' name='email' placeholder='Email' ref='userEmail'/>
+            
+                                <label>What do you think, what do you suggest?</label>
+                                <textarea onChange = {this.onTextChange} onKeyDown = {this.onKeyDown} name='letter' ref='text'></textarea>
+            
+                                <button onClick = { this.onSendClick } class= {'button-send ' + (this.state.locked ? 'locked': '') }>Send</button>
+                            </form>
+                        </div>
+
+                        <div class='success-container'>
+                            <div class='success-message'>
+                                <img src={Check} />
+                                <div class='text'>Message is sent. <br/>We will read it soon!</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,5 +133,6 @@ export default class ConversationComponent extends React.Component {
 }
 
 ConversationComponent.propTypes = {
-    userName: PropTypes.string.isRequired
+    userName: PropTypes.string.isRequired,
+    sendMessage: PropTypes.func.isRequired
 }

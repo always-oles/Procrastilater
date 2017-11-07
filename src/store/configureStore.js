@@ -11,9 +11,9 @@ import popups from '../reducers/popupsReducer';
 
 const defaultInitialState = {
     global: {
-        step: 1,
+        step: -1,
         stepPhase: 'active',
-        userName: '',
+        userName: 'Incognito',
     
         foldersIds: [],
         visitedIds: [],
@@ -22,7 +22,8 @@ const defaultInitialState = {
         scheduleFrequency: null,
         schedulePeriod: null,
         scheduleTimes: null,
-        tempo: null
+        tempo: null,
+        justReceived: false
     },
 
     achievements: {       

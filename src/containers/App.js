@@ -6,7 +6,7 @@ import MainPage from '../components/MainPage';
 import API from '../api';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as stepsActions from '../actions/StepsActions';
+import * as globalActions from '../actions/GlobalActions';
 
 class ClearButton extends React.Component {
     onClick() {
@@ -55,7 +55,7 @@ class App extends React.Component {
     componentWillReceiveProps(nextProps) {
         // if user has finished the last step
         if (nextProps.global.stepPhase == 'done' && nextProps.global.step == '3') {
-            this.props.stepsActions.setStep(-1);
+            this.props.globalActions.setStep(-1);
             this.needToAnimate = true;
         }
     }
@@ -86,5 +86,5 @@ class App extends React.Component {
 
 export default connect( 
     (state) => ({global: state.global}),
-    (dispatch) => ({ stepsActions: bindActionCreators(stepsActions, dispatch) })
+    (dispatch) => ({ globalActions: bindActionCreators(globalActions, dispatch) })
  )(App);

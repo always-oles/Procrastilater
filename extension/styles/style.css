@@ -587,6 +587,34 @@ template {
   to {
     filter: blur(0px); } }
 
+@keyframes flyingFingerRotating {
+  0% {
+    transform: translateY(-50px) rotate(0); }
+  100% {
+    transform: translateY(500px) rotate(180deg); } }
+
+@keyframes flyingFingerRotatingHard {
+  0% {
+    transform: translateY(-50px) rotate(0); }
+  100% {
+    transform: translateY(500px) rotate(360deg); } }
+
+@keyframes bounce {
+  0% {
+    transform: translateY(-15px); }
+  15% {
+    transform: translateY(0); }
+  30% {
+    transform: translateY(-10px); }
+  45% {
+    transform: translateY(0); }
+  60% {
+    transform: translateY(-5px); }
+  75% {
+    transform: translateY(0); }
+  90% {
+    transform: translateY(-2px); } }
+
 .buttons-container {
   margin: 20px auto 0;
   display: flex;
@@ -659,7 +687,8 @@ template {
   font-weight: 500;
   min-width: 130px;
   min-height: 35px;
-  box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.3); }
+  box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.3);
+  transition: background 0.5s; }
   .button-send:hover {
     background: #468cfc; }
   .button-send:active {
@@ -667,6 +696,12 @@ template {
     border: #3280fc;
     background: #3280fc;
     transform: translateY(1px); }
+  .button-send.locked {
+    background: #777777; }
+    .button-send.locked:hover, .button-send.locked:active {
+      background: #777777;
+      transform: none;
+      box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.3); }
 
 .steps {
   margin: 30px 0; }
@@ -1092,6 +1127,22 @@ template {
     font-size: 1.1rem; }
   .main-page footer .socials a {
     margin-right: 1px; }
+    .main-page footer .socials a img {
+      border-radius: 3px;
+      margin-right: 3px; }
+    .main-page footer .socials a img[src*='facebook'] {
+      background: #3b5998; }
+    .main-page footer .socials a img[src*='twitter'] {
+      background: #55acee; }
+    .main-page footer .socials a img[src*='google_plus'] {
+      background: #dd4b39; }
+    .main-page footer .socials a img[src*='telegram'] {
+      background: #2ca5e0; }
+    .main-page footer .socials a img[src*='vk'] {
+      background: #587ea3; }
+    .main-page footer .socials a img[src*='email'],
+    .main-page footer .socials a img[src*='link'] {
+      background: #0166ff; }
 
 .conversation-icon {
   position: fixed;
@@ -1111,20 +1162,17 @@ template {
     animation: turnBack 0.4s ease-out forwards; }
 
 .conversation-container {
+  display: none;
   width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  background: none;
-  z-index: 9998;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 2000;
   cursor: pointer; }
-  .conversation-container.fadeIn {
-    animation: fadeIn 1s ease-out; }
-  .conversation-container.fadeOut {
-    animation: fadeOut 1s ease-out forwards; }
 
-.review {
+.conversation {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1133,14 +1181,36 @@ template {
   position: fixed;
   bottom: 45px;
   right: 80px;
-  z-index: 9999;
+  z-index: 2001;
   width: 25%;
   cursor: default; }
-  .review.appear {
+  .conversation.appear {
     animation: conversationAppear 1s ease-out, fadeIn 1s ease-out; }
-  .review.disappear {
+  .conversation.disappear {
     animation: conversationDisappear 1s ease-out, fadeOut 1s ease-out forwards; }
-  .review .header {
+  .conversation .success-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); }
+    .conversation .success-container .success-message {
+      text-align: center; }
+      .conversation .success-container .success-message img {
+        background: #fff;
+        width: 70px;
+        height: 70px;
+        animation: bounce 1s linear 1; }
+      .conversation .success-container .success-message .text {
+        padding: 20px 0;
+        color: #555;
+        font-size: 1.7rem;
+        font-weight: 500; }
+  .conversation .header {
     -webkit-border-top-left-radius: 4px;
     -webkit-border-top-right-radius: 4px;
     -moz-border-radius-topleft: 4px;
@@ -1155,7 +1225,7 @@ template {
     background: #3ca1fc;
     color: #fff;
     font-weight: 500; }
-    .review .header .close {
+    .conversation .header .close {
       display: block;
       position: absolute;
       right: 5px;
@@ -1163,26 +1233,26 @@ template {
       color: #ffffff;
       font-size: 0.7rem;
       opacity: 0.4; }
-  .review .title {
+  .conversation .title {
     padding: 15px 20px 5px;
     font-size: 1.1rem; }
-  .review form {
+  .conversation form {
     padding: 15px 20px 10px; }
-    .review form label {
+    .conversation form label {
       display: block;
       font-weight: 500;
       font-size: 1.1rem; }
-    .review form input,
-    .review form textarea {
+    .conversation form input,
+    .conversation form textarea {
       display: block;
       font-size: inherit; }
-    .review form input {
+    .conversation form input {
       padding: 5px;
       min-width: 200px;
       margin-bottom: 20px; }
-    .review form textarea {
+    .conversation form textarea {
       resize: none;
-      padding: 10px;
+      padding: 2px 6px;
       margin: 0 auto 20px;
       width: 100%;
       border: 1px solid #cccccc;
@@ -1203,6 +1273,82 @@ template {
     animation: dropFromTop 1s ease;
     width: 100px;
     height: 100px; }
+
+.achievement-gained {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  width: 100vw;
+  height: 100vh;
+  z-index: 3000; }
+  .achievement-gained .container {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #6b3fff;
+    top: 50%;
+    left: 50%;
+    margin-left: -30vw;
+    margin-top: -20vh;
+    width: 60vw;
+    height: 40vh;
+    background-image: url(../images/a0d7b1fc8f147e135768d78393047a24.png);
+    z-index: 1001;
+    overflow: hidden; }
+    .achievement-gained .container .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      background: #6b3fff;
+      color: #ffffff;
+      font-size: 1.2rem;
+      text-align: center;
+      line-height: 20px;
+      padding-left: 3px;
+      opacity: 0.7; }
+      .achievement-gained .container .close:hover {
+        opacity: 1; }
+    .achievement-gained .container .finger {
+      z-index: 1001;
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: -100px;
+      left: 10px; }
+      .achievement-gained .container .finger:nth-child(1) {
+        animation: flyingFingerRotating 5s infinite linear; }
+      .achievement-gained .container .finger:nth-child(2) {
+        left: 20%;
+        animation: flyingFingerRotatingHard 4s infinite linear 0.5s; }
+      .achievement-gained .container .finger:nth-child(3) {
+        left: 40%;
+        animation: flyingFingerRotating 5s infinite linear 1s; }
+      .achievement-gained .container .finger:nth-child(4) {
+        left: 55%;
+        animation: flyingFingerRotatingHard 4s infinite linear 1.5s; }
+      .achievement-gained .container .finger:nth-child(5) {
+        left: 90%;
+        animation: flyingFingerRotating 4.5s infinite linear; }
+      .achievement-gained .container .finger:nth-child(6) {
+        left: 80%;
+        animation: flyingFingerRotatingHard 4s infinite linear 1.8s; }
+      .achievement-gained .container .finger:nth-child(7) {
+        left: 60%;
+        animation: flyingFingerRotating 5s infinite linear 2.2s; }
+    .achievement-gained .container .text {
+      background: #6b3fff;
+      width: 80%;
+      padding: 20px;
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: 500;
+      color: #ffffff;
+      z-index: 1003; }
 
 .clear-button {
   width: 40px;

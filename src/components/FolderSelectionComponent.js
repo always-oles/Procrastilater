@@ -1,4 +1,4 @@
-import { saveFolders } from '../actions/StepsActions';
+import { saveFolders } from '../actions/GlobalActions';
 import React from 'react';
 import PropTypes from 'prop-types';
 import BookmarksList from './BookmarksList';

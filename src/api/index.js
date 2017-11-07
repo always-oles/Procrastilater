@@ -1,3 +1,11 @@
+/* global chrome, $: jQuery, Promise, moment */
+
+/**
+ * TODO: remove consoles
+ */
+
+const SERVER_API = 'http://localhost:3000/api/';
+
 export default {
     saveFolders: (folders) => {
         chrome.storage.local.set({'folders': folders});
@@ -43,6 +51,25 @@ export default {
     setState: (state, callback) => {
         chrome.storage.local.set({'state': state}, () => {
             if (callback) callback();
+        });
+    },
+
+    getToken: (callback) => {
+        chrome.storage.local.get('token', (token) => {
+            callback(token);
+        });
+    },
+
+    sendMessage: (message) => {
+        return new Promise( (resolve, reject) => {
+            $.post(SERVER_API + 'sendMessage', message, data => {
+                if (data.status == true) {
+                    resolve();
+                } else {
+                    console.warn(data);
+                    reject(data);
+                }
+            });
         });
     },
 

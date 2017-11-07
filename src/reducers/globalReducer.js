@@ -5,7 +5,9 @@ import {
     SAVE_FOLDERS,
     CREATE_CUSTOM_FOLDER,
     SET_SCHEDULE,
-    SET_TEMPO
+    SET_TEMPO,
+    GIVE_ACHIEVEMENT,
+    RESET_RECEIVED_ACHIEVEMENT
 } from '../constants';
 
 export default function global(state = {}, action) {
@@ -24,6 +26,10 @@ export default function global(state = {}, action) {
             return { ...state, folder: action.payload }
         case SET_SCHEDULE:
             return { ...state, scheduleFrequency: action.payload.frequency, schedulePeriod: action.payload.period, scheduleTimes: action.payload.times }
+        case GIVE_ACHIEVEMENT:
+            return { ...state, justReceived: true }
+        case RESET_RECEIVED_ACHIEVEMENT:
+            return { ...state, justReceived: false}
         default:
             return state;
     }

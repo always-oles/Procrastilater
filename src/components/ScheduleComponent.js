@@ -22,26 +22,6 @@ export default class ScheduleComponent extends React.Component {
         this.notifyTimeout = null;
     }
 
-    // onSaveClick() {
-    //     // if nothing changed and save button clicked
-    //     if ( !this.state.changed) return;
-
-    //     // update schedule
-    //     this.props.setSchedule(this.state);
-
-    //     // add completed animation
-    //     this.refs.container.classList.add('completed');
-        
-    //     // reset
-    //     this.setState({ changed: false });
-        
-    //     // when animation is done
-    //     setTimeout(() => {
-    //         // remove animation class
-    //         this.refs.container.classList.remove('completed');
-    //     }, 2000);
-    // }
-
     save() {
         this.props.setSchedule(this.state);
         
@@ -54,16 +34,26 @@ export default class ScheduleComponent extends React.Component {
             toastr.success('Saved new schedule', null, {
                 positionClass: 'toast-bottom-left'
             });
-            //debugger;
         }, 500);
     }
 
     onFrequencyChange(e) {
-        this.setState({ 
-            frequency : e.target.id
-         }, () => {
-            this.save();
-         });
+        // if user selected few times a day and didnt enter how many times
+        // set to 1 by default
+        if (e.target.id == SCHEDULE.FREQUENCY.FEW_TIMES && !this.state.times) {
+            this.setState({ 
+                frequency : e.target.id,
+                times: 1
+             }, () => {
+                this.save();
+             });
+        } else {
+            this.setState({ 
+                frequency : e.target.id
+             }, () => {
+                this.save();
+             });
+        }
     }
 
     onPeriodChange(e) {
@@ -94,7 +84,7 @@ export default class ScheduleComponent extends React.Component {
                         <label for={ SCHEDULE.FREQUENCY.MANUAL } >I will open bookmarks manually</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
-                        <input type='text' onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
+                        <input type='text' onChange={ this.onTimesChange } class='blue-input' title='Max value is 10' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
                         <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >times a day</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 

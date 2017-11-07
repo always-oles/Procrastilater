@@ -49,7 +49,16 @@ export default class Steps extends React.Component {
     }
 
     onFrequencyChange(e) {
-        this.setState({ frequency : e.target.id });
+        if (e.target.id == SCHEDULE.FREQUENCY.FEW_TIMES && !this.state.times) {
+            this.setState({ 
+                frequency : e.target.id,
+                times: 1
+             });
+        } else {
+            this.setState({ 
+                frequency : e.target.id
+             });
+        }
     }
 
     onPeriodChange(e) {

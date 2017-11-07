@@ -1,3 +1,6 @@
+import { resetReceivedAchievement } from '../actions/GlobalActions';
+/* global $:jQuery */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,8 +10,29 @@ import AchievementLazy   from '../assets/images/achievement-lazy.svg';
 import AchievementMedal  from '../assets/images/achievement-medal.svg';
 import AchievementSocial from '../assets/images/achievement-social.svg';
 import AchievementReviewer from '../assets/images/achievement-reviewer.svg';
+import Trophy from '../assets/images/trophy.svg';
 
 export default class AchievementsComponent extends React.Component {
+    constructor() {
+        super();
+        this.onCloseClick = this.onCloseClick.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // if user just received an achievement
+        if (nextProps.justReceived == true) {
+            // show gratz popup
+            $('.achievement-gained').fadeIn();
+
+            // dispatch that user received it
+            this.props.resetReceivedAchievement();
+        }
+    }
+
+    onCloseClick() {
+        $('.achievement-gained').fadeOut();
+    }
+
     render() {
         return (
             <div class='panel achievements panel--blue'>
@@ -53,9 +77,27 @@ export default class AchievementsComponent extends React.Component {
                         class = {'item opacity-05 ' + (this.props.achievements.reviewer ? '' : 'locked')} 
                         src = {AchievementReviewer} 
                         title = { this.props.achievements.reviewer 
-                                ? 'You\'ve sent your review to developer!'
+                                ? 'You\'ve sent a message to developer!'
                                 : 'Locked: send your review/thoughts to developer to unlock' }
                     />
+                </div>
+
+                <div class='achievement-gained'>
+                    <div class='container'>
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+                        <img class='finger' src={ Trophy }/> 
+
+                        <div class='close' onClick = { this.onCloseClick } >✕</div>
+
+                        <div class='text'>
+                            Congratulations! You've just unlocked an achievement! Keep the good work!
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -63,5 +105,7 @@ export default class AchievementsComponent extends React.Component {
 }
 
 AchievementsComponent.propTypes = {
-    achievements: PropTypes.object.isRequired
+    achievements: PropTypes.object.isRequired,
+    resetReceivedAchievement: PropTypes.func.isRequired,
+    justReceived: PropTypes.bool.isRequired
 }
