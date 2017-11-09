@@ -1,4 +1,29 @@
-/*global chrome:{}, getRandomToken: function*/
+/*global chrome, getRandomToken: function*/
+
+/**
+ * Global variables
+ */
+let TOKEN = null;
+const API = 'http://localhost:3000/';
+
+chrome.storage.local.get('token', (result) => {
+	if ( result.token ) {
+		TOKEN = result.token;
+	} else {
+		TOKEN = getRandomToken();
+		chrome.storage.local.set({ 'token' : TOKEN});
+	}
+
+	chrome.cookies.set(
+		{ 
+			url: API + 'uninstall', 
+			name: 'token', 
+			value: TOKEN, 
+			expirationDate: (new Date().getTime()/1000) + 9999999 
+		}
+	);
+});
+
 
 let nextPopup = null,
 	intervalHolder = null;
@@ -74,6 +99,10 @@ chrome.runtime.onInstalled.addListener((details) => {
 	}
 });
 
+/**
+ * Uninstall
+ */
+chrome.runtime.setUninstallURL(API + 'uninstall');
 
 function getRandomToken() {
     var randomPool = new Uint8Array(16);

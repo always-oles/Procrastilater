@@ -1,4 +1,4 @@
-/* global chrome: {} */
+/* global $:jQuery, chrome */
 import API from '../api';
 import { 
     SET_STEP,
@@ -14,6 +14,8 @@ import {
     RESET_RECEIVED_ACHIEVEMENT,
     SEND_MESSAGE_SUCCESS,
     SEND_MESSAGE_ERROR,
+    ADDED_LOTS_ACHIEVEMENT_NUMBER,
+    UPDATE_TOTAL_STATS
 } from '../constants';
 
 
@@ -38,37 +40,50 @@ export function setUsername(name) {
     }
 }
 
-var oldTotalBookmarks = 0;
+/**
+ * When user updates selected folders - we have to process 
+ * all bookmarks in these folders and update stats
+ */
+// we need few global variables to pass data between functions and recursion
+var bookmarks = [];
+var hasFoldersAchievement = false;
+
 export function saveFolders(folders) {
     return (dispatch, getState) => {
 
         let state = getState();
 
-        // decrement how many bookmarks user had to increment laters
-        if (state.stats.totalBookmarks > 0 ){
-            oldTotalBookmarks = state.stats.totalBookmarks - state.stats.bookmarksCount
+        // update global var if user has this achievement
+        // to prevent giving it to him twice later
+        if ( state.achievements.addedLots == true ) {
+            hasFoldersAchievement = true;
         }
 
+        // save selected folders
         dispatch({
             type: SAVE_FOLDERS,
             payload: folders
         });
 
         // count/calculate selected folders bookmarks
-        prepareStats(dispatch, folders, state.global.allVisitedIds);
+        prepareStats(dispatch, folders, state.global.allVisitedIds, () => {
+
+            // when everything is finished - update backend and get new total stats from it
+            getStatsFromBackend(dispatch, getState);
+        });
     }
 }
 
-var bookmarks;
-function prepareStats(dispatch, folders, allVisitedIds) {
-    // get all user bookmarks
+function prepareStats(dispatch, folders, allVisitedIds, saveFoldersCallback) {
+
+    // get all user bookmarks as a tree object
     chrome.bookmarks.getTree((results) => {
         if (results[0] && results[0].children) {
             // reset our array
             bookmarks = [];
 
             // find bookmarks in foldrs
-            findObjects(results[0].children, folders, dispatch, allVisitedIds);
+            findObjects(results[0].children, folders, dispatch, allVisitedIds, saveFoldersCallback);
         }
     });
 }
@@ -77,7 +92,7 @@ function prepareStats(dispatch, folders, allVisitedIds) {
  * Non-blocking recursive function for gathering all bookmarks from folders
  */
 var foldersCount = 0, foldersDone = 0;
-function findObjects(items, ids, dispatch, allVisitedIds) {
+function findObjects(items, ids, dispatch, allVisitedIds, saveFoldersCallback) {
 
     // go through object
     for (let i in items) {
@@ -88,7 +103,7 @@ function findObjects(items, ids, dispatch, allVisitedIds) {
                 foldersCount++;
                 //console.log('going deeper into a folder ', items[i].title);
                 setTimeout(() => {
-                    findObjects(items[i].children, ids, dispatch, allVisitedIds);
+                    findObjects(items[i].children, ids, dispatch, allVisitedIds, saveFoldersCallback);
                 });
             }
         } 
@@ -105,13 +120,13 @@ function findObjects(items, ids, dispatch, allVisitedIds) {
     if (foldersDone >= foldersCount) {
         foldersCount = 0;
         foldersDone = 0;
-        updateStats(dispatch, allVisitedIds);
+        updateStats(dispatch, allVisitedIds, saveFoldersCallback);
     } else {
         foldersDone++;
     }
 }
 
-function updateStats(dispatch, allVisitedIds) {
+function updateStats(dispatch, allVisitedIds, saveFoldersCallback) {
     let visitedIds = [];
 
     // check for duplicates between visitedIds/allVisitedIds
@@ -127,12 +142,20 @@ function updateStats(dispatch, allVisitedIds) {
         type: UPDATE_BOOKMARKS_STATS,
         payload: {
             visitedIds,
-            bookmarksCount: bookmarks.length,
-            totalBookmarks: oldTotalBookmarks + bookmarks.length
+            bookmarksCount: bookmarks.length
         }
     });
+
+    // check for achievements after new folders selection
+    checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
+
+    saveFoldersCallback();
 }
 
+/**
+ * User clicked on "create custom PL folder during Step 2"
+ * @param {function} callback
+ */
 export function createCustomFolder(callback) {
     return dispatch => {
         API.createCustomFolder((folder) => {
@@ -147,11 +170,19 @@ export function createCustomFolder(callback) {
     }
 }
 
+/**
+ * Update schedule from widget
+ * @param {object} schedule 
+ */
 export function setSchedule(schedule) {
     return (dispatch, getState) => {
         // max
         if (schedule.times > 10) {
             schedule.times = 10;
+        } 
+        // min
+        else if (isNaN(schedule.times) || schedule.times <= 0) {
+            schedule.times = 1;
         }
         
         dispatch({
@@ -217,7 +248,7 @@ export function sharedInSocial() {
  */
 function checkAchievements(dispatch, state, action) {
     // Check shares (social) achievement
-    if ( state.stats.shared >= 2 && state.achievements.social == false ) {
+    if ( state.stats && state.stats.shared >= 2 && state.achievements.social == false ) {
         dispatch({
             type: GIVE_ACHIEVEMENT,
             payload: { 'social' : true }
@@ -225,14 +256,20 @@ function checkAchievements(dispatch, state, action) {
     }
 
     // if user just sent a review and has no reviewer achievement yet
-    if ( state.achievements.reviewer == false && action == 'review' ) {
+    if ( state.achievements && state.achievements.reviewer == false && action == 'review' ) {
         dispatch({
             type: GIVE_ACHIEVEMENT,
             payload: { 'reviewer' : true }
         });
-    } 
+    }
 
-    // send to server
+    // check for achievement if user added >=ADDED_LOTS_ACHIEVEMENT_NUMBER(40) bookmarks to shuffle
+    if ( action == 'foldersChanged' && state >= ADDED_LOTS_ACHIEVEMENT_NUMBER && hasFoldersAchievement == false ) {
+        dispatch({
+            type: GIVE_ACHIEVEMENT,
+            payload: { 'addedLots' : true }
+        });
+    }
 }
 
 /**
@@ -251,24 +288,54 @@ export function resetReceivedAchievement() {
 export function sendMessage(data, callback) {
     return (dispatch, getState) => {
 
-        // get token first
-        API.getToken((token) => {
+        // append token to the message object
+        API.sendMessage(Object.assign({}, data))
+        .then(() => {
+            dispatch({ type: SEND_MESSAGE_SUCCESS });
+            if (callback) callback();
 
-            // append token to the message object
-            API.sendMessage(Object.assign({}, data, token))
-            .then(() => {
-                dispatch({ type: SEND_MESSAGE_SUCCESS });
-                if (callback) callback();
-
-                // check if we have to give user an achievement right after
-                setTimeout(() => {
-                    checkAchievements(dispatch, getState(), 'review');
-                }, 2000);
-            })
-            .catch(() => {
-                dispatch({ type: SEND_MESSAGE_ERROR });
-                if (callback) callback();
-            })
+            // check if we have to give user an achievement right after
+            setTimeout(() => {
+                checkAchievements(dispatch, getState(), 'review');
+            }, 2000);
+        })
+        .catch(() => {
+            dispatch({ type: SEND_MESSAGE_ERROR });
+            if (callback) callback();
         });
+    }
+}
+
+/**
+ * Get backend stats upon initial load
+ */
+export function getStatsFromBackend(dispatch, getState) {
+
+    // if called manually from another function
+    if (dispatch && getState) {
+        API.getStatsFromBackend(getState())
+        .then(data => {
+            dispatch({
+                type: UPDATE_TOTAL_STATS,
+                payload: data
+            });
+        });
+    } 
+    // if called as a redux function
+    else {
+        return (dispatch, getState) => {
+            let state = getState();
+
+            // do not send data until user has some bookmarks selected
+            if (state.global.foldersIds.length) {
+                API.getStatsFromBackend(getState())
+                .then(data => {
+                    dispatch({
+                        type: UPDATE_TOTAL_STATS,
+                        payload: data
+                    });
+                });
+            }
+        }
     }
 }

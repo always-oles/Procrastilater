@@ -1,6 +1,7 @@
+/* global toastr */
+
 import React from 'react';
 import PropTypes from 'prop-types';
-import Check from '../assets/images/check.svg';
 import { SCHEDULE } from '../constants';
 
 export default class ScheduleComponent extends React.Component {
@@ -17,20 +18,18 @@ export default class ScheduleComponent extends React.Component {
         this.onFrequencyChange = this.onFrequencyChange.bind(this);
         this.onPeriodChange = this.onPeriodChange.bind(this);
         this.onTimesChange = this.onTimesChange.bind(this);
-        //this.onSaveClick = this.onSaveClick.bind(this);
         this.save = this.save.bind(this);
         this.notifyTimeout = null;
     }
 
     save() {
-        this.props.setSchedule(this.state);
-        
         toastr.remove();
-        
         clearTimeout(this.notifyTimeout);
-
+        
         // debounce notification
         this.notifyTimeout = setTimeout(() => {
+            this.props.setSchedule(this.state);
+
             toastr.success('Saved new schedule', null, {
                 positionClass: 'toast-bottom-left'
             });
@@ -44,32 +43,24 @@ export default class ScheduleComponent extends React.Component {
             this.setState({ 
                 frequency : e.target.id,
                 times: 1
-             }, () => {
-                this.save();
-             });
+             }, () => this.save());
         } else {
             this.setState({ 
                 frequency : e.target.id
-             }, () => {
-                this.save();
-             });
+             }, () => this.save());
         }
     }
 
     onPeriodChange(e) {
         this.setState({
             period : e.target.id
-        }, () => {
-            this.save();
-        });
+        }, () => this.save());
     }
 
     onTimesChange(e) {
         this.setState({ 
             times : +e.target.value
-        }, () => {
-            this.save();
-        });
+        }, () => this.save());
     }
 
     render() {

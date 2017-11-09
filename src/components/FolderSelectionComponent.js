@@ -5,32 +5,6 @@ import BookmarksList from './BookmarksList';
 import Check from '../assets/images/check.svg';
 
 export default class FolderSelectionComponent extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            changed: false
-        }
-
-        this.onSaveClick = this.onSaveClick.bind(this);
-    }
-
-    onSaveClick() {
-        if (!this.state.changed) return;
-
-        // add completed animation
-        this.refs.container.classList.add('completed');
-        
-        // reset
-        this.setState({ changed: false });
-        
-        // when animation is done
-        setTimeout(() => {
-            // remove animation class
-            this.refs.container.classList.remove('completed');
-        }, 2000);
-    }
-
     render() {
         return (
             <div class='panel np'>

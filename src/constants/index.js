@@ -25,6 +25,15 @@ export const UPDATE_BOOKMARKS_STATS = 'UPDATE_BOOKMARKS_STATS';
 export const SHARED_IN_SOCIAL = 'SHARED_IN_SOCIAL';
 export const GIVE_ACHIEVEMENT = 'GIVE_ACHIEVEMENT';
 export const RESET_RECEIVED_ACHIEVEMENT = 'RESET_RECEIVED_ACHIEVEMENT';
-
 export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
 export const SEND_MESSAGE_ERROR = 'SEND_MESSAGE_ERROR';
+export const UPDATE_TOTAL_STATS = 'UPDATE_TOTAL_STATS';
+
+// achievements data
+export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;
+
+// backend consts
+const API_VERSION = '1';
+export const SERVER_API = 'http://localhost:3000/api_v'+API_VERSION+'/';
+export const API_SEND_MESSAGE = 'sendMessage';
+export const API_STATS = 'stats';

@@ -45,11 +45,14 @@ class MiscButton extends React.Component {
 }
 
 class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         // goes true if user switched from step3 to main page to animate it's appearance
         this.needToAnimate = false;
+
+        // get data from backend on initial load
+        this.props.globalActions.getStatsFromBackend();
     }
 
     componentWillReceiveProps(nextProps) {

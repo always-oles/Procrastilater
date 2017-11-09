@@ -33,6 +33,8 @@
     "contextMenus",
     "notifications",
     "storage",
+    "cookies",
+    "chrome://favicon/",
     "http://*/*",
     "https://*/*"
   ],

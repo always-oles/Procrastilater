@@ -6,12 +6,12 @@ import BookmarksList from './BookmarksList';
 import Check from '../assets/images/check.svg';
 
 export default class Steps extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             createdCustom: false,
-            nextLocked: true
+            nextLocked: props.foldersIds.length ? false : true
         };
 
         this.onNextClick = this.onNextClick.bind(this);

@@ -236,7 +236,7 @@
     chrome.storage.local.get('popupData', (result) => {
 
       // set bookmark name
-      titleContainer.innerHTML = result.popupData.name;
+      titleContainer.innerHTML = '<img src="chrome://favicon/'+result.popupData.url+'"/>' + result.popupData.name;
       id = result.popupData.id;
       url = result.popupData.url;
     });

@@ -11,7 +11,7 @@ import popups from '../reducers/popupsReducer';
 
 const defaultInitialState = {
     global: {
-        step: -1,
+        step: 1,
         stepPhase: 'active',
         userName: 'Incognito',
     
@@ -49,7 +49,8 @@ const defaultInitialState = {
         bookmarksPostponed: 0,
         shared: 0,
         totalBookmarks: 0, 
-        totalUsers: 1
+        totalUsers: 1,
+        totalVisited: 0
     }
 }
 

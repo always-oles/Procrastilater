@@ -1,10 +1,14 @@
+import { getStatsFromBackend } from '../actions/GlobalActions';
+import {
+    SERVER_API,
+    API_SEND_MESSAGE,
+    API_STATS
+} from '../constants';
 /* global chrome, $: jQuery, Promise, moment */
 
 /**
  * TODO: remove consoles
  */
-
-const SERVER_API = 'http://localhost:3000/api/';
 
 export default {
     saveFolders: (folders) => {
@@ -30,7 +34,11 @@ export default {
     },
 
     clearData: (callback) => {
-        chrome.storage.local.clear( () => {
+        // chrome.storage.local.clear( () => {
+        //     console.warn('storage is clear');
+        //     if (callback) callback();
+        // });
+        chrome.storage.local.remove('state', () => {
             console.warn('storage is clear');
             if (callback) callback();
         });
@@ -62,13 +70,48 @@ export default {
 
     sendMessage: (message) => {
         return new Promise( (resolve, reject) => {
-            $.post(SERVER_API + 'sendMessage', message, data => {
-                if (data.status == true) {
-                    resolve();
-                } else {
-                    console.warn(data);
-                    reject(data);
-                }
+            chrome.storage.local.get('token', (token) => {
+                $.post(SERVER_API + 'sendMessage', Object.assign({}, message, token), data => {
+                    if (data.status == true) {
+                        resolve();
+                    } else {
+                        console.warn(data);
+                        reject(data);
+                    }
+                });
+            });
+        });
+    },
+
+    getStatsFromBackend: (state) => {
+        return new Promise( (resolve, reject) => {
+            // get token
+            chrome.storage.local.get('token', (storage) => {
+
+                // send data
+                $.post(
+                    SERVER_API + API_STATS, 
+                    Object.assign(
+                        {},
+                        {
+                            token: storage.token,
+                            name: state.global.userName,
+                            achievements: state.achievements,
+                            stats: {
+                                bookmarksCount:             state.stats.bookmarksCount,
+                                bookmarksPostponed:         state.stats.bookmarksPostponed,
+                                bookmarksVisited:           state.stats.bookmarksVisited,
+                                bookmarksVisitedManually:   state.stats.bookmarksVisitedManually,
+                                shared:                     state.stats.shared
+                            }        
+                        }
+                ), data => {
+                    if (data.status == 'Error') {
+                        reject(data);
+                    }
+
+                    resolve(data);
+                });
             });
         });
     },

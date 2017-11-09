@@ -46,7 +46,7 @@ class MainPage extends React.Component {
         return ( 
             <div class='main-page' ref='mainPage' style={{display: this.props.global.step == -1 ? 'block' : 'none' }}>
                 <header> 
-                    <img class='logo' src={Logo}/>
+                    <img class='logo' src={Logo}/> 
 
                     <div class='header-panel'>
                         <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <img class='help-button' src={HelpButton}/> </div>

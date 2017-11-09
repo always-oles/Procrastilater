@@ -15,7 +15,25 @@ import Trophy from '../assets/images/trophy.svg';
 export default class AchievementsComponent extends React.Component {
     constructor() {
         super();
+
+        this.state = {
+            justReceived: false
+        };
+
         this.onCloseClick = this.onCloseClick.bind(this);
+    }
+
+    componentDidMount() {
+        // if user just received an achievement after steps
+        if (this.props.justReceived == true) {
+            // dispatch that user received it
+            this.props.resetReceivedAchievement();
+
+            setTimeout(() => {
+                // show gratz popup
+                $('.achievement-gained').fadeIn();
+            }, 1500);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -46,6 +64,20 @@ export default class AchievementsComponent extends React.Component {
                             : 'Locked: add 40+ bookmarks to shuffle to unlock'}
                     />
                     <img 
+                        class = {'item opacity-06 ' + (this.props.achievements.social ? '' : 'locked')} 
+                        src = {AchievementSocial} 
+                        title = { this.props.achievements.social 
+                                ? 'You\'ve shared Procrastilater in 2 social networks!'
+                                : 'Locked: share Procrastilater in at least 2 social networks to unlock' }
+                    />
+                    <img 
+                        class = {'item opacity-05 ' + (this.props.achievements.reviewer ? '' : 'locked')} 
+                        src = {AchievementReviewer} 
+                        title = { this.props.achievements.reviewer 
+                                ? 'You\'ve sent a message to developer!'
+                                : 'Locked: send your review/thoughts to developer to unlock' }
+                    />
+                    <img 
                         class = {'item ' + (this.props.achievements.visitor ? '' : 'locked')} 
                         src =  {AchievementMedal}
                         title = { this.props.achievements.visitor
@@ -65,20 +97,6 @@ export default class AchievementsComponent extends React.Component {
                         title = { this.props.achievements.manualOpener 
                                 ? 'You\'ve opened more than 15 bookmarks manually!'
                                 : 'Locked: open 15+ bookmarks manually to unlock' }
-                    />
-                    <img 
-                        class = {'item opacity-06 ' + (this.props.achievements.social ? '' : 'locked')} 
-                        src = {AchievementSocial} 
-                        title = { this.props.achievements.social 
-                                ? 'You\'ve shared Procrastilater in 2 social networks!'
-                                : 'Locked: share Procrastilater in at least 2 social networks to unlock' }
-                    />
-                    <img 
-                        class = {'item opacity-05 ' + (this.props.achievements.reviewer ? '' : 'locked')} 
-                        src = {AchievementReviewer} 
-                        title = { this.props.achievements.reviewer 
-                                ? 'You\'ve sent a message to developer!'
-                                : 'Locked: send your review/thoughts to developer to unlock' }
                     />
                 </div>
 

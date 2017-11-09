@@ -36,7 +36,9 @@ export default class StatsComponent extends React.Component {
     getPercentage() {
         if (this.props.stats.totalBookmarks == 0) 
             return null;
-        return Math.round(this.props.stats.bookmarksCount * 100 / this.props.stats.totalBookmarks);
+
+        // return result, Max is 100%
+        return Math.min(Math.round(this.props.stats.bookmarksCount * 100 / this.props.stats.totalBookmarks), 100);
     }
 
     render() {
@@ -75,13 +77,18 @@ export default class StatsComponent extends React.Component {
                 
                     <div class='group'>
                         <div class='item'>
-                            <div class='name'>total users:</div>
+                            <div class='name' title='All users statistics'>total users:</div>
                             <div class='value'>{ this.props.stats.totalUsers }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>total bookmarks:</div>
+                            <div class='name' title='All users statistics'>total bookmarks:</div>
                             <div class='value'>{ this.props.stats.totalBookmarks }</div>
+                        </div>
+
+                        <div class='item'>
+                            <div class='name' title='All users statistics'>total visited:</div>
+                            <div class='value'>{ this.props.stats.totalVisited }</div>
                         </div>
 
                         <div class='item'>

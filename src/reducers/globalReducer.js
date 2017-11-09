@@ -7,7 +7,8 @@ import {
     SET_SCHEDULE,
     SET_TEMPO,
     GIVE_ACHIEVEMENT,
-    RESET_RECEIVED_ACHIEVEMENT
+    RESET_RECEIVED_ACHIEVEMENT,
+    UPDATE_BOOKMARKS_STATS
 } from '../constants';
 
 export default function global(state = {}, action) {
@@ -30,6 +31,8 @@ export default function global(state = {}, action) {
             return { ...state, justReceived: true }
         case RESET_RECEIVED_ACHIEVEMENT:
             return { ...state, justReceived: false}
+        case UPDATE_BOOKMARKS_STATS:
+            return { ...state, visitedIds: action.payload.visitedIds }
         default:
             return state;
     }
