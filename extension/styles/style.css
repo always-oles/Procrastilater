@@ -992,7 +992,7 @@ template {
         color: #E20158;
         max-height: 50px; }
         .main-page header .header-panel .timer-container .timer.animate {
-          animation: timerBounce 1.5s 1; }
+          animation: timerBounce 1s 1; }
         .main-page header .header-panel .timer-container .timer.text {
           cursor: default;
           font-size: 1.5rem;

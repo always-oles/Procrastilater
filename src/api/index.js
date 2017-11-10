@@ -147,114 +147,104 @@ export default {
         let resetPopupsToday = false;
         console.log('nextPopupTime:',moment(nextPopupTime).format('ddd MMMM Do YYYY, HH:mm:ss'));
 
-        switch ( state.global.scheduleFrequency ) {
-            // every day
-            case SCHEDULE.FREQUENCY.EVERY_DAY: 
-                // if there is no timer yet
-                if ( state.popups.nextPopupTime == null ) {
-                    resetPopupsToday = true;                    
-                    prepareTimer('today', period);
-                } 
-                // if timer was shown today earlier
-                else if ( nextPopupTime.isBetween(todayStart, now) ) {
-                    prepareTimer('tomorrow', period);
-                } 
-                // if timer was shown yesterday
-                else if ( nextPopupTime.isBetween(yesterdayStart, yesterdayEnd) ) {
-                    resetPopupsToday = true;
-                    prepareTimer('today', period);
-                }
-                // more than 1 days ago
-                else if ( nextPopupTime.diff(yesterdayStart) <= 0 ) {
-                    resetPopupsToday = true;
-                    prepareTimer('today', period);
-                } else {
-                    // everything is ok and we have next timer
-                    // but if invoked manually - generate new anyway
-                    if (manualInvoke) 
+        // if there is no timer yet
+        if ( state.popups.nextPopupTime == null && state.global.scheduleFrequency != SCHEDULE.FREQUENCY.MANUAL ) {
+            resetPopupsToday = true;                    
+            prepareTimer('today', period, scheduleTimes, popupsToday);
+        } else {
+            switch ( state.global.scheduleFrequency ) {
+                // every day
+                case SCHEDULE.FREQUENCY.EVERY_DAY: 
+                    // if timer was shown today earlier
+                    if ( nextPopupTime.isBetween(todayStart, now) ) {
+                        prepareTimer('tomorrow', period);
+                    } 
+                    // if timer was shown yesterday
+                    else if ( nextPopupTime.isBetween(yesterdayStart, yesterdayEnd) ) {
+                        resetPopupsToday = true;
                         prepareTimer('today', period);
-                }
-            break;
-
-            // every 2 days 
-            case SCHEDULE.FREQUENCY.EVERY_2_DAYS:
-                // if there is no timer yet
-                if ( state.popups.nextPopupTime == null ) {
-                    resetPopupsToday = true;                    
-                    prepareTimer('today', period);
-                } 
-                // if timer was shown today already
-                else if ( nextPopupTime.diff(now) <=0 && nextPopupTime.diff(todayStart) >=0 ) {
-                    console.warn('was shown today, go after tomorrow');
-                    prepareTimer('afterTomorrow', period);
-                }
-                // was shown yesterday
-                else if ( nextPopupTime.diff(todayStart) <= 0 && nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) >=0 ) {
-                    // generate for tomorrow
-                    console.warn('was shown yesterday, go tomorrow');
-                    resetPopupsToday = true;
-                    prepareTimer('tomorrow', period);
-                }
-                // was shown before yesterday
-                else if ( nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) <= 0) {
-                    console.warn('was shown long time ago');
-                    resetPopupsToday = true;
-                    prepareTimer('today', period);
-                } else {
-                    // everything is ok and we have next timer
-                    // but if invoked manually - generate new anyway
-                    console.warn('ok next timer is in future, regenerate if called manually');
-                    if (manualInvoke) {
-                        // if it had to show today
-                        if (nextPopupTime.isBetween(todayStart, todayEnd)) {
+                    }
+                    // more than 1 days ago
+                    else if ( nextPopupTime.diff(yesterdayStart) <= 0 ) {
+                        resetPopupsToday = true;
+                        prepareTimer('today', period);
+                    } else {
+                        // everything is ok and we have next timer
+                        // but if invoked manually - generate new anyway
+                        if (manualInvoke) 
                             prepareTimer('today', period);
-                        }
-                        else if (nextPopupTime.isBetween(tomorrowStart, tomorrowEnd)) {
-                            prepareTimer('tomorrow', period);
-                        }
-                        else if ( nextPopupTime.diff(afterTomorrowEnd) >=0 ) {
-                            prepareTimer('afterTomorrow', period);
+                    }
+                break;
+    
+                // every 2 days 
+                case SCHEDULE.FREQUENCY.EVERY_2_DAYS:
+                    // if timer was shown today already
+                    if ( nextPopupTime.diff(now) <=0 && nextPopupTime.diff(todayStart) >=0 ) {
+                        console.warn('was shown today, go after tomorrow');
+                        prepareTimer('afterTomorrow', period);
+                    }
+                    // was shown yesterday
+                    else if ( nextPopupTime.diff(todayStart) <= 0 && nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) >=0 ) {
+                        // generate for tomorrow
+                        console.warn('was shown yesterday, go tomorrow');
+                        resetPopupsToday = true;
+                        prepareTimer('tomorrow', period);
+                    }
+                    // was shown before yesterday
+                    else if ( nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) <= 0) {
+                        console.warn('was shown long time ago');
+                        resetPopupsToday = true;
+                        prepareTimer('today', period);
+                    } else {
+                        // everything is ok and we have next timer
+                        // but if invoked manually - generate new anyway
+                        console.warn('ok next timer is in future, regenerate if called manually');
+                        if (manualInvoke) {
+                            // if it had to show today
+                            if (nextPopupTime.isBetween(todayStart, todayEnd)) {
+                                prepareTimer('today', period);
+                            }
+                            else if (nextPopupTime.isBetween(tomorrowStart, tomorrowEnd)) {
+                                prepareTimer('tomorrow', period);
+                            }
+                            else if ( nextPopupTime.diff(afterTomorrowEnd) >=0 ) {
+                                prepareTimer('afterTomorrow', period);
+                            }
                         }
                     }
-                }
-            break;
-
-            // few times per day
-            case SCHEDULE.FREQUENCY.FEW_TIMES:
-                // if there is no timer yet
-                if ( state.popups.nextPopupTime == null ) {
-                    resetPopupsToday = true;                    
-                    prepareTimer('today', period, scheduleTimes, popupsToday);
-                } 
-                // if timer was yesterday or earlier
-                else if ( nextPopupTime.diff(todayStart) <= 0 ) {
-                    console.warn('was shown yesterday or earlier');
-                    resetPopupsToday = true;                    
-                    prepareTimer('today', period, scheduleTimes, popupsToday);
-                }
-                // if timer was shown today
-                else if ( nextPopupTime.isBetween(todayStart, todayEnd) ) {
-                    console.warn('was shown today');
-
-                    // if shown enough
-                    if ( popupsToday >= scheduleTimes ) {
-                        console.warn('had enough');
-                        prepareTimer('tomorrow', period, scheduleTimes, popupsToday);
-                    }
-                    // if still can show more
-                    else {
-                        console.warn('can show more');              
+                break;
+    
+                // few times per day
+                case SCHEDULE.FREQUENCY.FEW_TIMES:
+                    // if timer was yesterday or earlier
+                    if ( nextPopupTime.diff(todayStart) <= 0 ) {
+                        console.warn('was shown yesterday or earlier');
+                        resetPopupsToday = true;                    
                         prepareTimer('today', period, scheduleTimes, popupsToday);
                     }
-                } else {
-                    prepareTimer('today', period, scheduleTimes, popupsToday);
-                }
-            break;
-
-            default: 
-                console.warn('manual');
+                    // if timer was shown today
+                    else if ( nextPopupTime.isBetween(todayStart, todayEnd) ) {
+                        console.warn('was shown today');
+    
+                        // if shown enough
+                        if ( popupsToday >= scheduleTimes ) {
+                            console.warn('had enough');
+                            prepareTimer('tomorrow', period, scheduleTimes, popupsToday);
+                        }
+                        // if still can show more
+                        else {
+                            console.warn('can show more');              
+                            prepareTimer('today', period, scheduleTimes, popupsToday);
+                        }
+                    } else {
+                        prepareTimer('today', period, scheduleTimes, popupsToday);
+                    }
+                break;
+    
+                default: 
+                    console.warn('manual');
+            }
         }
-
 
         /**
          * Prepare, check everything and generate a random date in needed interval for timer

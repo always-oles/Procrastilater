@@ -12,7 +12,7 @@ export default class Timer extends React.Component {
         this.onClick    = this.onClick.bind(this);
         this.tick       = this.tick.bind(this);
         this.getOutput  = this.getOutput.bind(this);
-        //this.interval   = setInterval(this.tick, 1000);
+        this.interval   = setInterval(this.tick, 1000);
 
         this.animationTimeout = null;
         this.state = {
@@ -33,7 +33,7 @@ export default class Timer extends React.Component {
             clearTimeout(this.animationTimeout);
             this.animationTimeout = setTimeout(() => {
                 this.refs.timerContainer.classList.remove('animate');            
-            }, 1500);
+            }, 1000);
         }
     }
 
@@ -66,7 +66,7 @@ export default class Timer extends React.Component {
                 ? '0' + Math.floor(duration.asHours()) 
                 : Math.floor(duration.asHours());
         
-        return hours + moment.utc(difference).format(":mm:ss");
+        return hours + moment.utc(difference).format(':mm:ss');
         //return moment.unix(ends).format('HH:mm:ss');
     }
 
@@ -78,7 +78,7 @@ export default class Timer extends React.Component {
         return ( 
             <div 
                 class = { 'timer ' + (this.state.manual ? 'text' : '')} 
-                title = { this.state.manual ? '' : 'click to regenerate timer'}
+                title = { this.state.manual ? '' : 'Click to generate new timer'}
                 onClick = { this.onClick }
                 ref = 'timerContainer'
             >{ this.state.output }</div>
