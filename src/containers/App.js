@@ -53,6 +53,10 @@ class App extends React.Component {
 
         // get data from backend on initial load
         this.props.globalActions.getStatsFromBackend();
+
+        // as small hack - listen for visibility change. if extension became visible
+        // after blur then check if we need to update the store
+        this.props.globalActions.listenForVisibilityChange();
     }
 
     componentWillReceiveProps(nextProps) {

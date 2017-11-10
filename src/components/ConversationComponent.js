@@ -71,6 +71,8 @@ export default class ConversationComponent extends React.Component {
 
         // form
         this.refs.conversation.classList.add('appear');
+
+        this.refs.userEmail.focus();
     }
 
     close() {

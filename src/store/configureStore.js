@@ -11,7 +11,7 @@ import popups from '../reducers/popupsReducer';
 
 const defaultInitialState = {
     global: {
-        step: 1,
+        step: -1,
         stepPhase: 'active',
         userName: 'Incognito',
     
@@ -19,8 +19,8 @@ const defaultInitialState = {
         visitedIds: [],
         allVisitedIds: [],
     
-        scheduleFrequency: null,
-        schedulePeriod: null,
+        scheduleFrequency: 'EVERY_DAY',
+        schedulePeriod: 'RANDOM',
         scheduleTimes: null,
         tempo: null,
         justReceived: false
@@ -39,7 +39,7 @@ const defaultInitialState = {
         lastPopupTime: null,
         nextPopupTime: null,
         popupIsShowing: false,
-        popupsToday:0
+        popupsToday: 0
     },
 
     stats: {

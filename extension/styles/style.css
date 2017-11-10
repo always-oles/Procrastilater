@@ -615,6 +615,15 @@ template {
   90% {
     transform: translateY(-2px); } }
 
+@keyframes timerBounce {
+  0% {
+    transform: translateY(0px); }
+  20% {
+    color: #78012e;
+    transform: translateY(15px); }
+  100% {
+    transform: translateY(0px); } }
+
 .buttons-container {
   margin: 20px auto 0;
   display: flex;
@@ -977,9 +986,19 @@ template {
         font-size: 2rem;
         font-weight: bold; }
       .main-page header .header-panel .timer-container .timer {
+        cursor: pointer;
         font-size: 3.3rem;
         font-weight: 300;
-        color: #E20158; }
+        color: #E20158;
+        max-height: 50px; }
+        .main-page header .header-panel .timer-container .timer.animate {
+          animation: timerBounce 1.5s 1; }
+        .main-page header .header-panel .timer-container .timer.text {
+          cursor: default;
+          font-size: 1.5rem;
+          font-weight: 400;
+          padding: 17px 0;
+          line-height: 25px; }
     .main-page header .header-panel .progress-container {
       position: relative;
       top: -20px; }

@@ -1,4 +1,3 @@
-import { resetReceivedAchievement } from '../actions/GlobalActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,7 +23,7 @@ class MainPage extends React.Component {
         this.animate = this.animate.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         // scenario: if user switched to main page from steps - need to animate is true
         if (this.props.needToAnimate) {
             this.animate();
@@ -52,7 +51,11 @@ class MainPage extends React.Component {
                         <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <img class='help-button' src={HelpButton}/> </div>
                         <div class='col-sm-4 timer-container'>
                             <div class='title'>Next bookmark will appear in:</div>
-                            <Timer nextPopup = {this.props.stats.nextPopup}></Timer>
+                            <Timer 
+                                nextPopup           = {this.props.popups.nextPopupTime}
+                                generateTimer       = {this.props.globalActions.generateTimer}
+                                scheduleFrequency   = {this.props.global.scheduleFrequency}
+                            ></Timer>
                         </div>
                         <div class='col-sm-4'>
                             <ProgressComponent

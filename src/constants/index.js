@@ -15,7 +15,7 @@ export const SCHEDULE = {
         MORNING: '6:00-12:00',
         NOON: '12:00-18:00',
         EVENING: '18:00-0:00',
-        RANDOM: 'ANY'
+        RANDOM: 'RANDOM'
     }
 }
 
@@ -28,9 +28,13 @@ export const RESET_RECEIVED_ACHIEVEMENT = 'RESET_RECEIVED_ACHIEVEMENT';
 export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
 export const SEND_MESSAGE_ERROR = 'SEND_MESSAGE_ERROR';
 export const UPDATE_TOTAL_STATS = 'UPDATE_TOTAL_STATS';
+export const SET_NEXT_POPUP = 'SET_NEXT_POPUP';
 
 // achievements data
 export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;
+export const VISITOR_LIMIT = 20;
+export const POSTPONER_LIMIT = 10;
+export const MANUAL_OPENER_LIMIT = 15;
 
 // backend consts
 const API_VERSION = '1';

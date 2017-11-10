@@ -35,7 +35,6 @@ router.route('/sendMessage')
         // save it
         message.save((error) => {
             if (error) return response.send(error);
-
             response.json({ status: true });
         })
     });
@@ -90,11 +89,11 @@ router.route('/stats')
             }, (error, user) => {
                 if (error) return response.json({ status: 'Error', message: 'Something went wrong' });
                 
-                // if user has been found - update and return the new data
+                // if user has been found - update the model
                 if (user) {
-                    user.name = request.body.name;
+                    user.name =         request.body.name;
                     user.achievements = request.body.achievements;
-                    user.stats = request.body.stats;
+                    user.stats =        request.body.stats;
 
                     // save updated user
                     user.save(() => {

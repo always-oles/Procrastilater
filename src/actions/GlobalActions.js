@@ -15,7 +15,11 @@ import {
     SEND_MESSAGE_SUCCESS,
     SEND_MESSAGE_ERROR,
     ADDED_LOTS_ACHIEVEMENT_NUMBER,
-    UPDATE_TOTAL_STATS
+    UPDATE_TOTAL_STATS,
+    VISITOR_LIMIT,
+    POSTPONER_LIMIT,
+    MANUAL_OPENER_LIMIT,
+    SET_NEXT_POPUP
 } from '../constants';
 
 
@@ -270,6 +274,39 @@ function checkAchievements(dispatch, state, action) {
             payload: { 'addedLots' : true }
         });
     }
+
+    // check for visited achievement
+    if ( state.stats && 
+         state.achievements.visitor == false && 
+        (state.stats.bookmarksVisited + state.stats.bookmarksVisitedManually) >= VISITOR_LIMIT
+    ) {
+        dispatch({
+            type: GIVE_ACHIEVEMENT,
+            payload: { 'visitor' : true }
+        });
+    }
+
+    // check for postponer achievement
+    if ( state.stats && 
+         state.achievements.postponer == false && 
+         state.stats.postponed >= POSTPONER_LIMIT
+    ) {
+        dispatch({
+            type: GIVE_ACHIEVEMENT,
+            payload: { 'postponer' : true }
+        });
+    }
+
+    // check for manual opener achievement
+    if ( state.stats && 
+        state.achievements.manualOpener == false && 
+        state.stats.postponed >= MANUAL_OPENER_LIMIT
+    ) {
+        dispatch({
+            type: GIVE_ACHIEVEMENT,
+            payload: { 'manualOpener' : true }
+        });
+    }
 }
 
 /**
@@ -337,5 +374,75 @@ export function getStatsFromBackend(dispatch, getState) {
                 });
             }
         }
+    }
+}
+
+/**
+ * Compare store from localstorage
+ * thanks https://stackoverflow.com/questions/1060008/is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active
+ */
+export function listenForVisibilityChange() {
+    return (dispatch, getStore) => {
+
+        var hidden = 'hidden';
+    
+        if (hidden in document)
+            document.addEventListener('visibilitychange', onchange);
+        else if ((hidden = 'webkitHidden') in document)
+            document.addEventListener('webkitvisibilitychange', onchange);
+        else
+            window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
+        
+        function onchange (evt) {
+            var v = 'visible', h = 'hidden',
+                evtMap = {
+                focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h
+                };
+        
+            evt = evt || window.event;
+            if (evt.type in evtMap) {
+                if (evtMap[evt.type] == 'visible') {
+                    console.log('update now1');
+                }
+            }
+            else {
+                if (!this[hidden]) {
+                    console.log('update now2');
+                }
+            }
+        }
+        
+        // set the initial state (but only if browser supports the Page Visibility API)
+        if( document[hidden] !== undefined )
+            onchange({type: document[hidden] ? 'blur' : 'focus'});
+    }
+}
+
+/**
+ * Generate timer and dispatch new time
+ * @param {bool} manualInvoke - if true then generate despite need to generate or not
+ */
+export function generateTimer(manualInvoke) {
+    return (dispatch, getState) => {
+        API.generateTimer(manualInvoke, getState(), (nextPopupTime, resetPopupsToday) => {
+            
+            console.warn('Can dispatch results:', nextPopupTime, resetPopupsToday);
+
+            // insert next popup unixtime for payload for sure
+            let payload = {
+                nextPopupTime
+            };
+
+            // if we need to reset popups today counter
+            if (resetPopupsToday == true) {
+                payload.popupsToday = 0;
+            }
+
+            dispatch({
+                type: SET_NEXT_POPUP,
+                payload
+            });
+
+        });
     }
 }
