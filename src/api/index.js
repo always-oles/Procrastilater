@@ -121,6 +121,10 @@ export default {
     generateTimer: (manualInvoke = false, state, callback) => {
         if (!state) return;
 
+        //// debugging
+        return callback(moment().add(30,'seconds').format('X'), false);
+        ////////////////////////////
+
         let now                 = moment();
 
         let todayStart          = moment().startOf('day');
@@ -400,8 +404,53 @@ export default {
                 return prepareTimer(...newArguments);
             }
         }
+    },
+
+    /**
+     * When timer ran out of time
+     * Let's create a popup it's not a crime
+     * p.s. proud of this function
+     * @param {Array} allVisitedIds 
+     * @param {Array} foldersIds 
+     * @param {Function} callback 
+     */
+    createPopup(allVisitedIds, foldersIds, callback) {
+        if (!foldersIds.length) return;
+        let allBookmarks = [];
+        
+        // open each of passed folders ids and get bookmarks
+        (function fetchFolder(id) {
+            chrome.bookmarks.getChildren(id, (items) => {
+                // add items to main array
+                allBookmarks.push(...items);
+
+                if (foldersIds.length) {
+                    // prevent freeze
+                    setTimeout(() => {
+                        fetchFolder(foldersIds.shift());
+                    });
+                } else {
+                    checkVisited();
+                }
+            });
+        })(foldersIds.shift());
+
+        function checkVisited() {
+            if (!allBookmarks.length) return;
+
+            let safeItems = [];
+            for (let i in allBookmarks) {
+                if ( allVisitedIds.indexOf( parseInt(allBookmarks[i].id) ) === -1 ) {
+                    safeItems.push(allBookmarks[i]);
+                } 
+            }
+
+            // send message with random bookmark to background script
+            chrome.runtime.sendMessage({ action: "createPopup", data: safeItems[Math.floor(Math.random() * safeItems.length)] });
+        }
     }
 }
+
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

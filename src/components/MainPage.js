@@ -55,6 +55,7 @@ class MainPage extends React.Component {
                                 nextPopup           = {this.props.popups.nextPopupTime}
                                 generateTimer       = {this.props.globalActions.generateTimer}
                                 scheduleFrequency   = {this.props.global.scheduleFrequency}
+                                createPopup         = {this.props.globalActions.createPopup}
                             ></Timer>
                         </div>
                         <div class='col-sm-4'>
@@ -70,8 +71,9 @@ class MainPage extends React.Component {
                     <div class='col-sm-12'>
                         <div class='col-sm-4'>
                             <FolderSelectionComponent
-                                foldersIds  = { this.props.global.foldersIds }
-                                saveFolders = { this.props.globalActions.saveFolders }
+                                foldersIds   = { this.props.global.foldersIds }
+                                saveFolders  = { this.props.globalActions.saveFolders }
+                                emptyFolders = { this.props.stats.bookmarksCount == 0 }
                             />
                         </div>
 

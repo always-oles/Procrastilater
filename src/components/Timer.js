@@ -1,7 +1,6 @@
 /* global moment */
 
 import React from 'react';
-import API from '../api';
 import PropTypes from 'prop-types';
 import { SCHEDULE } from '../constants';
 
@@ -12,19 +11,42 @@ export default class Timer extends React.Component {
         this.onClick    = this.onClick.bind(this);
         this.tick       = this.tick.bind(this);
         this.getOutput  = this.getOutput.bind(this);
-        this.interval   = setInterval(this.tick, 1000);
+        this.timeIsOut  = this.timeIsOut.bind(this);
+        //this.interval   = setInterval(this.tick, 1000);
 
         this.animationTimeout = null;
         this.state = {
-            output: this.getOutput(this.props.nextPopup, this.props.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL),
-            manual: this.props.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL
+            output: '00:00:00',
+            manual: this.props.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL,
+            clickable: true,
+            popupCreatingCalled: false 
         }
     }
 
+    componentDidMount() {
+        this.tick();
+    }
+
+    timeIsOut() {
+        // prevent calling multiple times
+        if (this.state.popupCreatingCalled) return;
+
+        this.setState({ popupCreatingCalled: true});
+        this.props.createPopup();
+        //this.props.generateTimer();
+
+        // prevent all possible shit for a second
+        setTimeout(() => {
+            this.setState({ popupCreatingCalled: false});
+        }, 1000); 
+    }
+
     onClick() {
-        if ( !this.state.manual ) {
+        if ( !this.state.manual && this.state.clickable ) {
             // animate
             this.refs.timerContainer.classList.add('animate');
+
+            this.setState({ clickable: false });
 
             // generate new timer
             this.props.generateTimer(true);
@@ -32,7 +54,8 @@ export default class Timer extends React.Component {
             // remove animation class
             clearTimeout(this.animationTimeout);
             this.animationTimeout = setTimeout(() => {
-                this.refs.timerContainer.classList.remove('animate');            
+                this.refs.timerContainer.classList.remove('animate');
+                this.setState({ clickable: true });            
             }, 1000);
         }
     }
@@ -66,8 +89,15 @@ export default class Timer extends React.Component {
                 ? '0' + Math.floor(duration.asHours()) 
                 : Math.floor(duration.asHours());
         
-        return hours + moment.utc(difference).format(':mm:ss');
-        //return moment.unix(ends).format('HH:mm:ss');
+        let result = hours + moment.utc(difference).format(':mm:ss');
+        
+        // check if less than 0
+        if (moment.utc(difference).format('X') < 0) {
+            this.timeIsOut();
+            return '00:00:00';
+        }
+
+        return result;
     }
 
     tick() {
@@ -89,5 +119,6 @@ export default class Timer extends React.Component {
 Timer.propTypes = {
     nextPopupTime: PropTypes.number,
     generateTimer: PropTypes.func.isRequired,
+    createPopup: PropTypes.func.isRequired,
     scheduleFrequency: PropTypes.string.isRequired
 }

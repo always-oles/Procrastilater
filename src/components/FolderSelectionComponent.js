@@ -8,7 +8,12 @@ export default class FolderSelectionComponent extends React.Component {
     render() {
         return (
             <div class='panel np'>
-                <div class='header'>Folders</div>
+                <div class='header'>Folders 
+                    <span 
+                        title="You have 0 bookmarks in selected folders" 
+                        class={'alert ' + (this.props.emptyFolders && this.props.foldersIds.length ? '' : 'hidden')} 
+                    >!</span>
+                </div>
                 <div class='content'>
                     Change folders where I should take bookmarks from
                     <BookmarksList 
@@ -24,5 +29,6 @@ export default class FolderSelectionComponent extends React.Component {
 
 FolderSelectionComponent.propTypes = {
     foldersIds: PropTypes.array,
-    saveFolders: PropTypes.func.isRequired
+    saveFolders: PropTypes.func.isRequired,
+    emptyFolders: PropTypes.bool.isRequired
 }

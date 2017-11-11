@@ -424,10 +424,11 @@ export function listenForVisibilityChange() {
  */
 export function generateTimer(manualInvoke) {
     return (dispatch, getState) => {
+
+        // notify background script ************
+
         API.generateTimer(manualInvoke, getState(), (nextPopupTime, resetPopupsToday) => {
             
-            console.warn('Can dispatch results:', nextPopupTime, resetPopupsToday);
-
             // insert next popup unixtime for payload for sure
             let payload = {
                 nextPopupTime
@@ -442,7 +443,24 @@ export function generateTimer(manualInvoke) {
                 type: SET_NEXT_POPUP,
                 payload
             });
+        });
+    }
+}
 
+/**
+ * Time is out, lets create a popup
+ */
+export function createPopup() {
+    return (dispatch, getState) => {
+        let state = getState();
+
+        // create copy and prevent bugs/modifying the actual state 
+        // (actually catched a bug with this feature during development)
+        let foldersIds      = state.global.foldersIds.slice();
+        let allVisitedIds   = state.global.allVisitedIds.slice();
+        
+        API.createPopup(allVisitedIds, foldersIds, (result) => {
+            
         });
     }
 }

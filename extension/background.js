@@ -62,6 +62,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
 chrome.runtime.onMessage.addListener(
 	(request, sender, sendResponse) => {
+		console.warn('background received message');
 		switch (request.action) {
 			case 'openTab':
 				chrome.tabs.create({ url : request.url });
@@ -112,4 +113,10 @@ function getRandomToken() {
         hex += randomPool[i].toString(16);
     }
     return hex + (+new Date());
+}
+
+
+
+function createPopup() {
+	console.log('background create popup called');
 }
