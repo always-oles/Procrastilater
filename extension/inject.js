@@ -16,14 +16,6 @@
 
 (function() {
 
-    try {
-      var myAudio = new Audio();
-      myAudio.src = chrome.extension.getURL('assets/sound.mp3');
-      myAudio.volume = 0.5;
-      myAudio.play();
-    } catch(e) {}
-
-
     // check if we added a popup for this tab already
     if (document.querySelectorAll('.pl-popup-container').length > 0) {
       console.log('added already');
@@ -83,6 +75,7 @@
       z-index: 9998;
       font-family: "Roboto", "Open Sans", Arial, sans-serif;
       font-size: 12px;
+      animation: fadeIn 1s 1
     }
     .pl-popup-container.fadeIn {
       display: flex;
@@ -128,7 +121,7 @@
     }
     .pl-popup-container .pl-popup .pl-main-content .pl-text {
       padding: 15px 10px 0;
-      font-size: 1.4em;
+      font-size: 1.3em;
       font-weight: 400;
       line-height: 24px;
     }
@@ -225,7 +218,11 @@
           <div class='pl-main-content'>
               <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
               <div class='pl-title'>Time has come!</div>
-              <div class='pl-text'>The magic shuffle suggests you to open the <br/><span class='pl-bookmark-title'></span><br/> Do you agree? </div>
+              <div class='pl-text'>
+                The magic shuffle suggests you to open the <br/>
+                <span class='pl-bookmark-title'></span><br/>
+                Do you agree? 
+              </div>
           </div>
 
           <div class='pl-buttons'>
@@ -236,17 +233,26 @@
       </div>
     `;
 
-    let titleContainer = div.querySelectorAll('.pl-bookmark-title')[0],
+    let titleContainer    = div.querySelectorAll('.pl-bookmark-title')[0],
         url = null,
         id = null;
 
     // get data for current popup
     chrome.storage.local.get('popupData', (result) => {
-
-      // set bookmark name
-      titleContainer.innerHTML = `<img src=${chrome.extension.getURL('chrome://favicon/'+result.popupData.url)} />${result.popupData.title}`;
       id = result.popupData.id;
       url = result.popupData.url;
+      titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${result.popupData.url}'/> ${result.popupData.title}`;
+      titleContainer.setAttribute('title', url);
+
+      // play sound or not
+      if (result.popupData.sound == true) {
+        try {
+          var myAudio = new Audio();
+          myAudio.src = chrome.extension.getURL('assets/sound.mp3');
+          myAudio.volume = 0.5;
+          myAudio.play();
+        } catch(e) {}
+      }
     });
 
     // accept button container

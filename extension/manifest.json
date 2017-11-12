@@ -12,6 +12,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
+      "sharedAPI.js",
       "background.js"
     ],
     "persistent": true
@@ -30,8 +31,8 @@
   "permissions": [
     "tabs",
     "<all_urls>",
-    "chrome://favicon/",
-    "chrome://favicon/*",
+    "http://*",
+    "https://*",
     "bookmarks",
     "activeTab",
     "contextMenus",

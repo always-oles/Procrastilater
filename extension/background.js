@@ -3,19 +3,51 @@
 /**
  * Global variables
  */
-let TOKEN = null,
-	nextPopup = null,
-	intervalHolder = null;
 const API = 'http://localhost:3000/';
+var TOKEN = null,
+	intervalHolder = null,
+	nextPopup = null,
+	updateTimer;
 
-chrome.storage.local.get('state', (result) => {
+(updateTimer = function updateTimer(nextPopupTime) {
+	// if passed
+	if (nextPopupTime) {
+		launchTimer(nextPopupTime);
+	} 
+	// otherwise get from local storage
+	else {
+		chrome.storage.local.get('state', (result) => {
+			launchTimer(result.state.popups.nextPopupTime);
+		});
+	}
 
-	// get next popup time or make it now
-	nextPopup = (result.state && result.state.nextPopup) || +new Date();
+	function launchTimer(time) {
+		// get next popup time or make it now
+		nextPopup = parseInt(time) || null;
+		
+		// launch timer
+		if (nextPopup) {
+			clearInterval(intervalHolder);
+			intervalHolder = setInterval(checkTime, 1000);
+		}
+	}
+})();
 
-	// launch time checker
-	//intervalHolder = setInterval(checkTime, 1000);
-});
+function checkTime() {
+	// convert to unix timestamp without miliseconds
+	let now = parseInt((+new Date()).toString().slice(0,-3));
+
+	// time is out
+	if (now > nextPopup) {
+		console.warn('creating popup');
+		console.warn(sharedAPI);
+		createPopup();
+	} else {
+		console.warn(now-nextPopup, 'left');
+	}
+}
+
+
 
 chrome.browserAction.onClicked.addListener(function (tab) {
 	// for the current tab, inject the "inject.js" file & execute it
@@ -26,13 +58,18 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
 chrome.runtime.onMessage.addListener(
 	(request, sender, sendResponse) => {
+		console.warn('background received message: ', request);
 		switch (request.action) {
 			case 'openTab':
 				chrome.tabs.create({ url : request.url });
 			break;
 
 			case 'createPopup':
-				createPopup(sender, request.data);
+				createPopup(request.data);
+			break;
+
+			case 'updateTimer':
+				updateTimer(request.data);
 			break;
 		}
 	}
@@ -97,55 +134,69 @@ function saveTokenInCookies(token) {
 	);
 }
 
-function createPopup(sender, data) {
-	// set data to storage
+function createPopup(data) {
+	// put data to storage to share with injected script
+	data.sound = true;
 	chrome.storage.local.set({'popupData': data});
 
-	//if currently open page is not a service page or extension page
-	if ( !sender.url.includes('chrome://') && !sender.url.includes('chrome-extension://') ) {
-		console.warn('can execute script on current tab');
-		chrome.tabs.executeScript({
+	console.warn('data for popup: ', data);
+	return;
+
+	// check active tab if it's not a service url
+	chrome.tabs.query({
+		active: true
+	}, function(tabs) {
+		if ( tabs[0].url.includes('chrome-extension://') || tabs[0].url.includes('chrome://')) {
+			console.warn('service tab is active');
+
+			// get all tabs
+			chrome.tabs.getAllInWindow(null, (tabs) => {
+				// remove service urls from array
+				let safeTabs = [];
+
+				for (let i in tabs) {
+					if (!tabs[i].url.includes('chrome-extension://') && !tabs[i].url.includes('chrome://')) {
+						safeTabs.push(tabs[i]);
+					}
+				}
+
+				let lastTabId = safeTabs[safeTabs.length-1].id;
+
+				// switch to last non-service tab
+				chrome.tabs.update(lastTabId, {selected: true});
+				// inject popup into it
+				injectScript(lastTabId);
+			});
+
+		} else {
+			injectScript(tabs[0].id);
+		}
+	});
+
+
+	function addListeners() {
+		console.warn('adding listeners for chrome tabs');
+		chrome.tabs.onActivated.addListener(injectScript);
+		chrome.tabs.onUpdated.addListener(injectScript);
+	}
+
+	function injectScript(id) {
+		if (!id) { id = null; }
+
+		console.warn('injecting!');
+		chrome.tabs.executeScript(id, {
 			file: 'inject.js'
 		});
-	} 
-	// otherwise inject upon an event
-	else {
-		chrome.tabs.query({
-			active: true
-		}, function(tabs) {
-			console.warn('injecting into tab', tabs[0]);
 
-			chrome.tabs.executeScript(tabs[0].id, {
-				file: 'inject.js'
-			}, (result) => {
-				// error callback, add listeners for simple pages
-				if (typeof result == 'undefined') {
-					addListeners();
-				} else {
-					console.warn('okay');
-				}
-			});
-		});
+		// remove listeners upon injection
+		removeListeners();
 	}
-}
 
-function addListeners() {
-	console.warn('adding listeners for chrome tabs');
-	chrome.tabs.onActivated.addListener(injectListener);
-	chrome.tabs.onUpdated.addListener(injectListener);
-}
-
-function injectListener() {
-	console.warn('injecting?');
-	chrome.tabs.executeScript({
-		file: 'inject.js'
-	});
-	removeListeners();
-}
-
-function removeListeners() {
-	chrome.tabs.onActivated.removeListener(injectListener);
-	chrome.tabs.onUpdated.removeListener(injectListener);
+	function removeListeners() {
+		console.warn('removing listeners');
+		chrome.tabs.onActivated.removeListener(injectScript);
+		chrome.tabs.onUpdated.removeListener(injectScript);
+	}
 }
 
 /////////////////////////////////////////////////////// //chrome.runtime.openOptionsPage();

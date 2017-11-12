@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: [
         'babel-polyfill',
-        './src/index.js'
+        './src/index.js' 
     ],
     output: {
         path: __dirname + '/extension/',
@@ -35,6 +35,10 @@ module.exports = {
                 options: {
                     outputPath: 'images/'
                 }
+            },
+            {
+                test: require.resolve('./extension/sharedAPI.js'),
+                use: 'exports-loader?sharedAPI'
             }
         ]
     },

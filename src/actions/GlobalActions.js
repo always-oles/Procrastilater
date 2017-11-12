@@ -1,5 +1,7 @@
 /* global $:jQuery, chrome */
 import API from '../api';
+import sharedAPI from '../../extension/sharedAPI';
+
 import { 
     SET_STEP,
     SET_STEP_PHASE,
@@ -427,8 +429,10 @@ export function generateTimer(manualInvoke) {
 
         // notify background script ************
 
-        API.generateTimer(manualInvoke, getState(), (nextPopupTime, resetPopupsToday) => {
-            
+        sharedAPI.generateTimer(manualInvoke, getState(), (nextPopupTime, resetPopupsToday) => {
+            // notify background script 
+            chrome.runtime.sendMessage({ action: 'updateTimer', data: nextPopupTime });            
+
             // insert next popup unixtime for payload for sure
             let payload = {
                 nextPopupTime
@@ -452,7 +456,6 @@ export function generateTimer(manualInvoke) {
  */
 export function createPopup() {
     return (dispatch, getState) => {
-        console.log('create popup called from globalactions');
         let state = getState();
 
         // create copy and prevent bugs/modifying the actual state 
@@ -460,8 +463,6 @@ export function createPopup() {
         let foldersIds      = state.global.foldersIds.slice();
         let allVisitedIds   = state.global.allVisitedIds.slice();
         
-        API.createPopup(allVisitedIds, foldersIds, (result) => {
-            
-        });
+        sharedAPI.createPopup(allVisitedIds, foldersIds);
     }
 }

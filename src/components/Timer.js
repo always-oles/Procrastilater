@@ -24,24 +24,33 @@ export default class Timer extends React.Component {
     }
 
     componentDidMount() {
-        this.tick();
+        this.tick(true);
     }
 
     timeIsOut() {
         // prevent calling multiple times
         if (this.state.popupCreatingCalled) return;
 
+        // set in progress
         this.setState({ popupCreatingCalled: true});
+
+        // call creating of popup
         this.props.createPopup();
+
+        // generate new timer
         this.props.generateTimer();
 
-        // prevent all possible shit for a second
+        // prevent all possible doublecalling shit for a second
         setTimeout(() => {
             this.setState({ popupCreatingCalled: false});
-        }, 1000); 
+        }, 2000); 
     }
 
     onClick() {
+        //this.timeIsOut();
+        //return;
+        ///////////////////////////
+
         if ( !this.state.manual && this.state.clickable ) {
             // animate
             this.refs.timerContainer.classList.add('animate');
@@ -73,7 +82,7 @@ export default class Timer extends React.Component {
     }
 
 
-    getOutput(ends, manual) {
+    getOutput(ends, manual, dontCallTimeout) {
 
         if  ((this.state && this.state.manual) || manual ) {
             return 'timer is disabled if you\'ve chosen a manual reminder appearance';
@@ -92,16 +101,20 @@ export default class Timer extends React.Component {
         let result = hours + moment.utc(difference).format(':mm:ss');
         
         // check if less than 0
-        if (moment.utc(difference).format('X') < 0) {
-            this.timeIsOut();
+        if (moment.utc(difference).format('X') <= 0) {
+
+            // le kostilek
+            if (!dontCallTimeout)
+                this.timeIsOut();
+
             return '00:00:00';
         }
 
         return result;
     }
 
-    tick() {
-        this.setState({ output: this.getOutput(this.props.nextPopup) });
+    tick(dontCallTimeout) {
+        this.setState({ output: this.getOutput(this.props.nextPopup, false, dontCallTimeout) });
     }
 
     render() {  
