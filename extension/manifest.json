@@ -23,20 +23,21 @@
      }
   },
   "web_accessible_resources": [
-      "images/alarm.svg"
+      "images/alarm.svg",
+      "assets/sound.mp3"
   ],
   "options_page": "index.html",
   "permissions": [
     "tabs",
+    "<all_urls>",
+    "chrome://favicon/",
+    "chrome://favicon/*",
     "bookmarks",
     "activeTab",
     "contextMenus",
     "notifications",
     "storage",
-    "cookies",
-    "chrome://favicon/",
-    "http://*/*",
-    "https://*/*"
+    "cookies"
   ],
   "content_security_policy": "script-src 'self' https://google.com/; object-src 'self'"
 }

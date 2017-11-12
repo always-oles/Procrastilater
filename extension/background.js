@@ -3,30 +3,10 @@
 /**
  * Global variables
  */
-let TOKEN = null;
-const API = 'http://localhost:3000/';
-
-chrome.storage.local.get('token', (result) => {
-	if ( result.token ) {
-		TOKEN = result.token;
-	} else {
-		TOKEN = getRandomToken();
-		chrome.storage.local.set({ 'token' : TOKEN});
-	}
-
-	chrome.cookies.set(
-		{ 
-			url: API + 'uninstall', 
-			name: 'token', 
-			value: TOKEN, 
-			expirationDate: (new Date().getTime()/1000) + 9999999 
-		}
-	);
-});
-
-
-let nextPopup = null,
+let TOKEN = null,
+	nextPopup = null,
 	intervalHolder = null;
+const API = 'http://localhost:3000/';
 
 chrome.storage.local.get('state', (result) => {
 
@@ -35,22 +15,6 @@ chrome.storage.local.get('state', (result) => {
 
 	// launch time checker
 	//intervalHolder = setInterval(checkTime, 1000);
-});
-
-function checkTime() {
-	if ( +new Date() > nextPopup ) {
-		chrome.tabs.executeScript({
-			file: 'inject.js'
-		});
-	}
-}
-
-chrome.tabs.onActivated.addListener(() => {
-	//checkTime();
-})
-
-chrome.tabs.onUpdated.addListener(function() {
-	//checkTime();
 });
 
 chrome.browserAction.onClicked.addListener(function (tab) {
@@ -62,10 +26,13 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
 chrome.runtime.onMessage.addListener(
 	(request, sender, sendResponse) => {
-		console.warn('background received message');
 		switch (request.action) {
 			case 'openTab':
 				chrome.tabs.create({ url : request.url });
+			break;
+
+			case 'createPopup':
+				createPopup(sender, request.data);
 			break;
 		}
 	}
@@ -90,11 +57,15 @@ chrome.runtime.onMessage.addListener(
  */
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason == 'install') {
-		chrome.storage.local.set({ 'token' : getRandomToken()});
+		TOKEN = getRandomToken();
+		chrome.storage.local.set({ 'token' : TOKEN});
+		saveTokenInCookies(TOKEN);
     } else {
 		chrome.storage.local.get( 'token', (result) => {
 			if ( !result.token ) {
-				chrome.storage.local.set({ 'token' : getRandomToken()});
+				TOKEN = getRandomToken();
+				chrome.storage.local.set({ 'token' : TOKEN});
+				saveTokenInCookies(TOKEN);
 			}
 		});
 	}
@@ -115,8 +86,77 @@ function getRandomToken() {
     return hex + (+new Date());
 }
 
-
-
-function createPopup() {
-	console.log('background create popup called');
+function saveTokenInCookies(token) {
+	chrome.cookies.set(
+		{ 
+			url: API + 'uninstall', 
+			name: 'token', 
+			value: token, 
+			expirationDate: (new Date().getTime()/1000) + 9999999 
+		}
+	);
 }
+
+function createPopup(sender, data) {
+	// set data to storage
+	chrome.storage.local.set({'popupData': data});
+
+	//if currently open page is not a service page or extension page
+	if ( !sender.url.includes('chrome://') && !sender.url.includes('chrome-extension://') ) {
+		console.warn('can execute script on current tab');
+		chrome.tabs.executeScript({
+			file: 'inject.js'
+		});
+	} 
+	// otherwise inject upon an event
+	else {
+		chrome.tabs.query({
+			active: true
+		}, function(tabs) {
+			console.warn('injecting into tab', tabs[0]);
+
+			chrome.tabs.executeScript(tabs[0].id, {
+				file: 'inject.js'
+			}, (result) => {
+				// error callback, add listeners for simple pages
+				if (typeof result == 'undefined') {
+					addListeners();
+				} else {
+					console.warn('okay');
+				}
+			});
+		});
+	}
+}
+
+function addListeners() {
+	console.warn('adding listeners for chrome tabs');
+	chrome.tabs.onActivated.addListener(injectListener);
+	chrome.tabs.onUpdated.addListener(injectListener);
+}
+
+function injectListener() {
+	console.warn('injecting?');
+	chrome.tabs.executeScript({
+		file: 'inject.js'
+	});
+	removeListeners();
+}
+
+function removeListeners() {
+	chrome.tabs.onActivated.removeListener(injectListener);
+	chrome.tabs.onUpdated.removeListener(injectListener);
+}
+
+/////////////////////////////////////////////////////// //chrome.runtime.openOptionsPage();
+
+
+// chrome.storage.local.get('token', (result) => {
+// 	if ( result.token ) {
+// 		TOKEN = result.token;
+// 	} else {
+// 		TOKEN = getRandomToken();
+// 		chrome.storage.local.set({ 'token' : TOKEN});
+// 	}
+// 	saveTokenInCookies(TOKEN);
+// });

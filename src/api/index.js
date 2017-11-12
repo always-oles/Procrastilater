@@ -122,7 +122,7 @@ export default {
         if (!state) return;
 
         //// debugging
-        return callback(moment().add(30,'seconds').format('X'), false);
+        return callback(moment().add(15,'seconds').format('X'), false);
         ////////////////////////////
 
         let now                 = moment();

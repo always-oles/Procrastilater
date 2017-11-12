@@ -452,6 +452,7 @@ export function generateTimer(manualInvoke) {
  */
 export function createPopup() {
     return (dispatch, getState) => {
+        console.log('create popup called from globalactions');
         let state = getState();
 
         // create copy and prevent bugs/modifying the actual state 

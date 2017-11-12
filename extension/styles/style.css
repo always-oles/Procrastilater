@@ -989,14 +989,10 @@ template {
         position: relative;
         top: -15px;
         cursor: pointer;
-        font-size: 2rem;
-        font-weight: 400;
-        color: #fff;
-        padding: 10px 25px;
-        border-radius: 10px;
-        user-select: none;
-        background: #e20158;
-        background: linear-gradient(to bottom, #e20158 0%, #ce0048 100%); }
+        font-size: 3rem;
+        font-weight: 300;
+        color: #e20158;
+        user-select: none; }
         .main-page header .header-panel .timer-container .timer.animate {
           animation: timerBounce 1s 1; }
         .main-page header .header-panel .timer-container .timer.text {

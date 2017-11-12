@@ -1,6 +1,4 @@
-// document.addEventListener("mousedown", function(event){
-//   console.log('privetiki');
-// }, false);
+/* global chrome */
 
 // chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
 //   console.log('tab received:', message);
@@ -14,14 +12,21 @@
 //   }
 // });
 
-//-------------------------- font, positioning, image, cursor pointer http://volshebnaya-eda.ru/kollekcia-receptov/dough/pelmeni/
-//chrome.extension.sendMessage({});
+//-------------------------- font, positioning, image, cursor pointer
 
 (function() {
 
+    try {
+      var myAudio = new Audio();
+      myAudio.src = chrome.extension.getURL('assets/sound.mp3');
+      myAudio.volume = 0.5;
+      myAudio.play();
+    } catch(e) {}
+
+
     // check if we added a popup for this tab already
-    if (document.querySelectorAll(".pl-popup-container").length > 0) {
-      console.log('added')
+    if (document.querySelectorAll('.pl-popup-container').length > 0) {
+      console.log('added already');
       return;
     }
 
@@ -127,6 +132,9 @@
       font-weight: 400;
       line-height: 24px;
     }
+    .pl-popup-container .pl-popup .pl-main-content .pl-text .pl-bookmark-title {
+      font-weight: 700;
+    }
     .pl-popup-container .pl-popup .pl-buttons {
       -webkit-border-bottom-right-radius: 7px;
       -webkit-border-bottom-left-radius: 7px;
@@ -215,9 +223,9 @@
     div.innerHTML = `
       <div class='pl-popup' ref='popup'>
           <div class='pl-main-content'>
-              <div class='pl-icon'><img src=${chrome.extension.getURL('images/alarm.svg')} class='pl-alarm'/></div>
+              <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
               <div class='pl-title'>Time has come!</div>
-              <div class='pl-text'>The magic shuffle suggests you opening the "<span class='pl-bookmark-title'></span>" bookmark. Do you agree? </div>
+              <div class='pl-text'>The magic shuffle suggests you to open the <br/><span class='pl-bookmark-title'></span><br/> Do you agree? </div>
           </div>
 
           <div class='pl-buttons'>
@@ -228,7 +236,7 @@
       </div>
     `;
 
-    let titleContainer = div.querySelectorAll(".pl-bookmark-title")[0],
+    let titleContainer = div.querySelectorAll('.pl-bookmark-title')[0],
         url = null,
         id = null;
 
@@ -236,29 +244,25 @@
     chrome.storage.local.get('popupData', (result) => {
 
       // set bookmark name
-      titleContainer.innerHTML = '<img src="chrome://favicon/'+result.popupData.url+'"/>' + result.popupData.name;
+      titleContainer.innerHTML = `<img src=${chrome.extension.getURL('chrome://favicon/'+result.popupData.url)} />${result.popupData.title}`;
       id = result.popupData.id;
       url = result.popupData.url;
     });
 
     // accept button container
-    var accept = div.querySelectorAll(".pl-accept")[0];
-
+    var accept    = div.querySelectorAll('.pl-accept')[0];
+    var reshuffle = div.querySelectorAll('.pl-reshuffle')[0];
+    var postpone  = div.querySelectorAll('.pl-postpone')[0];
+    
     // accept click handler
     accept.addEventListener('click', (e) => {
-      chrome.runtime.sendMessage({ action: "openTab", url });
+      chrome.runtime.sendMessage({ action: 'openTab', url });
     });
-
-    // reshuffle button container
-    var reshuffle = div.querySelectorAll(".pl-reshuffle")[0];
 
     // reshuffle click handler
     reshuffle.addEventListener('click', (e) => {
       console.log('yee boii', e)
     });
-
-    // postpone button container
-    var postpone = div.querySelectorAll(".pl-postpone")[0];
 
     // postpone click handler
     postpone.addEventListener('click', (e) => {
@@ -266,5 +270,4 @@
     });
     
     document.body.appendChild(div);
-  
-  })();
+})();

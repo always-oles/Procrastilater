@@ -12,7 +12,7 @@ export default class Timer extends React.Component {
         this.tick       = this.tick.bind(this);
         this.getOutput  = this.getOutput.bind(this);
         this.timeIsOut  = this.timeIsOut.bind(this);
-        //this.interval   = setInterval(this.tick, 1000);
+        this.interval   = setInterval(this.tick, 1000);
 
         this.animationTimeout = null;
         this.state = {
@@ -33,7 +33,7 @@ export default class Timer extends React.Component {
 
         this.setState({ popupCreatingCalled: true});
         this.props.createPopup();
-        //this.props.generateTimer();
+        this.props.generateTimer();
 
         // prevent all possible shit for a second
         setTimeout(() => {
