@@ -58,6 +58,7 @@ export default {
 
     setState: (state, callback) => {
         chrome.storage.local.set({'state': state}, () => {
+            console.warn('saving state', state);
             if (callback) callback();
         });
     },

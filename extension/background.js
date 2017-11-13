@@ -1,4 +1,4 @@
-/*global chrome, getRandomToken: function*/
+/*global chrome, sharedAPI, getRandomToken*/
 
 /**
  * Global variables
@@ -24,7 +24,7 @@ var TOKEN = null,
 	function launchTimer(time) {
 		// get next popup time or make it now
 		nextPopup = parseInt(time) || null;
-		
+
 		// launch timer
 		if (nextPopup) {
 			clearInterval(intervalHolder);
@@ -33,20 +33,49 @@ var TOKEN = null,
 	}
 })();
 
+/**
+ * Checking if timer is expired
+ * if expired - open popup
+ */
 function checkTime() {
 	// convert to unix timestamp without miliseconds
 	let now = parseInt((+new Date()).toString().slice(0,-3));
 
 	// time is out
 	if (now > nextPopup) {
-		console.warn('creating popup');
-		console.warn(sharedAPI);
-		createPopup();
+		console.warn('need to update timer,',now-nextPopup);
+
+		// stop timer
+		clearInterval(intervalHolder);
+
+		// create popup and open it
+		chrome.storage.local.get('state', result => {
+			let foldersIds      = result.state.global.foldersIds.slice();
+			let allVisitedIds   = result.state.global.allVisitedIds.slice();
+
+			sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+				openPopup(bookmark);
+			});
+		});
+		
+		// chrome.storage.local.get('state', (result) => {
+		// 	sharedAPI.generateTimer(false, result.state, (newTime) => {
+		// 		// update storage timer
+		// 		let newState = result.state;
+		// 		newState.popups.nextPopupTime = newTime;
+
+		// 		chrome.storage.local.set({'state' : newState}, () => {
+		// 			console.warn('new state saved, updating timer');
+		// 			updateTimer(newTime);					
+		// 		});
+		// 	});
+		// });
+
+		//createPopup();
 	} else {
 		console.warn(now-nextPopup, 'left');
 	}
 }
-
 
 
 chrome.browserAction.onClicked.addListener(function (tab) {
@@ -64,8 +93,8 @@ chrome.runtime.onMessage.addListener(
 				chrome.tabs.create({ url : request.url });
 			break;
 
-			case 'createPopup':
-				createPopup(request.data);
+			case 'openPopup':
+				openPopup(request.data);
 			break;
 
 			case 'updateTimer':
@@ -134,13 +163,14 @@ function saveTokenInCookies(token) {
 	);
 }
 
-function createPopup(data) {
+function openPopup(data) {
+	if (!data) return;
+
 	// put data to storage to share with injected script
 	data.sound = true;
 	chrome.storage.local.set({'popupData': data});
 
 	console.warn('data for popup: ', data);
-	return;
 
 	// check active tab if it's not a service url
 	chrome.tabs.query({

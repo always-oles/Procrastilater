@@ -3,7 +3,7 @@ var sharedAPI = {
         if (!state) return;
     
         //// debugging
-        return callback(moment().add(20,'seconds').format('X'), false);
+        return callback(moment().add(30,'seconds').format('X'), false);
         ////////////////////////////
     
         let now                 = moment();
@@ -295,7 +295,7 @@ var sharedAPI = {
          * @param {Array} foldersIds 
          * @param {Function} callback 
          */
-    createPopup: function(allVisitedIds, foldersIds) {
+    createPopup: function(allVisitedIds, foldersIds, callback) {
         if (!foldersIds.length) return;
         let allBookmarks = [];
         
@@ -326,8 +326,18 @@ var sharedAPI = {
                 } 
             }
     
-            // send message with random bookmark to background script
-            chrome.runtime.sendMessage({ action: 'createPopup', data: safeItems[Math.floor(Math.random() * safeItems.length)] });
+            let randomBookmark = safeItems[Math.floor(Math.random() * safeItems.length)];
+
+            // callback is defined in background script
+            if (callback) {
+                callback(randomBookmark);
+            }
+
+            // otherwise just send message to runtime
+            else {
+                // send message with random bookmark to background script
+                chrome.runtime.sendMessage({ action: 'openPopup', data: randomBookmark });
+            }
         }
     },
     

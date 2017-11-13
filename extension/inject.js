@@ -147,6 +147,7 @@
       margin: 0;
     }
     .pl-popup-container .pl-popup .pl-buttons button {
+      cursor: pointer;
       box-sizing: border-box;
       width: 33.3%;
       text-align: center;
