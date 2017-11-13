@@ -330,7 +330,7 @@ var sharedAPI = {
 
             // callback is defined in background script
             if (callback) {
-                callback(randomBookmark);
+                return callback(randomBookmark);
             }
 
             // otherwise just send message to runtime

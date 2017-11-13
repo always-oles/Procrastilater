@@ -25,6 +25,23 @@
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
+    @keyframes shake {
+      0% {
+        transform: translateY(0);
+      }
+      25% {
+        transform: translateY(15px);
+      }
+      50% {
+        transform: translateY(5px);
+      }
+      75% {
+        transform: translateY(20px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
     @keyframes spin {
       0% {
         transform: rotate(-15deg);
@@ -93,6 +110,9 @@
       -ms-border-radius: 7px;
       border-radius: 7px;
       z-index: 9999;
+    }
+    .pl-popup-container .pl-popup.shake{
+      animation: shake 0.3s ease-out 1;
     }
     .pl-popup-container .pl-popup.flyIn {
       display: block;
@@ -215,7 +235,7 @@
     div.classList.add('pl-popup-container');
 
     div.innerHTML = `
-      <div class='pl-popup' ref='popup'>
+      <div class='pl-popup'>
           <div class='pl-main-content'>
               <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
               <div class='pl-title'>Time has come!</div>
@@ -234,27 +254,75 @@
       </div>
     `;
 
-    let titleContainer    = div.querySelectorAll('.pl-bookmark-title')[0],
-        url = null,
-        id = null;
+    var 
+      popup           = div.querySelectorAll('.pl-popup')[0];
+      titleContainer  = div.querySelectorAll('.pl-bookmark-title')[0],
+      url             = null,
+      id              = null;
+      sound           = false,
+      intervalHolder  = null,
+      savePopupData   = null;
 
-    // get data for current popup
-    chrome.storage.local.get('popupData', (result) => {
-      id = result.popupData.id;
-      url = result.popupData.url;
-      titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${result.popupData.url}'/> ${result.popupData.title}`;
-      titleContainer.setAttribute('title', url);
+    /**
+     * IIFE for getting + saving popup data from localstorage
+     */
+    (savePopupData = function(data, playSound = false) {
 
-      // play sound or not
-      if (result.popupData.sound == true) {
-        try {
-          var myAudio = new Audio();
-          myAudio.src = chrome.extension.getURL('assets/sound.mp3');
-          myAudio.volume = 0.5;
-          myAudio.play();
-        } catch(e) {}
+      // not passed - first call
+      if (!data) {
+        // get from storage
+        chrome.storage.local.get('popupData', (result) => {
+          // save
+          save(result);
+        });
+      } 
+      // if passed - just save
+      else {
+        save(data);
       }
-    });
+
+      // save required data in global variables
+      function save(result) {
+        id    = result.popupData.id;
+        url   = result.popupData.url;
+        sound = result.popupData.sound;
+        titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${result.popupData.url}'/> ${result.popupData.title}`;
+        titleContainer.setAttribute('title', url);
+  
+        // play sound or not
+        if (sound == true && !playSound) {
+          try {
+            var myAudio     = new Audio();
+            myAudio.src     = chrome.extension.getURL('assets/bell.mp3');
+            myAudio.volume  = 0.5;
+            myAudio.play();
+          } catch(e) {}
+        }
+      }
+    })();
+
+    /**
+     * Called upon shuffle button click to wait for new popup data
+     */
+    function waitForNewPopup() {
+      console.warn('started waiting for new data');
+      intervalHolder = setInterval(() => {
+        comparePopupData();
+      }, 100);
+    }
+
+    /**
+     * Compare old data with current data, if changed - save new
+     */
+    function comparePopupData() {
+      chrome.storage.local.get('popupData', (result) => {
+        if (result.popupData.id !== id) {
+          console.warn('received new data');
+          savePopupData(result, false);
+          clearInterval(intervalHolder);
+        }
+      });
+    }
 
     // accept button container
     var accept    = div.querySelectorAll('.pl-accept')[0];
@@ -266,9 +334,31 @@
       chrome.runtime.sendMessage({ action: 'openTab', url });
     });
 
-    // reshuffle click handler
+    /**
+     * Reshuffle click handler
+     */
     reshuffle.addEventListener('click', (e) => {
-      console.log('yee boii', e)
+
+      // demand a new bookmark
+      chrome.runtime.sendMessage({ action: 'shuffle', data: id });
+      waitForNewPopup();
+
+      // animate
+      popup.classList.add('shake');
+
+      // remove animation later
+      setTimeout(() => {
+        popup.classList.remove('shake');
+      }, 1000);
+
+      // play shake sound if possible
+      try {
+        var myAudio = new Audio();
+        myAudio.src = chrome.extension.getURL('assets/shake_2.mp3');
+        myAudio.volume = 0.5;
+        myAudio.play();
+      } catch(e) {}
+
     });
 
     // postpone click handler

@@ -26,7 +26,9 @@
   },
   "web_accessible_resources": [
       "images/alarm.svg",
-      "assets/sound.mp3"
+      "assets/bell.mp3",
+      "assets/shake_1.mp3",
+      "assets/shake_2.mp3"
   ],
   "options_page": "index.html",
   "permissions": [

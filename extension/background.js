@@ -100,9 +100,30 @@ chrome.runtime.onMessage.addListener(
 			case 'updateTimer':
 				updateTimer(request.data);
 			break;
+
+			case 'shuffle':
+				shuffle(request.data);
+			break;
 		}
 	}
 );
+
+/**
+ * User clicked on reshuffle bookmark button
+ * @param {Integer} lastId to prevent duplicate
+ */
+function shuffle(lastId) {
+	chrome.storage.local.get('state', result => {
+		let foldersIds      = result.state.global.foldersIds.slice();
+		let allVisitedIds   = result.state.global.allVisitedIds.slice();
+		allVisitedIds.push(lastId);
+
+		sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+			chrome.storage.local.set({'popupData': bookmark});
+		});
+	});
+}
+
 
 // chrome.tabs.create({
 //     url: chrome.extension.getURL('dialog.html'),
@@ -163,14 +184,14 @@ function saveTokenInCookies(token) {
 	);
 }
 
-function openPopup(data) {
-	if (!data) return;
+function openPopup(bookmark) {
+	if (!bookmark) return;
 
 	// put data to storage to share with injected script
-	data.sound = true;
-	chrome.storage.local.set({'popupData': data});
+	bookmark.sound = true; /////////////////////////////////////////////// remove after debug
+	chrome.storage.local.set({'popupData': bookmark});
 
-	console.warn('data for popup: ', data);
+	console.warn('data for popup: ', bookmark);
 
 	// check active tab if it's not a service url
 	chrome.tabs.query({
