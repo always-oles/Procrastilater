@@ -1,4 +1,4 @@
-import { resetReceivedAchievement } from '../actions/GlobalActions';
+import { checkAchievementsCaller, resetReceivedAchievement } from '../actions/GlobalActions';
 /* global $:jQuery */
 
 import React from 'react';
@@ -13,14 +13,18 @@ import AchievementReviewer from '../assets/images/achievement-reviewer.svg';
 import Trophy from '../assets/images/trophy.svg';
 
 export default class AchievementsComponent extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             justReceived: false
         };
 
         this.onCloseClick = this.onCloseClick.bind(this);
+
+        // check for achievements upon first load
+        // they could have been received while PL page was closed
+        props.checkAchievementsCaller();
     }
 
     componentDidMount() {
@@ -125,5 +129,6 @@ export default class AchievementsComponent extends React.Component {
 AchievementsComponent.propTypes = {
     achievements: PropTypes.object.isRequired,
     resetReceivedAchievement: PropTypes.func.isRequired,
+    checkAchievementsCaller: PropTypes.func.isRequired,
     justReceived: PropTypes.bool.isRequired
 }

@@ -36,9 +36,7 @@ const defaultInitialState = {
     },
 
     popups: {
-        lastPopupTime: null,
         nextPopupTime: null,
-        popupIsShowing: false,
         popupsToday: 0
     },
 

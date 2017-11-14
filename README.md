@@ -1,6 +1,10 @@
 # Procrastilater
 ### A Chrome/Opera browser extension that helps you to schedule and organize your postponed "visit/read/watch later" bookmarks and deal with them.
 
+## Slogan  
+Stop procrastinating and overcome yourself.  
+Get over your postponed bookmarks with tasks/knowledge/fun!  
+  
 ## Idea
 I am a procrastinator. I postpone some of my tasks/goals to the future.  
 And I got **lots** of tabs and bookmarks in my browser.  
@@ -23,6 +27,12 @@ TBA
 ## FAQ
 **Q:** 
 **A:**
+
+## Credits
+### Thanks  
+#### https://www.flaticon.com/ for some of the icons  
+#### https://www.zapsplat.com/ for sounds  
+#### and many-many thanks to my friends for testing and ideas <b style='color:red'>❤</b>
 
 ## Get in touch
 Author is Oles Bolotniuk (bolotniuk.oles@gmail.com)  

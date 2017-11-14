@@ -8,7 +8,8 @@ import {
     SET_TEMPO,
     GIVE_ACHIEVEMENT,
     RESET_RECEIVED_ACHIEVEMENT,
-    UPDATE_BOOKMARKS_STATS
+    UPDATE_BOOKMARKS_STATS,
+    UPDATE_ENTIRE_STATE
 } from '../constants';
 
 export default function global(state = {}, action) {
@@ -33,6 +34,16 @@ export default function global(state = {}, action) {
             return { ...state, justReceived: false}
         case UPDATE_BOOKMARKS_STATS:
             return { ...state, visitedIds: action.payload.visitedIds }
+        case UPDATE_ENTIRE_STATE:
+            return { 
+                ...state, 
+                allVisitedIds: (action.payload.allVisitedIds && (action.payload.allVisitedIds > state.allVisitedIds )) 
+                                ? action.payload.allVisitedIds
+                                : state.allVisitedIds,
+                visitedIds: (action.payload.visitedIds && (action.payload.visitedIds > state.visitedIds )) 
+                            ? action.payload.visitedIds
+                            : state.visitedIds
+            }
         default:
             return state;
     }

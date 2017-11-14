@@ -78,6 +78,14 @@
         opacity: 1;
       }
     }
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
     .pl-popup-container {
       position: fixed;
       display: flex;
@@ -89,14 +97,14 @@
       background: rgba(0, 0, 0, 0.7);
       align-items: flex-start;
       justify-content: flex-end;
-      z-index: 9998;
+      z-index: 9999999;
       font-family: "Roboto", "Open Sans", Arial, sans-serif;
       font-size: 12px;
       animation: fadeIn 1s 1
     }
-    .pl-popup-container.fadeIn {
-      display: flex;
-      animation: fadeIn 0.5s;
+    .pl-popup-container.fadeOut {
+      animation: fadeOut 0.5s 1;
+      animation-fill-mode: forwards;
     }
     .pl-popup-container .pl-popup {
       position: absolute;
@@ -130,6 +138,7 @@
     .pl-popup-container .pl-popup .pl-main-content .pl-icon img {
       width: 100px;
       height: 100px;
+      user-select: none;
     }
     .pl-popup-container .pl-popup .pl-main-content .pl-alarm {
       animation: spin 1.2s ease-in-out infinite;
@@ -140,13 +149,15 @@
       font-weight: 700;
     }
     .pl-popup-container .pl-popup .pl-main-content .pl-text {
-      padding: 15px 10px 0;
+      padding: 5px 10px 0;
       font-size: 1.3em;
       font-weight: 400;
       line-height: 24px;
     }
     .pl-popup-container .pl-popup .pl-main-content .pl-text .pl-bookmark-title {
       font-weight: 700;
+      margin: 7px 0px;
+      display: inline-block;
     }
     .pl-popup-container .pl-popup .pl-buttons {
       -webkit-border-bottom-right-radius: 7px;
@@ -238,35 +249,37 @@
       <div class='pl-popup'>
           <div class='pl-main-content'>
               <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
-              <div class='pl-title'>Time has come!</div>
+              <div class='pl-title'>${chrome.i18n.getMessage('popup_header')}</div>
               <div class='pl-text'>
-                The magic shuffle suggests you to open the <br/>
+                ${chrome.i18n.getMessage('popup_suggests')}<br/>
                 <span class='pl-bookmark-title'></span><br/>
-                Do you agree? 
+                ${chrome.i18n.getMessage('popup_agree')}
               </div>
           </div>
 
           <div class='pl-buttons'>
-              <button class='pl-accept pl-left'>Yes, open it</button>
-              <button class='pl-reshuffle pl-middle'>No, reshuffle</button>
-              <button class='pl-postpone pl-right'>No, postpone</button>
+              <button class='pl-accept pl-left'>${chrome.i18n.getMessage('popup_button_yes')}</button>
+              <button class='pl-reshuffle pl-middle'>${chrome.i18n.getMessage('popup_button_shuffle')}</button>
+              <button class='pl-postpone pl-right'>${chrome.i18n.getMessage('popup_button_postpone')}</button>
           </div>
       </div>
     `;
 
-    var 
+    var
+      popupContainer  = div;    
       popup           = div.querySelectorAll('.pl-popup')[0];
       titleContainer  = div.querySelectorAll('.pl-bookmark-title')[0],
       url             = null,
       id              = null;
-      sound           = false,
+      soundEnabled    = true,
       intervalHolder  = null,
       savePopupData   = null;
 
     /**
      * IIFE for getting + saving popup data from localstorage
      */
-    (savePopupData = function(data, playSound = false) {
+    (savePopupData = function(data, withoutSound = false) {
+
 
       // not passed - first call
       if (!data) {
@@ -283,20 +296,15 @@
 
       // save required data in global variables
       function save(result) {
-        id    = result.popupData.id;
-        url   = result.popupData.url;
-        sound = result.popupData.sound;
-        titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${result.popupData.url}'/> ${result.popupData.title}`;
+        id            = result.popupData.id;
+        url           = result.popupData.url;
+        soundEnabled  = result.popupData.soundEnabled || true;
+        titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${url}'/> ${result.popupData.title}`;
         titleContainer.setAttribute('title', url);
   
         // play sound or not
-        if (sound == true && !playSound) {
-          try {
-            var myAudio     = new Audio();
-            myAudio.src     = chrome.extension.getURL('assets/bell.mp3');
-            myAudio.volume  = 0.5;
-            myAudio.play();
-          } catch(e) {}
+        if (!withoutSound) {
+          playSound('bell');
         }
       }
     })();
@@ -318,7 +326,7 @@
       chrome.storage.local.get('popupData', (result) => {
         if (result.popupData.id !== id) {
           console.warn('received new data');
-          savePopupData(result, false);
+          savePopupData(result, true);
           clearInterval(intervalHolder);
         }
       });
@@ -329,9 +337,23 @@
     var reshuffle = div.querySelectorAll('.pl-reshuffle')[0];
     var postpone  = div.querySelectorAll('.pl-postpone')[0];
     
-    // accept click handler
+    
+    /**
+     * Accept click handler
+     */
     accept.addEventListener('click', (e) => {
-      chrome.runtime.sendMessage({ action: 'openTab', url });
+      playSound('accept');
+      unmountPopup(false);
+      chrome.runtime.sendMessage({ action: 'accept', data: { id, url } });
+    });
+
+    /**
+     * Postpone click handler
+     */
+    postpone.addEventListener('click', (e) => {
+      playSound('postpone');
+      unmountPopup();
+      chrome.runtime.sendMessage({ action: 'postpone' });
     });
 
     /**
@@ -341,6 +363,8 @@
 
       // demand a new bookmark
       chrome.runtime.sendMessage({ action: 'shuffle', data: id });
+
+      // launch timer waiting for new data
       waitForNewPopup();
 
       // animate
@@ -358,13 +382,38 @@
         myAudio.volume = 0.5;
         myAudio.play();
       } catch(e) {}
-
     });
 
-    // postpone click handler
-    postpone.addEventListener('click', (e) => {
-      console.log('yee boii', e)
-    });
+
+    /**
+     * Fade out and then remove from page
+     */
+    function unmountPopup(animate = true) {
+      if (animate) {
+        // fade out        
+        popupContainer.classList.add('fadeOut');   
+        
+        // remove from page
+        setTimeout(() => div.parentElement.removeChild(div), 1000);
+      } else {
+        // just remove
+        div.parentElement.removeChild(div);
+      }
+    }
+
+    /**
+     * Play sound on demand
+     */
+    function playSound(id) {
+      if (soundEnabled) {
+        try {
+          var myAudio     = new Audio();
+          myAudio.src     = chrome.extension.getURL('assets/'+id+'.mp3');
+          myAudio.volume  = 0.5;
+          myAudio.play();
+        } catch(e) {}
+      } 
+    }
     
     document.body.appendChild(div);
 })();

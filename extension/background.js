@@ -1,4 +1,4 @@
-/*global chrome, sharedAPI, getRandomToken*/
+/*global chrome, sharedAPI, moment, getRandomToken*/
 
 /**
  * Global variables
@@ -8,6 +8,10 @@ var TOKEN = null,
 	intervalHolder = null,
 	nextPopup = null,
 	updateTimer;
+
+chrome.storage.local.get(null, result => {
+	console.warn('all storage now is:', result);
+});
 
 (updateTimer = function updateTimer(nextPopupTime) {
 	// if passed
@@ -39,39 +43,34 @@ var TOKEN = null,
  */
 function checkTime() {
 	// convert to unix timestamp without miliseconds
-	let now = parseInt((+new Date()).toString().slice(0,-3));
+	let now = moment().format('X');
 
 	// time is out
-	if (now > nextPopup) {
-		console.warn('need to update timer,',now-nextPopup);
+	if (now >= nextPopup) {
+		console.warn('timer is expired');
 
 		// stop timer
 		clearInterval(intervalHolder);
 
 		// create popup and open it
-		chrome.storage.local.get('state', result => {
-			let foldersIds      = result.state.global.foldersIds.slice();
-			let allVisitedIds   = result.state.global.allVisitedIds.slice();
+		chrome.storage.local.get(['state', 'popupData'], result => {
 
-			sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
-				openPopup(bookmark);
-			});
+			// if popup is in storage
+			if (result.popupData) {
+				console.warn('popup is in storage');
+				openPopup(result.popupData);
+			} 
+			// else generate a new popup
+			else {
+				let foldersIds      = result.state.global.foldersIds.slice();
+				let allVisitedIds   = result.state.global.allVisitedIds.slice();
+
+				console.warn('generating new popup');
+				sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+					openPopup(bookmark);
+				});
+			}
 		});
-		
-		// chrome.storage.local.get('state', (result) => {
-		// 	sharedAPI.generateTimer(false, result.state, (newTime) => {
-		// 		// update storage timer
-		// 		let newState = result.state;
-		// 		newState.popups.nextPopupTime = newTime;
-
-		// 		chrome.storage.local.set({'state' : newState}, () => {
-		// 			console.warn('new state saved, updating timer');
-		// 			updateTimer(newTime);					
-		// 		});
-		// 	});
-		// });
-
-		//createPopup();
 	} else {
 		console.warn(now-nextPopup, 'left');
 	}
@@ -86,11 +85,11 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 });
 
 chrome.runtime.onMessage.addListener(
-	(request, sender, sendResponse) => {
+	request => {
 		console.warn('background received message: ', request);
 		switch (request.action) {
-			case 'openTab':
-				chrome.tabs.create({ url : request.url });
+			case 'accept':
+				accept(request.data);
 			break;
 
 			case 'openPopup':
@@ -104,24 +103,113 @@ chrome.runtime.onMessage.addListener(
 			case 'shuffle':
 				shuffle(request.data);
 			break;
+
+			case 'postpone':
+				postpone();
+			break;
 		}
 	}
 );
 
 /**
- * User clicked on reshuffle bookmark button
- * @param {Integer} lastId to prevent duplicate
+ * User clicked on accept inside popup
+ * @param {Object} data contains id and url of currently opening bookmark
  */
-function shuffle(lastId) {
+function accept(data) {
+	// open page
+	chrome.tabs.create({ url : data.url });
+
+	// remove old popup data
+	chrome.storage.local.remove('popupData');
+	
+	// get current storage state
+	chrome.storage.local.get('state', result => {
+		let newState = result.state;
+		
+		// make some changes before generating new timer
+		newState.stats.bookmarksVisited 	+= 1;		
+		newState.popups.popupsToday 		+= 1;
+		newState.global.visitedIds.push(data.id);
+		newState.global.allVisitedIds.push(data.id);
+		
+		// generate new timer
+		sharedAPI.generateTimer(false, newState, newTime => {
+
+			// save new timer
+			newState.popups.nextPopupTime = newTime;
+			
+			// set new storage
+			chrome.storage.local.set({
+				state: newState,
+				needUpdate: moment().format('X')
+			}, () => {
+				chrome.storage.local.get(null, result => {
+					console.warn('all storage now is:', result);
+				});
+			});
+
+			// update background timer
+			updateTimer(newTime);
+		});
+	});
+}
+
+/**
+ * User clicked on reshuffle bookmark button inside popup
+ * @param {Integer} bookmarkId to prevent duplicate
+ */
+function shuffle(bookmarkId) {
 	chrome.storage.local.get('state', result => {
 		let foldersIds      = result.state.global.foldersIds.slice();
 		let allVisitedIds   = result.state.global.allVisitedIds.slice();
-		allVisitedIds.push(lastId);
+		allVisitedIds.push(bookmarkId);
 
 		sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
 			chrome.storage.local.set({'popupData': bookmark});
 		});
 	});
+}
+
+/**
+ * User clicked on postpone button inside popup
+ */
+function postpone() {
+	// remove all listeners to prevent annoying showing
+	removeListeners();
+
+	// remove old popup data
+	chrome.storage.local.remove('popupData');
+
+	// get current storage state
+	chrome.storage.local.get('state', result => {
+		let newState = result.state;
+		
+		// make some changes before generating new timer
+		newState.stats.bookmarksPostponed 	+= 1;		
+		newState.popups.popupsToday 		+= 1;
+		
+		// generate new timer
+		sharedAPI.generateTimer(false, newState, newTime => {
+
+			// save new timer
+			newState.popups.nextPopupTime = newTime;
+			
+			// set new storage
+			chrome.storage.local.set({
+				state: newState,
+				needUpdate: moment().format('X')
+			}, () => {
+				chrome.storage.local.get(null, result => {
+					console.warn('all storage now is:', result);
+				});
+			});
+
+			// update background timer
+			updateTimer(newTime);
+		});
+	});
+
+	// inject removing popup script
 }
 
 
@@ -188,7 +276,7 @@ function openPopup(bookmark) {
 	if (!bookmark) return;
 
 	// put data to storage to share with injected script
-	bookmark.sound = true; /////////////////////////////////////////////// remove after debug
+	bookmark.soundEnabled = true; /////////////////////////////////////////////// remove after debug
 	chrome.storage.local.set({'popupData': bookmark});
 
 	console.warn('data for popup: ', bookmark);
@@ -223,31 +311,30 @@ function openPopup(bookmark) {
 			injectScript(tabs[0].id);
 		}
 	});
+}
 
+function addListeners() {
+	console.warn('adding listeners for chrome tabs');
+	chrome.tabs.onActivated.addListener(injectScript);
+	chrome.tabs.onUpdated.addListener(injectScript);
+}
 
-	function addListeners() {
-		console.warn('adding listeners for chrome tabs');
-		chrome.tabs.onActivated.addListener(injectScript);
-		chrome.tabs.onUpdated.addListener(injectScript);
-	}
+function injectScript(tabId) {
+	if (!tabId) { tabId = null; }
 
-	function injectScript(id) {
-		if (!id) { id = null; }
+	console.warn('injecting!');
+	chrome.tabs.executeScript(tabId, {
+		file: 'inject.js'
+	});
 
-		console.warn('injecting!');
-		chrome.tabs.executeScript(id, {
-			file: 'inject.js'
-		});
+	// remove listeners upon injection
+	removeListeners();
+}
 
-		// remove listeners upon injection
-		removeListeners();
-	}
-
-	function removeListeners() {
-		console.warn('removing listeners');
-		chrome.tabs.onActivated.removeListener(injectScript);
-		chrome.tabs.onUpdated.removeListener(injectScript);
-	}
+function removeListeners() {
+	console.warn('removing listeners');
+	chrome.tabs.onActivated.removeListener(injectScript);
+	chrome.tabs.onUpdated.removeListener(injectScript);
 }
 
 /////////////////////////////////////////////////////// //chrome.runtime.openOptionsPage();

@@ -28,7 +28,9 @@
       "images/alarm.svg",
       "assets/bell.mp3",
       "assets/shake_1.mp3",
-      "assets/shake_2.mp3"
+      "assets/shake_2.mp3",
+      "assets/accept.mp3",
+      "assets/postpone.mp3"
   ],
   "options_page": "index.html",
   "permissions": [

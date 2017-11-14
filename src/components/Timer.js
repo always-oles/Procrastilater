@@ -11,7 +11,6 @@ export default class Timer extends React.Component {
         this.onClick    = this.onClick.bind(this);
         this.tick       = this.tick.bind(this);
         this.getOutput  = this.getOutput.bind(this);
-        this.timeIsOut  = this.timeIsOut.bind(this);
         this.interval   = setInterval(this.tick, 1000);
 
         this.animationTimeout = null;
@@ -24,33 +23,10 @@ export default class Timer extends React.Component {
     }
 
     componentDidMount() {
-        this.tick(true);
-    }
-
-    timeIsOut() {
-        // prevent calling multiple times
-        if (this.state.popupCreatingCalled) return;
-
-        // set in progress
-        this.setState({ popupCreatingCalled: true});
-
-        // call creating of popup
-        this.props.createPopup();
-
-        // generate new timer
-        this.props.generateTimer();
-
-        // prevent all possible doublecalling shit for a second
-        setTimeout(() => {
-            this.setState({ popupCreatingCalled: false});
-        }, 2000); 
+        this.tick();
     }
 
     onClick() {
-        //this.timeIsOut();
-        //return;
-        ///////////////////////////
-
         if ( !this.state.manual && this.state.clickable ) {
             // animate
             this.refs.timerContainer.classList.add('animate');
@@ -74,15 +50,15 @@ export default class Timer extends React.Component {
         if ( nextProps.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL ) {
             clearInterval(this.interval);
         } else {
-            this.interval = setInterval(this.tick, 1000); 
+            clearInterval(this.interval);
+            this.interval = setInterval(this.tick, 1000);
         }
 
-        this.tick();        
         this.setState({ manual: nextProps.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL });
     }
 
 
-    getOutput(ends, manual, dontCallTimeout) {
+    getOutput(ends, manual) {
 
         if  ((this.state && this.state.manual) || manual ) {
             return 'timer is disabled if you\'ve chosen a manual reminder appearance';
@@ -101,12 +77,7 @@ export default class Timer extends React.Component {
         let result = hours + moment.utc(difference).format(':mm:ss');
         
         // check if less than 0
-        if (moment.utc(difference).format('X') <= 0) {
-
-            // le kostilek
-            if (!dontCallTimeout)
-                this.timeIsOut();
-
+        if (moment.utc(difference).format('X') < 0) {
             return '00:00:00';
         }
 

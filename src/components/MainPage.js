@@ -92,6 +92,7 @@ class MainPage extends React.Component {
                                 achievements = { this.props.achievements }
                                 resetReceivedAchievement = { this.props.globalActions.resetReceivedAchievement }
                                 justReceived = { this.props.global.justReceived }
+                                checkAchievementsCaller = { this.props.globalActions.checkAchievementsCaller }
                             />
                             <StatsComponent 
                                 stats = { this.props.stats }

@@ -21,6 +21,7 @@ import {
     VISITOR_LIMIT,
     POSTPONER_LIMIT,
     MANUAL_OPENER_LIMIT,
+    UPDATE_ENTIRE_STATE,
     SET_NEXT_POPUP
 } from '../constants';
 
@@ -133,12 +134,12 @@ function findObjects(items, ids, dispatch, allVisitedIds, saveFoldersCallback) {
 }
 
 function updateStats(dispatch, allVisitedIds, saveFoldersCallback) {
-    let visitedIds = [];
+    let visitedIds = []; 
 
     // check for duplicates between visitedIds/allVisitedIds
     if (allVisitedIds.length) {
         for (let i in bookmarks) {
-            if ( allVisitedIds.indexOf(bookmarks[i].id) ) {
+            if ( allVisitedIds.indexOf(bookmarks[i].id) !== -1 ) {
                 visitedIds.push(bookmarks[i].id);
             }
         }
@@ -291,7 +292,7 @@ function checkAchievements(dispatch, state, action) {
     // check for postponer achievement
     if ( state.stats && 
          state.achievements.postponer == false && 
-         state.stats.postponed >= POSTPONER_LIMIT
+         state.stats.bookmarksPostponed >= POSTPONER_LIMIT
     ) {
         dispatch({
             type: GIVE_ACHIEVEMENT,
@@ -302,12 +303,21 @@ function checkAchievements(dispatch, state, action) {
     // check for manual opener achievement
     if ( state.stats && 
         state.achievements.manualOpener == false && 
-        state.stats.postponed >= MANUAL_OPENER_LIMIT
+        state.stats.bookmarksVisitedManually >= MANUAL_OPENER_LIMIT
     ) {
         dispatch({
             type: GIVE_ACHIEVEMENT,
             payload: { 'manualOpener' : true }
         });
+    }
+}
+
+/**
+ * Helper-action-creator
+ */
+export function checkAchievementsCaller() {
+    return (dispatch, getState) => {
+        checkAchievements(dispatch, getState());
     }
 }
 
@@ -380,11 +390,11 @@ export function getStatsFromBackend(dispatch, getState) {
 }
 
 /**
- * Compare store from localstorage
+ * Listen for focus receiving. (when user has opened PL tab, switches to another tab and back)
  * thanks https://stackoverflow.com/questions/1060008/is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active
  */
 export function listenForVisibilityChange() {
-    return (dispatch, getStore) => {
+    return (dispatch, getState) => {
 
         var hidden = 'hidden';
     
@@ -404,12 +414,29 @@ export function listenForVisibilityChange() {
             evt = evt || window.event;
             if (evt.type in evtMap) {
                 if (evtMap[evt.type] == 'visible') {
-                    console.log('update now1');
+                    // usually page received focus here if refreshed
                 }
             }
             else {
                 if (!this[hidden]) {
-                    console.log('update now2');
+                    // when user switches to PL tab
+                    // compare current state with storage
+                    API.checkForUpdates(getState(), mutatedState => {
+                        
+                        // do not dispatch an event if nothing changed and empty object received
+                        if (JSON.stringify(mutatedState) === JSON.stringify({})) {
+                            return;
+                        }
+
+                        // dispatch difference
+                        dispatch({
+                            type: UPDATE_ENTIRE_STATE,
+                            payload: mutatedState
+                        });
+
+                        // check if user deserves an
+                        checkAchievements(dispatch, getState());
+                    });
                 }
             }
         }

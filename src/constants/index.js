@@ -29,11 +29,12 @@ export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
 export const SEND_MESSAGE_ERROR = 'SEND_MESSAGE_ERROR';
 export const UPDATE_TOTAL_STATS = 'UPDATE_TOTAL_STATS';
 export const SET_NEXT_POPUP = 'SET_NEXT_POPUP';
+export const UPDATE_ENTIRE_STATE = 'UPDATE_ENTIRE_STATE';
 
 // achievements data
 export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;
 export const VISITOR_LIMIT = 20;
-export const POSTPONER_LIMIT = 10;
+export const POSTPONER_LIMIT = 2;
 export const MANUAL_OPENER_LIMIT = 15;
 
 // backend consts

@@ -11,17 +11,17 @@ import {
  */
 
 export default {
-    saveFolders: (folders) => {
+    saveFolders: folders => {
         chrome.storage.local.set({'folders': folders});
     },
 
-    getFolders: (callback) => {
+    getFolders: callback => {
         chrome.storage.local.get('folders', (result) => {
             callback(result.folders);
         })
     },
     
-    createCustomFolder: (callback) => {
+    createCustomFolder: callback => {
         chrome.bookmarks.create(
             {
                 'parentId': '1', 
@@ -33,7 +33,7 @@ export default {
         );
     },
 
-    clearData: (callback) => {
+    clearData: callback => {
         // chrome.storage.local.clear( () => {
         //     console.warn('storage is clear');
         //     if (callback) callback();
@@ -50,7 +50,7 @@ export default {
         });
     },
 
-    getState: (callback) => {
+    getState: callback => {
         chrome.storage.local.get('state', (result) => {
             callback(result.state);
         });
@@ -58,18 +58,17 @@ export default {
 
     setState: (state, callback) => {
         chrome.storage.local.set({'state': state}, () => {
-            console.warn('saving state', state);
             if (callback) callback();
         });
     },
 
-    getToken: (callback) => {
+    getToken: callback => {
         chrome.storage.local.get('token', (token) => {
             callback(token);
         });
     },
 
-    sendMessage: (message) => {
+    sendMessage: message => {
         return new Promise( (resolve, reject) => {
             chrome.storage.local.get('token', (token) => {
                 $.post(SERVER_API + 'sendMessage', Object.assign({}, message, token), data => {
@@ -84,7 +83,7 @@ export default {
         });
     },
 
-    getStatsFromBackend: (state) => {
+    getStatsFromBackend: state => {
         return new Promise( (resolve, reject) => {
             // get token
             chrome.storage.local.get('token', (storage) => {
@@ -115,5 +114,44 @@ export default {
                 });
             });
         });
+    },
+
+    // compare current PL state with storage if changed
+    checkForUpdates: (currentState, callback) => {
+        // get entire storage
+        chrome.storage.local.get(null, result => {
+            // if needs update flag found
+            if (result.needUpdate) {
+                let summary = {};
+                let storage = result.state;
+
+                // length of visited ids changed
+                if ( currentState.global.allVisitedIds.length < storage.global.allVisitedIds.length ) {
+                    summary.allVisitedIds            = storage.global.allVisitedIds;
+                    summary.visitedIds               = storage.global.visitedIds;
+                    summary.bookmarksVisited         = storage.stats.bookmarksVisited;
+                    summary.bookmarksVisitedManually = storage.stats.bookmarksVisitedManually;
+                    summary.popupsToday              = storage.popups.popupsToday;
+                }
+
+                // timer renew
+                if ( currentState.popups.nextPopupTime < storage.popups.nextPopupTime ) {
+                    summary.nextPopupTime = storage.popups.nextPopupTime;
+                }
+
+                // stats changed
+                if ( currentState.stats.bookmarksPostponed < storage.stats.bookmarksPostponed ) {
+                    summary.bookmarksPostponed = storage.stats.bookmarksPostponed;
+                    summary.popupsToday        = storage.popups.popupsToday;
+                }
+
+                //console.warn('RESULT OF CONCATENATION:', summary);
+
+                // remove need for update from storage
+                chrome.storage.local.remove('needUpdate');
+                
+                callback(summary);
+            }
+		});
     }
 }

@@ -994,7 +994,7 @@ template {
         color: #e20158;
         user-select: none; }
         .main-page header .header-panel .timer-container .timer.animate {
-          animation: timerBounce 1s 1; }
+          animation: timerBounce 0.6s 1; }
         .main-page header .header-panel .timer-container .timer.text {
           cursor: default;
           font-size: 1.5rem;
@@ -1020,6 +1020,9 @@ template {
         -moz-border-radius: 8px;
         -ms-border-radius: 8px;
         border-radius: 8px; }
+        .main-page header .header-panel .progress-container .progress-bar-full.onepercent {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0; }
         .main-page header .header-panel .progress-container .progress-bar-full .bar {
           height: inherit;
           background: #29abe2;

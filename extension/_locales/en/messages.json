@@ -4,6 +4,30 @@
   }
 
   ,"description": {
-    "message": "First of all - it's an app..."
+    "message": "Stop procrastinating! I will remind you about postponed bookmarks."
+  }
+
+  ,"popup_header": {
+    "message": "The time has come." 
+  }
+
+  ,"popup_suggests": {
+    "message": "The magic shuffle suggests you to open:" 
+  }
+
+  ,"popup_agree": {
+    "message": "Do you agree?" 
+  }
+
+  ,"popup_button_yes": {
+    "message": "Yes, open it" 
+  }
+
+  ,"popup_button_shuffle": {
+    "message": "No, reshuffle" 
+  }
+
+  ,"popup_button_postpone": {
+    "message": "No, postpone" 
   }
 }

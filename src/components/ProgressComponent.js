@@ -16,7 +16,7 @@ export default class ProgressComponent extends React.Component {
         return (
             <div class='progress-container'>
                 <div class='title'>Your overall progress:</div>
-                <div class='progress-bar-full' title='Your progress bar'>
+                <div class= {'progress-bar-full ' + (this.calculate() == 1 ? 'onepercent' : '')} title='Your progress bar'>
                     <div class='bar' style={{ width: this.calculate() + '%' }}></div>
                     <div class='text'>{ this.calculate() }%</div>
                 </div>

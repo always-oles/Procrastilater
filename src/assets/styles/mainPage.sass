@@ -57,7 +57,7 @@
           user-select: none
 
           &.animate
-            animation: timerBounce 1s 1
+            animation: timerBounce 0.6s 1
 
           &.text
             cursor: default
@@ -85,6 +85,10 @@
           height: 30px     
           width: 80%
           +border-radius(8px)
+
+          &.onepercent
+            border-top-left-radius: 0
+            border-bottom-left-radius: 0
 
           .bar
             height: inherit
