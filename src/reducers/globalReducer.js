@@ -25,7 +25,7 @@ export default function global(state = {}, action) {
         case SAVE_FOLDERS:
             return { ...state, foldersIds: action.payload }
         case CREATE_CUSTOM_FOLDER:
-            return { ...state, folder: action.payload }
+            return { ...state, customFolder: action.payload }
         case SET_SCHEDULE:
             return { ...state, scheduleFrequency: action.payload.frequency, schedulePeriod: action.payload.period, scheduleTimes: action.payload.times }
         case GIVE_ACHIEVEMENT:

@@ -106,23 +106,31 @@
     &:active
         border: darken(#ff0063, 3%)
         background: darken(#ff0063, 3%)
+        transform: translateY(1px)
 
 .add-to-bookmarks
     background: #65c56d
     color: #11331f
     &:hover
-        background: lighten(#65c56d, 3%)
+        background: lighten(#65c56d, 4%)
     &:active
-        border: darken(#65c56d, 3%)
-        background: darken(#65c56d, 3%)
+        border: darken(#65c56d, 4%)
+        background: darken(#65c56d, 4%)
+        transform: translateY(1px)
     &.locked
-        background: #777777
+        opacity: 0.3
+        &:hover
+            background: #65c56d
+        &:active
+            background: #65c56d
+            transform: none
 
 .open-settings
     background: #585858
     color: #e0e0e0
     &:hover
-        background: lighten(#585858, 3%)
+        background: lighten(#585858, 4%)
     &:active
-        border: darken(#585858, 3%)
-        background: darken(#585858, 3%)
+        border: darken(#585858, 4%)
+        background: darken(#585858, 4%)
+        transform: translateY(1px)

@@ -60,8 +60,13 @@ $(() => {
 
     $('.add-to-bookmarks').on('click', () => {
         if (disabledAdding) return;
-
-        //chrome.bookmarks.create(object bookmark, function callback)
+        
+        // send the same data format as the context menu does
+        chrome.runtime.sendMessage({ action: 'addNewBookmark' });
+        
+        // lets assume we added - lock button
+        disabledAdding = true;
+        $('.add-to-bookmarks').addClass('locked');
     });
 
     $('.open-now').on('click', () => {

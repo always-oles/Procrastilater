@@ -14,6 +14,44 @@ chrome.storage.local.get(null, result => {
 });
 
 /**
+ * Listener for messages from inject/browserAction/Options page
+ */
+chrome.runtime.onMessage.addListener(
+	request => {
+		console.warn('background received message: ', request);
+		switch (request.action) {
+			case 'accept':
+				accept(request.data);
+			break;
+
+			case 'openPopup':
+				openPopup(request.data);
+			break;
+
+			case 'updateTimer':
+				updateTimer(request.data);
+			break;
+
+			case 'shuffle':
+				shuffle(request.data);
+			break;
+
+			case 'postpone':
+				postpone();
+			break;
+
+			case 'manualCall':
+				checkTime(true);
+			break;
+
+			case 'addNewBookmark':
+				addNewBookmark();
+			return;
+		}
+	}
+);
+
+/**
  * Update and launch a new timer
  */
 (updateTimer = function updateTimer(nextPopupTime) {
@@ -80,9 +118,67 @@ function checkTime(manualCall) {
 }
 
 /**
+ * User clicked on add new bookmark in context menu / browseraction
+ */
+function addNewBookmark() {
+	let URL, title, selectedFolders, targetFolder;
+
+	// get active page
+    chrome.tabs.query({
+		active: true
+	}, function(tabs) {
+		URL 	= tabs[0].url;
+		title 	= tabs[0].title;
+
+		// get selected folders from state
+		chrome.storage.local.get('state', result => {
+			if (result.state) {
+				// if user has custom PL folder lets try to get it
+				if (result.state.global.customFolder !== null) {
+					targetFolder = result.state.global.customFolder.id;
+				} else {
+					targetFolder = result.state.global.foldersIds;
+				}
+				
+				// get actual bookmarks by id/ids to make sure they exist
+				chrome.bookmarks.get(targetFolder, folders => {
+					if (folders.length) {
+						// add bookmark
+						chrome.bookmarks.create({
+							parentId: folders[0].id,
+							url: URL,
+							title: title
+						}, () => notifyUser(title, folders[0].title));
+					} else {
+						chrome.bookmarks.create({
+							url: URL,
+							title: title
+						}, () => notifyUser(title, 'Others'));
+					}
+				});
+			}
+		});
+	});
+
+	function notifyUser(pageTitle, folderTitle) {
+		// PL needs update
+		chrome.storage.local.set({ needsFoldersUpdate: moment().format('X')	});
+
+		chrome.notifications.create('1', {
+			type: 'basic',
+			title: 'Success!',
+			iconUrl: '/icons/icon48.png',
+			message: pageTitle + ' is added to ' + folderTitle + ' folder!'
+		}, id => {
+			setTimeout(() => chrome.notifications.clear(id), 4000);
+		});
+	}
+}
+
+/**
  * Browser extension icon click listener
  */
-chrome.browserAction.onClicked.addListener(function (tab) {
+chrome.browserAction.onClicked.addListener(() => {
 	// check if user have his steps done already 
 	chrome.storage.local.get('state', result => {
 		// if user has state and completed steps already
@@ -92,39 +188,8 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 			console.warn('here');
 			chrome.runtime.openOptionsPage();
 		}
-	})
+	});
 });
-
-chrome.runtime.onMessage.addListener(
-	request => {
-		console.warn('background received message: ', request);
-		switch (request.action) {
-			case 'accept':
-				accept(request.data);
-			break;
-
-			case 'openPopup':
-				openPopup(request.data);
-			break;
-
-			case 'updateTimer':
-				updateTimer(request.data);
-			break;
-
-			case 'shuffle':
-				shuffle(request.data);
-			break;
-
-			case 'postpone':
-				postpone();
-			break;
-
-			case 'manualCall':
-				checkTime(true);
-			break;
-		}
-	}
-);
 
 /**
  * User clicked on accept inside popup
@@ -231,22 +296,9 @@ function postpone() {
 		});
 	});
 
-	// inject removing popup script
+	// TODO: inject removing popup script
 }
 
-
-// chrome.tabs.create({
-//     url: chrome.extension.getURL('dialog.html'),
-//     active: false
-// }, function(tab) {
-//     // After the tab has been created, open a window to inject the tab
-//     chrome.windows.create({
-//         tabId: tab.id,
-//         type: 'popup',
-//         focused: true
-//         // incognito, top, left, ...
-//     });
-// });
 
 
 /**
@@ -268,20 +320,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 	}
 });
 
-/**
- * Uninstall
- */
-chrome.runtime.setUninstallURL(API + 'uninstall');
-
-function getRandomToken() {
-    var randomPool = new Uint8Array(16);
-    crypto.getRandomValues(randomPool);
-    var hex = '';
-    for (var i = 0; i < randomPool.length; ++i) {
-        hex += randomPool[i].toString(16);
-    }
-    return hex + (+new Date());
-}
 
 function saveTokenInCookies(token) {
 	chrome.cookies.set(
@@ -361,3 +399,29 @@ function removeListeners() {
 	chrome.tabs.onActivated.removeListener(injectScript);
 	chrome.tabs.onUpdated.removeListener(injectScript);
 }
+
+function getRandomToken() {
+    var randomPool = new Uint8Array(16);
+    crypto.getRandomValues(randomPool);
+    var hex = '';
+    for (var i = 0; i < randomPool.length; ++i) {
+        hex += randomPool[i].toString(16);
+    }
+    return hex + (+new Date());
+}
+
+/**
+ * Uninstall url
+ */
+chrome.runtime.setUninstallURL(API + 'uninstall');
+
+/**
+ * Add some options to context menu
+ */
+chrome.contextMenus.removeAll(() => {
+	chrome.contextMenus.create({
+		id: '1',
+		title: 'Add this page to bookmarks shuffle', 
+		onclick: addNewBookmark,
+	});
+});

@@ -72,14 +72,12 @@ export default class Steps extends React.Component {
 
                 <div class='description'>
                     You have to select folders where I should take 
-                    bookmarks from. You should create a separate
-                    folder like “read later”,  “watch later”, “visit later”, 
-                    etc.
+                    bookmarks from.
                 </div>
 
                 <div class='create-folder' style = {{display: this.state.createdCustom ? 'none' : 'block' }}>
-                    Click <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>here</a> to create a new folder in root 
-                    folder where you can store new postponed bookmarks.
+                    We <strong>suggest</strong> you creating a custom folder where you can store your new bookmarks for reminding.
+                    Click <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>here</a> to create it.
                 </div> 
                 
                 <BookmarksList 

@@ -54,6 +54,7 @@ export default class Timer extends React.Component {
             this.interval = setInterval(this.tick, 1000);
         }
 
+        this.tick();
         this.setState({ manual: nextProps.scheduleFrequency == SCHEDULE.FREQUENCY.MANUAL });
     }
 
@@ -84,8 +85,8 @@ export default class Timer extends React.Component {
         return result;
     }
 
-    tick(dontCallTimeout) {
-        this.setState({ output: this.getOutput(this.props.nextPopup, false, dontCallTimeout) });
+    tick() {
+        this.setState({ output: this.getOutput(this.props.nextPopup, false) });
     }
 
     render() {  

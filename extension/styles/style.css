@@ -732,27 +732,35 @@ template {
     background: #ff0f6c; }
   .open-now:active {
     border: #f0005d;
-    background: #f0005d; }
+    background: #f0005d;
+    transform: translateY(1px); }
 
 .add-to-bookmarks {
   background: #65c56d;
   color: #11331f; }
   .add-to-bookmarks:hover {
-    background: #70c978; }
+    background: #74cb7b; }
   .add-to-bookmarks:active {
-    border: #5ac162;
-    background: #5ac162; }
+    border: #56bf5f;
+    background: #56bf5f;
+    transform: translateY(1px); }
   .add-to-bookmarks.locked {
-    background: #777777; }
+    opacity: 0.3; }
+    .add-to-bookmarks.locked:hover {
+      background: #65c56d; }
+    .add-to-bookmarks.locked:active {
+      background: #65c56d;
+      transform: none; }
 
 .open-settings {
   background: #585858;
   color: #e0e0e0; }
   .open-settings:hover {
-    background: #606060; }
+    background: #626262; }
   .open-settings:active {
-    border: #505050;
-    background: #505050; }
+    border: #4e4e4e;
+    background: #4e4e4e;
+    transform: translateY(1px); }
 
 .steps {
   margin: 30px 0; }

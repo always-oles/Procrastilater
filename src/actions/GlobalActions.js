@@ -1,6 +1,7 @@
 /* global $:jQuery, chrome */
 import API from '../api';
 import sharedAPI from '../../extension/sharedAPI';
+let debounceTimeout = null;
 
 import { 
     SET_STEP,
@@ -134,7 +135,7 @@ function findObjects(items, ids, dispatch, allVisitedIds, saveFoldersCallback) {
 }
 
 function updateStats(dispatch, allVisitedIds, saveFoldersCallback) {
-    let visitedIds = []; 
+    let visitedIds = [];
 
     // check for duplicates between visitedIds/allVisitedIds
     if (allVisitedIds.length) {
@@ -359,16 +360,20 @@ export function sendMessage(data, callback) {
  * Get backend stats upon initial load
  */
 export function getStatsFromBackend(dispatch, getState) {
+    // prevent multiple backend calls
+    clearTimeout(debounceTimeout);
 
     // if called manually from another function
     if (dispatch && getState) {
-        API.getStatsFromBackend(getState())
-        .then(data => {
-            dispatch({
-                type: UPDATE_TOTAL_STATS,
-                payload: data
+        debounceTimeout = setTimeout(() => {
+            API.getStatsFromBackend(getState())
+            .then(data => {
+                dispatch({
+                    type: UPDATE_TOTAL_STATS,
+                    payload: data
+                });
             });
-        });
+        }, 2000);
     } 
     // if called as a redux function
     else {
@@ -377,13 +382,15 @@ export function getStatsFromBackend(dispatch, getState) {
 
             // do not send data until user has some bookmarks selected
             if (state.global.foldersIds.length) {
-                API.getStatsFromBackend(getState())
-                .then(data => {
-                    dispatch({
-                        type: UPDATE_TOTAL_STATS,
-                        payload: data
+                debounceTimeout = setTimeout(() => {
+                    API.getStatsFromBackend(getState())
+                    .then(data => {
+                        dispatch({
+                            type: UPDATE_TOTAL_STATS,
+                            payload: data
+                        });
                     });
-                });
+                }, 2000);
             }
         }
     }
@@ -415,30 +422,48 @@ export function listenForVisibilityChange() {
             if (evt.type in evtMap) {
                 if (evtMap[evt.type] == 'visible') {
                     // usually page received focus here if refreshed
+                    checkForFoldersUpdates();
                 }
             }
             else {
-                if (!this[hidden]) {
+                if (!this[hidden]) {                    
                     // when user switches to PL tab
                     // compare current state with storage
-                    API.checkForUpdates(getState(), mutatedState => {
-                        
-                        // do not dispatch an event if nothing changed and empty object received
-                        if (JSON.stringify(mutatedState) === JSON.stringify({})) {
-                            return;
-                        }
-
-                        // dispatch difference
-                        dispatch({
-                            type: UPDATE_ENTIRE_STATE,
-                            payload: mutatedState
-                        });
-
-                        // check if user deserves an
-                        checkAchievements(dispatch, getState());
-                    });
+                    checkForFoldersUpdates();
+                    checkForSmallUpdates();
                 }
             }
+        }
+
+        function checkForFoldersUpdates() {
+            API.checkForFoldersUpdates(getState(), () => {
+
+            });
+        }
+
+        /**
+         * Small updates like user called a bookmark manually / new timer / postponed bookmark
+         * while PL settings (options) page was inactive
+         */
+        function checkForSmallUpdates() {
+            API.checkForUpdates(getState(), mutatedState => {
+                
+                // do not dispatch an event if nothing changed and empty object received
+                if (JSON.stringify(mutatedState) === JSON.stringify({})) {
+                    return;
+                }
+                
+                console.warn('Something changed...');
+
+                // dispatch difference
+                dispatch({
+                    type: UPDATE_ENTIRE_STATE,
+                    payload: mutatedState
+                });
+
+                // check if user deserves an
+                checkAchievements(dispatch, getState());
+            });
         }
         
         // set the initial state (but only if browser supports the Page Visibility API)

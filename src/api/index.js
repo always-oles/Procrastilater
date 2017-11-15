@@ -117,7 +117,7 @@ export default {
     },
 
     // compare current PL state with storage if changed
-    checkForUpdates: (currentState, callback) => {
+    checkForSmallUpdates: (currentState, callback) => {
         // get entire storage
         chrome.storage.local.get(null, result => {
             // if needs update flag found
@@ -153,5 +153,18 @@ export default {
                 callback(summary);
             }
 		});
+    },
+
+    checkForFoldersUpdates: (currentState, callback) => {
+        if (currentState && currentState.global && currentState.global.foldersIds.length) {
+            let allChilds;
+
+            chrome.bookmarks.get(currentState.global.foldersIds, children => {
+                console.warn('children:', children);
+            });
+            // chrome.bookmarks.getSubTree(currentState.global.foldersIds[0],  children => {
+            //     console.warn('children:', children);
+            // }); 
+        }
     }
 }

@@ -5,11 +5,26 @@ import PropTypes from 'prop-types';
 export default class ProgressComponent extends React.Component {
     constructor() {
         super();
-        this.calculate = this.calculate.bind(this);
+        this.calculate  = this.calculate.bind(this);
+        this.getNote    = this.getNote.bind(this);
     }
 
     calculate() {
         return Math.round(this.props.global.visitedIds.length * 100 / this.props.stats.bookmarksCount) || 0;
+    }
+
+    getNote() {
+        if (this.props.stats.bookmarksCount > 0) {
+            return (
+                <div class='note'>
+                    You’ve dealt with { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } postponed bookmarks!
+                </div>
+            );
+        } else {
+            return (
+                <div class='note'>You have no bookmarks in selected folders yet</div>
+            );
+        }
     }
 
     render() {
@@ -20,7 +35,7 @@ export default class ProgressComponent extends React.Component {
                     <div class='bar' style={{ width: this.calculate() + '%' }}></div>
                     <div class='text'>{ this.calculate() }%</div>
                 </div>
-                <div class='note'>You’ve dealt with { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } postponed bookmarks!</div>
+                { this.getNote() }
             </div>
         );
     }

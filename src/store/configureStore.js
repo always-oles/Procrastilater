@@ -11,13 +11,14 @@ import popups from '../reducers/popupsReducer';
 
 const defaultInitialState = {
     global: {
-        step: -1,
+        step: 1,
         stepPhase: 'active',
         userName: 'Incognito',
     
         foldersIds: [],
         visitedIds: [],
         allVisitedIds: [],
+        customFolder: null,
     
         scheduleFrequency: 'EVERY_DAY',
         schedulePeriod: 'RANDOM',
