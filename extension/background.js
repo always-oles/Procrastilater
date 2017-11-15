@@ -13,6 +13,9 @@ chrome.storage.local.get(null, result => {
 	console.warn('all storage now is:', result);
 });
 
+/**
+ * Update and launch a new timer
+ */
 (updateTimer = function updateTimer(nextPopupTime) {
 	// if passed
 	if (nextPopupTime) {
@@ -41,12 +44,12 @@ chrome.storage.local.get(null, result => {
  * Checking if timer is expired
  * if expired - open popup
  */
-function checkTime() {
+function checkTime(manualCall) {
 	// convert to unix timestamp without miliseconds
 	let now = moment().format('X');
 
 	// time is out
-	if (now >= nextPopup) {
+	if (now >= nextPopup || manualCall == true) {
 		console.warn('timer is expired');
 
 		// stop timer
@@ -58,7 +61,7 @@ function checkTime() {
 			// if popup is in storage
 			if (result.popupData) {
 				console.warn('popup is in storage');
-				openPopup(result.popupData);
+				openPopup(result.popupData, manualCall);
 			} 
 			// else generate a new popup
 			else {
@@ -67,7 +70,7 @@ function checkTime() {
 
 				console.warn('generating new popup');
 				sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
-					openPopup(bookmark);
+					openPopup(bookmark, manualCall);
 				});
 			}
 		});
@@ -76,12 +79,20 @@ function checkTime() {
 	}
 }
 
-
+/**
+ * Browser extension icon click listener
+ */
 chrome.browserAction.onClicked.addListener(function (tab) {
-	// for the current tab, inject the "inject.js" file & execute it
-	chrome.tabs.executeScript(tab.ib, {
-		file: 'inject.js'
-	});
+	// check if user have his steps done already 
+	chrome.storage.local.get('state', result => {
+		// if user has state and completed steps already
+		if (result.state && result.state.global.step === -1) {
+			// open modal with available actions
+		} else {
+			console.warn('here');
+			chrome.runtime.openOptionsPage();
+		}
+	})
 });
 
 chrome.runtime.onMessage.addListener(
@@ -107,6 +118,10 @@ chrome.runtime.onMessage.addListener(
 			case 'postpone':
 				postpone();
 			break;
+
+			case 'manualCall':
+				checkTime(true);
+			break;
 		}
 	}
 );
@@ -127,8 +142,13 @@ function accept(data) {
 		let newState = result.state;
 		
 		// make some changes before generating new timer
-		newState.stats.bookmarksVisited 	+= 1;		
-		newState.popups.popupsToday 		+= 1;
+		if (data.manualCall) {
+			newState.stats.bookmarksVisitedManually += 1;
+		} else {
+			newState.stats.bookmarksVisited += 1;
+		}
+
+		newState.popups.popupsToday += 1;
 		newState.global.visitedIds.push(data.id);
 		newState.global.allVisitedIds.push(data.id);
 		
@@ -156,15 +176,17 @@ function accept(data) {
 
 /**
  * User clicked on reshuffle bookmark button inside popup
- * @param {Integer} bookmarkId to prevent duplicate
+ * @param {Object} data contains id of old bookmark and manualCall boolean
  */
-function shuffle(bookmarkId) {
+function shuffle(data) {
 	chrome.storage.local.get('state', result => {
 		let foldersIds      = result.state.global.foldersIds.slice();
 		let allVisitedIds   = result.state.global.allVisitedIds.slice();
-		allVisitedIds.push(bookmarkId);
+		allVisitedIds.push(data.id);
 
 		sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+			bookmark.manualCall = data.manualCall;
+			console.warn('setting bookmark in storage to', bookmark);
 			chrome.storage.local.set({'popupData': bookmark});
 		});
 	});
@@ -272,8 +294,11 @@ function saveTokenInCookies(token) {
 	);
 }
 
-function openPopup(bookmark) {
+function openPopup(bookmark, manualCall) {
 	if (!bookmark) return;
+
+	// bookmark was called manually
+	bookmark.manualCall = manualCall;
 
 	// put data to storage to share with injected script
 	bookmark.soundEnabled = true; /////////////////////////////////////////////// remove after debug
@@ -336,16 +361,3 @@ function removeListeners() {
 	chrome.tabs.onActivated.removeListener(injectScript);
 	chrome.tabs.onUpdated.removeListener(injectScript);
 }
-
-/////////////////////////////////////////////////////// //chrome.runtime.openOptionsPage();
-
-
-// chrome.storage.local.get('token', (result) => {
-// 	if ( result.token ) {
-// 		TOKEN = result.token;
-// 	} else {
-// 		TOKEN = getRandomToken();
-// 		chrome.storage.local.set({ 'token' : TOKEN});
-// 	}
-// 	saveTokenInCookies(TOKEN);
-// });

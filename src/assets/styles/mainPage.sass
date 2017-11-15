@@ -414,6 +414,7 @@
       width: 100px
       height: 100px
 
+// achievement received popup
 .achievement-gained
   display: none
   position: fixed
@@ -504,3 +505,39 @@
       font-weight: 500 
       color: #ffffff
       z-index: 1003 
+
+// help popup
+.help-container 
+  // more than convesation less than achievement popup
+  display: flex
+  align-items: center
+  justify-content: center
+
+  z-index: 1500 
+  background: rgba(0,0,0,0.7)
+  position: fixed
+  top: 0
+  left: 0
+  height: 100vh
+  width: 100vw
+  animation: fadeIn 1s 1 
+
+  .video-container
+    position: relative
+
+    .close-button
+      position: absolute
+      top: -20px
+      right: -20px
+      border: 2px solid #fff
+      line-height: 37px
+      background: #000000
+      width: 40px
+      height: 40px
+      border-radius: 50%
+      color: #ffffff
+      font-size: 2rem
+      text-decoration: none
+
+      &:hover
+        background: #333

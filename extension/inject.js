@@ -273,7 +273,8 @@
       id              = null;
       soundEnabled    = true,
       intervalHolder  = null,
-      savePopupData   = null;
+      savePopupData   = null,
+      manualCall      = false;
 
     /**
      * IIFE for getting + saving popup data from localstorage
@@ -296,9 +297,10 @@
 
       // save required data in global variables
       function save(result) {
-        id            = result.popupData.id;
-        url           = result.popupData.url;
-        soundEnabled  = result.popupData.soundEnabled || true;
+        id             = result.popupData.id;
+        url            = result.popupData.url;
+        manualCall     = result.popupData.manualCall;
+        soundEnabled   = result.popupData.soundEnabled || true;
         titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${url}'/> ${result.popupData.title}`;
         titleContainer.setAttribute('title', url);
   
@@ -344,7 +346,7 @@
     accept.addEventListener('click', (e) => {
       playSound('accept');
       unmountPopup(false);
-      chrome.runtime.sendMessage({ action: 'accept', data: { id, url } });
+      chrome.runtime.sendMessage({ action: 'accept', data: { id, url, manualCall } });
     });
 
     /**
@@ -362,7 +364,7 @@
     reshuffle.addEventListener('click', (e) => {
 
       // demand a new bookmark
-      chrome.runtime.sendMessage({ action: 'shuffle', data: id });
+      chrome.runtime.sendMessage({ action: 'shuffle', data: {id, manualCall} });
 
       // launch timer waiting for new data
       waitForNewPopup();

@@ -99,7 +99,7 @@ export default class AchievementsComponent extends React.Component {
                         class = {'item ' + (this.props.achievements.manualOpener ? '' : 'locked')} 
                         src = {AchievementFinger} 
                         title = { this.props.achievements.manualOpener 
-                                ? 'You\'ve opened more than 15 bookmarks manually!'
+                                ? 'Wow, what a dedication! You\'ve opened more than 15 bookmarks manually!'
                                 : 'Locked: open 15+ bookmarks manually to unlock' }
                     />
                 </div>

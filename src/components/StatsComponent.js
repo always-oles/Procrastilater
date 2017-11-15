@@ -57,9 +57,14 @@ export default class StatsComponent extends React.Component {
                             <div class='name'>bookmarks:</div>
                             <div class='value'>{ this.props.stats.bookmarksCount }</div>
                         </div>
-                        
+
                         <div class='item'>
-                            <div class='name'>visited:</div>
+                            <div class='name'>visited of them:</div>
+                            <div class='value'>{ this.props.visitedIds.length }</div>
+                        </div>
+
+                        <div class='item'>
+                            <div class='name'>visited (all time):</div>
                             <div class='value'>{ this.props.stats.bookmarksVisited + this.props.stats.bookmarksVisitedManually }</div>
                         </div>
 
@@ -103,6 +108,7 @@ export default class StatsComponent extends React.Component {
 }
 
 StatsComponent.propTypes = {
+    visitedIds : PropTypes.array.isRequired,
     stats: PropTypes.object.isRequired,
     achievements: PropTypes.object.isRequired
 }

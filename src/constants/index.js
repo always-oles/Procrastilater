@@ -34,7 +34,7 @@ export const UPDATE_ENTIRE_STATE = 'UPDATE_ENTIRE_STATE';
 // achievements data
 export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;
 export const VISITOR_LIMIT = 20;
-export const POSTPONER_LIMIT = 2;
+export const POSTPONER_LIMIT = 10;
 export const MANUAL_OPENER_LIMIT = 15;
 
 // backend consts

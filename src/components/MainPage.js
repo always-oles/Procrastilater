@@ -12,10 +12,10 @@ import AchievementsComponent from './AchievementsComponent';
 import StatsComponent from './StatsComponent';
 import ProgressComponent from './ProgressComponent';
 import ShareComponent from './ShareComponent';
+import HelpComponent from './HelpComponent';
 
 // SVG images
 import Logo from '../assets/images/logo.svg';
-import HelpButton from '../assets/images/help-button.svg';
 
 class MainPage extends React.Component {
     constructor() {
@@ -48,7 +48,7 @@ class MainPage extends React.Component {
                     <img class='logo' src={Logo}/> 
 
                     <div class='header-panel'>
-                        <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <img class='help-button' src={HelpButton}/> </div>
+                        <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <HelpComponent/> </div>
                         <div class='col-sm-4 timer-container'>
                             <div class='title'>Next bookmark will appear in:</div>
                             <Timer 
@@ -95,6 +95,7 @@ class MainPage extends React.Component {
                                 checkAchievementsCaller = { this.props.globalActions.checkAchievementsCaller }
                             />
                             <StatsComponent 
+                                visitedIds = { this.props.global.visitedIds }
                                 stats = { this.props.stats }
                                 global = { this.props.global }
                                 achievements = { this.props.achievements }
