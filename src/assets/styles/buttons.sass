@@ -86,3 +86,43 @@
             background: #777777
             transform: none
             box-shadow: 0px 2px 8px 1px rgba(0,0,0,0.3)
+
+// Browser action popup buttons: 
+.browser-action-button
+    +border-radius(4px)
+    display: block
+    margin: 7px auto 5px auto
+    border: none
+    font-size: 1.2rem
+    font-weight: 500
+    min-width: 210px
+    min-height: 37px
+
+.open-now
+    background: #ff0063
+    color: #f3e3e9
+    &:hover
+        background: lighten(#ff0063, 3%)
+    &:active
+        border: darken(#ff0063, 3%)
+        background: darken(#ff0063, 3%)
+
+.add-to-bookmarks
+    background: #65c56d
+    color: #11331f
+    &:hover
+        background: lighten(#65c56d, 3%)
+    &:active
+        border: darken(#65c56d, 3%)
+        background: darken(#65c56d, 3%)
+    &.locked
+        background: #777777
+
+.open-settings
+    background: #585858
+    color: #e0e0e0
+    &:hover
+        background: lighten(#585858, 3%)
+    &:active
+        border: darken(#585858, 3%)
+        background: darken(#585858, 3%)

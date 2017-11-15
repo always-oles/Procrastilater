@@ -712,6 +712,48 @@ template {
       transform: none;
       box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.3); }
 
+.browser-action-button {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  display: block;
+  margin: 7px auto 5px auto;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  min-width: 210px;
+  min-height: 37px; }
+
+.open-now {
+  background: #ff0063;
+  color: #f3e3e9; }
+  .open-now:hover {
+    background: #ff0f6c; }
+  .open-now:active {
+    border: #f0005d;
+    background: #f0005d; }
+
+.add-to-bookmarks {
+  background: #65c56d;
+  color: #11331f; }
+  .add-to-bookmarks:hover {
+    background: #70c978; }
+  .add-to-bookmarks:active {
+    border: #5ac162;
+    background: #5ac162; }
+  .add-to-bookmarks.locked {
+    background: #777777; }
+
+.open-settings {
+  background: #585858;
+  color: #e0e0e0; }
+  .open-settings:hover {
+    background: #606060; }
+  .open-settings:active {
+    border: #505050;
+    background: #505050; }
+
 .steps {
   margin: 30px 0; }
   .steps .steps-boxes {
@@ -1012,6 +1054,7 @@ template {
         font-size: 2rem;
         font-weight: bold; }
       .main-page header .header-panel .progress-container .progress-bar-full {
+        position: relative;
         background: #CCCCCC;
         margin: 0 auto;
         height: 30px;
@@ -1037,7 +1080,7 @@ template {
         .main-page header .header-panel .progress-container .progress-bar-full .text {
           position: absolute;
           left: 48%;
-          top: 46%;
+          top: 0;
           text-align: center;
           color: #333;
           font-size: 1.4rem;
@@ -1426,10 +1469,23 @@ template {
         background: #333; }
 
 .browser-action {
-  background: #ffffff; }
+  background: #ffffff;
+  font-size: 12px;
+  color: #333; }
   .browser-action .main-container {
-    width: 300px;
-    height: 300px; }
+    padding: 10px;
+    width: 240px; }
+    .browser-action .main-container .timer .title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 500; }
+    .browser-action .main-container .timer .time {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #e20158;
+      font-weight: 400; }
+    .browser-action .main-container .buttons {
+      margin-top: 10px; }
 
 .inline-block {
   display: inline-block; }
