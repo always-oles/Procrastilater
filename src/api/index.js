@@ -156,15 +156,64 @@ export default {
     },
 
     checkForFoldersUpdates: (currentState, callback) => {
+        let 
+            bookmarks    = [],
+            foldersCount = 0, 
+            foldersDone  = 0,
+            foldersIds   = null;
+            
         if (currentState && currentState.global && currentState.global.foldersIds.length) {
-            let allChilds;
+            foldersIds = currentState.global.foldersIds;
 
-            chrome.bookmarks.get(currentState.global.foldersIds, children => {
-                console.warn('children:', children);
+            // check if need to update flag is in storage
+            chrome.storage.local.get(null, result => {
+                if (result.needsFoldersUpdate) {
+                    // remove the flag
+                    chrome.storage.local.remove('needsFoldersUpdate');
+                    launchScan();
+                }
             });
-            // chrome.bookmarks.getSubTree(currentState.global.foldersIds[0],  children => {
-            //     console.warn('children:', children);
-            // }); 
+        }
+
+        /**
+         * get all bookmarks and their children
+         */
+        function launchScan() {
+            // get entire tree
+            chrome.bookmarks.getTree(results => {
+                if (results[0] && results[0].children) {
+                    // find bookmarks in foldrs
+                    findObjects(results[0].children);
+                }
+            });
+        }
+
+        function findObjects(items) {
+            // go through objects
+            for (let i in items) {
+        
+                // if it's a folder - go deeper
+                if ( items[i].children && items[i].children.length ) {
+                    foldersCount++;
+
+                    setTimeout(() => {
+                        findObjects(items[i].children);
+                    });
+                }
+                // it's a bookmark
+                else {
+                    // in our array
+                    if ( foldersIds.indexOf(items[i].parentId) >= 0 ) {
+                        bookmarks.push(items[i]);
+                    }
+                }
+            }
+        
+            if (foldersDone >= foldersCount) {
+                callback(bookmarks);
+            } else {
+                foldersDone++;
+            }
         }
     }
 }

@@ -121,7 +121,7 @@ function checkTime(manualCall) {
  * User clicked on add new bookmark in context menu / browseraction
  */
 function addNewBookmark() {
-	let URL, title, selectedFolders, targetFolder;
+	let URL, title, targetFolder, custom = false;
 
 	// get active page
     chrome.tabs.query({
@@ -134,8 +134,10 @@ function addNewBookmark() {
 		chrome.storage.local.get('state', result => {
 			if (result.state) {
 				// if user has custom PL folder lets try to get it
-				if (result.state.global.customFolder !== null) {
+				if (result.state.global.customFolder !== null && 
+					result.state.global.foldersIds.indexOf(result.state.global.customFolder.id) !== -1 ) {
 					targetFolder = result.state.global.customFolder.id;
+					custom = true
 				} else {
 					targetFolder = result.state.global.foldersIds;
 				}
@@ -164,13 +166,21 @@ function addNewBookmark() {
 		// PL needs update
 		chrome.storage.local.set({ needsFoldersUpdate: moment().format('X')	});
 
+		// notification message
+		let message = pageTitle + ' is added to ' + folderTitle + ' folder';
+
+		// add explanation
+		if (!custom) {
+			message += ', because it\'s currently in our pool!';
+		}
+
 		chrome.notifications.create('1', {
 			type: 'basic',
 			title: 'Success!',
 			iconUrl: '/icons/icon48.png',
-			message: pageTitle + ' is added to ' + folderTitle + ' folder!'
+			message: message
 		}, id => {
-			setTimeout(() => chrome.notifications.clear(id), 4000);
+			setTimeout(() => chrome.notifications.clear(id), 5000);
 		});
 	}
 }
@@ -299,8 +309,6 @@ function postpone() {
 	// TODO: inject removing popup script
 }
 
-
-
 /**
  * Once extension is installed - generate unique token for user
  */
@@ -319,7 +327,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 		});
 	}
 });
-
 
 function saveTokenInCookies(token) {
 	chrome.cookies.set(

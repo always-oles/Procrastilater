@@ -33,7 +33,10 @@ export default function global(state = {}, action) {
         case RESET_RECEIVED_ACHIEVEMENT:
             return { ...state, justReceived: false}
         case UPDATE_BOOKMARKS_STATS:
-            return { ...state, visitedIds: action.payload.visitedIds }
+            return { 
+                ...state, 
+                visitedIds: (action.payload.visitedIds) ? action.payload.visitedIds : state.visitedIds
+            }
         case UPDATE_ENTIRE_STATE:
             return { 
                 ...state, 

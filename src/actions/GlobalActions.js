@@ -52,8 +52,6 @@ export function setUsername(name) {
  * When user updates selected folders - we have to process 
  * all bookmarks in these folders and update stats
  */
-// we need few global variables to pass data between functions and recursion
-var bookmarks = [];
 var hasFoldersAchievement = false;
 
 export function saveFolders(folders) {
@@ -75,15 +73,18 @@ export function saveFolders(folders) {
 
         // count/calculate selected folders bookmarks
         prepareStats(dispatch, folders, state.global.allVisitedIds, () => {
-
             // when everything is finished - update backend and get new total stats from it
             getStatsFromBackend(dispatch, getState);
         });
     }
 }
 
-function prepareStats(dispatch, folders, allVisitedIds, saveFoldersCallback) {
-
+function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) {
+    var 
+        bookmarks       = [],
+        foldersCount    = 0, 
+        foldersDone     = 0;
+    
     // get all user bookmarks as a tree object
     chrome.bookmarks.getTree((results) => {
         if (results[0] && results[0].children) {
@@ -91,74 +92,72 @@ function prepareStats(dispatch, folders, allVisitedIds, saveFoldersCallback) {
             bookmarks = [];
 
             // find bookmarks in foldrs
-            findObjects(results[0].children, folders, dispatch, allVisitedIds, saveFoldersCallback);
+            findObjects(results[0].children);
         }
     });
-}
-
-/**
- * Non-blocking recursive function for gathering all bookmarks from folders
- */
-var foldersCount = 0, foldersDone = 0;
-function findObjects(items, ids, dispatch, allVisitedIds, saveFoldersCallback) {
-
-    // go through object
-    for (let i in items) {
-
-        // if it's a folder - go deeper
-        if ( items[i].children ) {
-            if ( items[i].children.length ) {
-                foldersCount++;
-                //console.log('going deeper into a folder ', items[i].title);
-                setTimeout(() => {
-                    findObjects(items[i].children, ids, dispatch, allVisitedIds, saveFoldersCallback);
-                });
+        
+    /**
+     * Non-blocking recursive function for gathering all bookmarks from folders
+     */
+    function findObjects(items) {
+        // go through objects
+        for (let i in items) {
+        
+            // if it's a folder - go deeper
+            if ( items[i].children ) {
+                // if has children
+                if ( items[i].children.length ) {
+                    foldersCount++;
+                    setTimeout(() => {
+                        findObjects(items[i].children);
+                    });
+                }
+            } 
+            // it's a bookmark
+            else {
+                // is in our array
+                if ( foldersIds.indexOf(items[i].parentId) >= 0 ) {
+                    bookmarks.push(items[i]);
+                }
             }
-        } 
-        // it's a bookmark
-        else {
+        }
 
-            // in our array
-            if ( ids.indexOf(items[i].parentId) >= 0 ) {
-                bookmarks.push(items[i]);
-            }
+        if (foldersDone >= foldersCount) {
+            updateStats();
+        } else {
+            foldersDone++;
         }
     }
 
-    if (foldersDone >= foldersCount) {
-        foldersCount = 0;
-        foldersDone = 0;
-        updateStats(dispatch, allVisitedIds, saveFoldersCallback);
-    } else {
-        foldersDone++;
-    }
-}
-
-function updateStats(dispatch, allVisitedIds, saveFoldersCallback) {
-    let visitedIds = [];
-
-    // check for duplicates between visitedIds/allVisitedIds
-    if (allVisitedIds.length) {
-        for (let i in bookmarks) {
-            if ( allVisitedIds.indexOf(bookmarks[i].id) !== -1 ) {
-                visitedIds.push(bookmarks[i].id);
+    /**
+     * When we went through all recursive folders
+     */
+    function updateStats() {
+        let visitedIds = [];
+    
+        // check for duplicates between visitedIds/allVisitedIds
+        if (allVisitedIds.length) {
+            for (let i in bookmarks) {
+                if ( allVisitedIds.indexOf(bookmarks[i].id) !== -1 ) {
+                    visitedIds.push(bookmarks[i].id);
+                }
             }
         }
+    
+        dispatch({
+            type: UPDATE_BOOKMARKS_STATS,
+            payload: {
+                visitedIds,
+                bookmarksCount: bookmarks.length
+            }
+        });
+    
+        // check for achievements after new folders selection
+        checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
+        saveFoldersCallback();
     }
-
-    dispatch({
-        type: UPDATE_BOOKMARKS_STATS,
-        payload: {
-            visitedIds,
-            bookmarksCount: bookmarks.length
-        }
-    });
-
-    // check for achievements after new folders selection
-    checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
-
-    saveFoldersCallback();
 }
+
 
 /**
  * User clicked on "create custom PL folder during Step 2"
@@ -436,8 +435,14 @@ export function listenForVisibilityChange() {
         }
 
         function checkForFoldersUpdates() {
-            API.checkForFoldersUpdates(getState(), () => {
-
+            API.checkForFoldersUpdates(getState(), bookmarks => {
+                console.warn('Something changed with folders...');
+                dispatch({
+                    type: UPDATE_BOOKMARKS_STATS,
+                    payload: {
+                        bookmarksCount: bookmarks.length
+                    }
+                })
             });
         }
 
@@ -446,8 +451,7 @@ export function listenForVisibilityChange() {
          * while PL settings (options) page was inactive
          */
         function checkForSmallUpdates() {
-            API.checkForUpdates(getState(), mutatedState => {
-                
+            API.checkForSmallUpdates(getState(), mutatedState => {
                 // do not dispatch an event if nothing changed and empty object received
                 if (JSON.stringify(mutatedState) === JSON.stringify({})) {
                     return;
