@@ -20,7 +20,7 @@ export default function popups(state = {}, action) {
                 popupsToday: (action.payload.popupsToday && (action.payload.popupsToday > state.popupsToday )) 
                             ? action.payload.popupsToday
                             : state.popupsToday,
-                nextPopupTime: (action.payload.nextPopupTime && (action.payload.nextPopupTime > state.nextPopupTime )) 
+                nextPopupTime: action.payload.nextPopupTime
                             ? action.payload.nextPopupTime
                             : state.nextPopupTime
             }

@@ -1,9 +1,27 @@
+const SCHEDULE = {
+    FREQUENCY: {
+        FEW_TIMES : 'FEW_TIMES',
+        EVERY_DAY : 'EVERY_DAY',
+        EVERY_2_DAYS : 'EVERY_2_DAYS',
+        MANUAL: 'MANUAL'
+    },
+    PERIOD: {
+        MORNING: '6:00-12:00',
+        NOON: '12:00-18:00',
+        EVENING: '18:00-0:00',
+        RANDOM: 'RANDOM'
+    }
+}
+
+var self;
 var sharedAPI = {
     generateTimer: function(manualInvoke = false, state, callback) {
         if (!state) return;
+
+        var self = this;
     
         //// debugging
-        return callback(moment().add(5,'minutes').format('X'), false);
+        return callback(moment().add(30,'seconds').format('X'), false);
         ////////////////////////////
     
         let now                 = moment();
@@ -261,7 +279,7 @@ var sharedAPI = {
                 diff = Math.round(diff / (timesPerDay-popupsToday));
             }
     
-            let result = +periodStart.format('X') + getRandomInt(0, diff);
+            let result = +periodStart.format('X') + self.getRandomInt(0, diff);
             console.warn('now:', now.format('ddd MMMM Do YYYY, HH:mm:ss'));
             console.warn('generated time between\n', periodStart.format('ddd MMMM Do YYYY, HH:mm:ss'), '\n', periodEnd.format('ddd MMMM Do YYYY, HH:mm:ss'));
             console.warn('random between in normal time: ', moment.unix(result).format('ddd MMMM Do YYYY, HH:mm:ss'));
@@ -320,12 +338,13 @@ var sharedAPI = {
             if (!allBookmarks.length) return;
     
             let safeItems = [];
+
             for (let i in allBookmarks) {
-                if ( allVisitedIds.indexOf( parseInt(allBookmarks[i].id) ) === -1 ) {
+                if ( allVisitedIds.indexOf( allBookmarks[i].id ) === -1 ) {
                     safeItems.push(allBookmarks[i]);
                 } 
             }
-    
+            
             let randomBookmark = safeItems[Math.floor(Math.random() * safeItems.length)];
 
             // callback is defined in background script

@@ -23,7 +23,7 @@
        "19": "icons/icon19.png",
        "38": "icons/icon38.png"
      },
-     "default_popup": "browserAction.html" 
+     "default_popup": "browserAction.html"
   },
   "web_accessible_resources": [
       "images/alarm.svg",
@@ -37,8 +37,6 @@
   "permissions": [
     "tabs",
     "<all_urls>",
-    "http://*",
-    "https://*",
     "bookmarks",
     "activeTab",
     "contextMenus",

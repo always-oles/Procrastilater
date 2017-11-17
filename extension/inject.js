@@ -119,6 +119,17 @@
       border-radius: 7px;
       z-index: 9999;
     }
+
+    .pl-popup-container .pl-popup.lastPopup button.pl-left {
+      width: 50%;
+    }
+    .pl-popup-container .pl-popup.lastPopup button.pl-middle {
+      display: none;
+    }
+    .pl-popup-container .pl-popup.lastPopup button.pl-right {
+      width: 50%;
+    }
+
     .pl-popup-container .pl-popup.shake{
       animation: shake 0.3s ease-out 1;
     }
@@ -193,18 +204,21 @@
       box-shadow: none;
       margin: 0;
       padding: 0;
+      text-transform: none !important;
     }
     .pl-popup-container .pl-popup .pl-buttons button.pl-left {
       -webkit-border-bottom-left-radius: 7px;
       -moz-border-radius-bottomleft: 7px;
       border-bottom-left-radius: 7px;
       border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
     .pl-popup-container .pl-popup .pl-buttons button.pl-right {
       -webkit-border-bottom-right-radius: 7px;
       -moz-border-radius-bottomright: 7px;
       border-bottom-right-radius: 7px;
       border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
     .pl-popup-container .pl-popup .pl-buttons button.pl-middle {
       border-radius: 0;
@@ -243,6 +257,7 @@
 
     document.getElementsByTagName('head')[0].appendChild(style);
     var div = document.createElement('div');
+    div.setAttribute('id', 'pl-popup-container');
     div.classList.add('pl-popup-container');
 
     div.innerHTML = `
@@ -274,7 +289,9 @@
       soundEnabled    = true,
       intervalHolder  = null,
       savePopupData   = null,
-      manualCall      = false;
+      manualCall      = false,
+      inProgress      = false,
+      lastPopup       = false;
 
     /**
      * IIFE for getting + saving popup data from localstorage
@@ -301,8 +318,14 @@
         url            = result.popupData.url;
         manualCall     = result.popupData.manualCall;
         soundEnabled   = result.popupData.soundEnabled || true;
+        lastPopup      = result.popupData.lastPopup || false;
         titleContainer.innerHTML   = `<img class='pl-favicon' src='https://www.google.com/s2/favicons?domain=${url}'/> ${result.popupData.title}`;
         titleContainer.setAttribute('title', url);
+
+        // hide shuffle button if it's the last one
+        if (lastPopup) {
+          popup.classList.add('lastPopup');
+        }
   
         // play sound or not
         if (!withoutSound) {
@@ -329,6 +352,7 @@
         if (result.popupData.id !== id) {
           console.warn('received new data');
           savePopupData(result, true);
+          inProgress = false;
           clearInterval(intervalHolder);
         }
       });
@@ -363,6 +387,11 @@
      */
     reshuffle.addEventListener('click', (e) => {
 
+      // currently waiting for new data
+      if (inProgress) return;
+
+      inProgress = true;
+
       // demand a new bookmark
       chrome.runtime.sendMessage({ action: 'shuffle', data: {id, manualCall} });
 
@@ -375,7 +404,7 @@
       // remove animation later
       setTimeout(() => {
         popup.classList.remove('shake');
-      }, 1000);
+      }, 300);
 
       // play shake sound if possible
       try {

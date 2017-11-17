@@ -17,7 +17,7 @@ chrome.storage.local.get(null, result => {
  * Listener for messages from inject/browserAction/Options page
  */
 chrome.runtime.onMessage.addListener(
-	request => {
+	(request, sender, sendResponse) => {
 		console.warn('background received message: ', request);
 		switch (request.action) {
 			case 'accept':
@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(
 			break;
 
 			case 'updateTimer':
-				updateTimer(request.data);
+				updateTimer(request.data || null);
 			break;
 
 			case 'shuffle':
@@ -47,6 +47,10 @@ chrome.runtime.onMessage.addListener(
 			case 'addNewBookmark':
 				addNewBookmark();
 			return;
+
+			case 'stopTimer':
+				clearInterval(intervalHolder);
+			break;
 		}
 	}
 );
@@ -62,7 +66,8 @@ chrome.runtime.onMessage.addListener(
 	// otherwise get from local storage
 	else {
 		chrome.storage.local.get('state', (result) => {
-			launchTimer(result.state.popups.nextPopupTime);
+			if (result.state)
+				launchTimer(result.state.popups.nextPopupTime);
 		});
 	}
 
@@ -96,10 +101,25 @@ function checkTime(manualCall) {
 		// create popup and open it
 		chrome.storage.local.get(['state', 'popupData'], result => {
 
+			// if manual call is set in settings - dont call popup at all
+			if (result.state && result.state.global.scheduleFrequency == 'MANUAL' && manualCall !== true) {
+				console.warn('but manual call set in settings, so return');
+				return removePopupFromStorage();
+			}
+
+			// if user went through all bookmarks
+			if (result.state && result.state.global.visitedIds.length == result.state.stats.bookmarksCount) {
+				console.warn('all bookmarks visited!');
+				return removePopupFromStorage();
+			}
+
+			// if this popup is the one in shuffle
+			let lastPopup = (result.state.stats.bookmarksCount - result.state.global.visitedIds.length) <= 1;
+ 
 			// if popup is in storage
 			if (result.popupData) {
 				console.warn('popup is in storage');
-				openPopup(result.popupData, manualCall);
+				openPopup(result.popupData, manualCall, lastPopup);
 			} 
 			// else generate a new popup
 			else {
@@ -108,12 +128,16 @@ function checkTime(manualCall) {
 
 				console.warn('generating new popup');
 				sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
-					openPopup(bookmark, manualCall);
+					openPopup(bookmark, manualCall, lastPopup);
 				});
 			}
 		});
 	} else {
 		console.warn(now-nextPopup, 'left');
+	}
+
+	function removePopupFromStorage() {
+		chrome.storage.local.remove('popupData');
 	}
 }
 
@@ -133,13 +157,21 @@ function addNewBookmark() {
 		// get selected folders from state
 		chrome.storage.local.get('state', result => {
 			if (result.state) {
-				// if user has custom PL folder lets try to get it
-				if (result.state.global.customFolder !== null && 
-					result.state.global.foldersIds.indexOf(result.state.global.customFolder.id) !== -1 ) {
-					targetFolder = result.state.global.customFolder.id;
+				let currentState = result.state;
+
+				// check if user had all bookmarks visited
+				if (currentState.global.visitedIds.length == currentState.stats.bookmarksCount) {
+					console.warn('User had all bookmarks visited, generating new timer');
+					generateNewTimer(currentState);
+				}
+
+				// if user has custom PL folder lets try to get it first
+				if (currentState.global.customFolder !== null && 
+					currentState.global.foldersIds.indexOf(currentState.global.customFolder.id) !== -1 ) {
+					targetFolder = currentState.global.customFolder.id;
 					custom = true
 				} else {
-					targetFolder = result.state.global.foldersIds;
+					targetFolder = currentState.global.foldersIds;
 				}
 				
 				// get actual bookmarks by id/ids to make sure they exist
@@ -150,17 +182,31 @@ function addNewBookmark() {
 							parentId: folders[0].id,
 							url: URL,
 							title: title
-						}, () => notifyUser(title, folders[0].title));
+						}, () => {
+							notifyUser(title, folders[0].title);
+							incrementBookmarksCount(currentState);
+						});
 					} else {
 						chrome.bookmarks.create({
 							url: URL,
 							title: title
-						}, () => notifyUser(title, 'Others'));
+						}, () => {
+							notifyUser(title, 'Others');
+							incrementBookmarksCount(currentState);
+						});
 					}
 				});
 			}
 		});
 	});
+
+	/**
+	 * Increment total bookmarks-to-go number after adding this one
+	 */
+	function incrementBookmarksCount(currentState) {
+		currentState.stats.bookmarksCount += 1;
+		chrome.storage.local.set({ state: currentState });
+	}
 
 	function notifyUser(pageTitle, folderTitle) {
 		// PL needs update
@@ -186,26 +232,12 @@ function addNewBookmark() {
 }
 
 /**
- * Browser extension icon click listener
- */
-chrome.browserAction.onClicked.addListener(() => {
-	// check if user have his steps done already 
-	chrome.storage.local.get('state', result => {
-		// if user has state and completed steps already
-		if (result.state && result.state.global.step === -1) {
-			// open modal with available actions
-		} else {
-			console.warn('here');
-			chrome.runtime.openOptionsPage();
-		}
-	});
-});
-
-/**
  * User clicked on accept inside popup
  * @param {Object} data contains id and url of currently opening bookmark
  */
 function accept(data) {
+	removeListeners();
+
 	// open page
 	chrome.tabs.create({ url : data.url });
 
@@ -230,6 +262,11 @@ function accept(data) {
 		// generate new timer
 		sharedAPI.generateTimer(false, newState, newTime => {
 
+			// if user dealth with all bookmarks
+			if (newState.global.visitedIds.length == newState.stats.bookmarksCount) {
+				newTime = moment().format('X');
+			}
+
 			// save new timer
 			newState.popups.nextPopupTime = newTime;
 			
@@ -237,10 +274,6 @@ function accept(data) {
 			chrome.storage.local.set({
 				state: newState,
 				needUpdate: moment().format('X')
-			}, () => {
-				chrome.storage.local.get(null, result => {
-					console.warn('all storage now is:', result);
-				});
 			});
 
 			// update background timer
@@ -270,7 +303,9 @@ function shuffle(data) {
 /**
  * User clicked on postpone button inside popup
  */
-function postpone() {
+function postpone() {  
+	removeListeners();
+
 	// remove all listeners to prevent annoying showing
 	removeListeners();
 
@@ -285,48 +320,34 @@ function postpone() {
 		newState.stats.bookmarksPostponed 	+= 1;		
 		newState.popups.popupsToday 		+= 1;
 		
-		// generate new timer
-		sharedAPI.generateTimer(false, newState, newTime => {
-
-			// save new timer
-			newState.popups.nextPopupTime = newTime;
-			
-			// set new storage
-			chrome.storage.local.set({
-				state: newState,
-				needUpdate: moment().format('X')
-			}, () => {
-				chrome.storage.local.get(null, result => {
-					console.warn('all storage now is:', result);
-				});
-			});
-
-			// update background timer
-			updateTimer(newTime);
-		});
+		generateNewTimer(newState);
 	});
 
 	// TODO: inject removing popup script
 }
 
 /**
- * Once extension is installed - generate unique token for user
+ * Helper function that receives a current state, 
+ * generates new timer and saves it to the storage
+ * @param {Object} currentState 
  */
-chrome.runtime.onInstalled.addListener((details) => {
-    if (details.reason == 'install') {
-		TOKEN = getRandomToken();
-		chrome.storage.local.set({ 'token' : TOKEN});
-		saveTokenInCookies(TOKEN);
-    } else {
-		chrome.storage.local.get( 'token', (result) => {
-			if ( !result.token ) {
-				TOKEN = getRandomToken();
-				chrome.storage.local.set({ 'token' : TOKEN});
-				saveTokenInCookies(TOKEN);
-			}
+function generateNewTimer(currentState) {
+	// generate new timer
+	sharedAPI.generateTimer(false, currentState, newTime => {
+		
+		// save new timer
+		currentState.popups.nextPopupTime = newTime;
+		
+		// set new storage
+		chrome.storage.local.set({
+			state: currentState,
+			needUpdate: moment().format('X')
 		});
-	}
-});
+
+		// update background timer
+		updateTimer(newTime);
+	});
+}
 
 function saveTokenInCookies(token) {
 	chrome.cookies.set(
@@ -339,11 +360,12 @@ function saveTokenInCookies(token) {
 	);
 }
 
-function openPopup(bookmark, manualCall) {
+function openPopup(bookmark, manualCall, lastPopup) {
 	if (!bookmark) return;
 
 	// bookmark was called manually
 	bookmark.manualCall = manualCall;
+	bookmark.lastPopup  = lastPopup;
 
 	// put data to storage to share with injected script
 	bookmark.soundEnabled = true; /////////////////////////////////////////////// remove after debug
@@ -375,6 +397,8 @@ function openPopup(bookmark, manualCall) {
 				chrome.tabs.update(lastTabId, {selected: true});
 				// inject popup into it
 				injectScript(lastTabId);
+
+				addListeners();
 			});
 
 		} else {
@@ -384,7 +408,18 @@ function openPopup(bookmark, manualCall) {
 }
 
 function addListeners() {
+	//chrome.tabs.onActivated.removeListener(removePopupsScript);
+	//chrome.tabs.onUpdated.removeListener(removePopupsScript);
+
 	console.warn('adding listeners for chrome tabs');
+	//chrome.tabs.onActivated.addListener(injectScript);
+	//chrome.tabs.onUpdated.addListener(injectScript);
+}
+function removeListeners() {
+	console.warn('removing listeners');
+	chrome.tabs.onActivated.removeListener(injectScript);
+	chrome.tabs.onUpdated.removeListener(injectScript);
+
 	chrome.tabs.onActivated.addListener(injectScript);
 	chrome.tabs.onUpdated.addListener(injectScript);
 }
@@ -392,20 +427,31 @@ function addListeners() {
 function injectScript(tabId) {
 	if (!tabId) { tabId = null; }
 
-	console.warn('injecting!');
+	console.warn('injecting popup!');
 	chrome.tabs.executeScript(tabId, {
 		file: 'inject.js'
 	});
 
 	// remove listeners upon injection
-	removeListeners();
+	//removeListeners();
+}
+function removePopupsScript(tabId) {
+	console.warn('injecting removal of popup!');
+	chrome.tabs.executeScript(tabId, {
+		code: 'document.getElementById("pl-popup-container").outerHTML="";'
+	});
 }
 
-function removeListeners() {
-	console.warn('removing listeners');
-	chrome.tabs.onActivated.removeListener(injectScript);
-	chrome.tabs.onUpdated.removeListener(injectScript);
-}
+
+
+
+
+
+
+
+
+
+
 
 function getRandomToken() {
     var randomPool = new Uint8Array(16);
@@ -416,6 +462,25 @@ function getRandomToken() {
     }
     return hex + (+new Date());
 }
+
+/**
+ * Once extension is installed - generate unique token for user
+ */
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason == 'install') {
+		TOKEN = getRandomToken();
+		chrome.storage.local.set({ 'token' : TOKEN});
+		saveTokenInCookies(TOKEN);
+    } else {
+		chrome.storage.local.get( 'token', (result) => {
+			if ( !result.token ) {
+				TOKEN = getRandomToken();
+				chrome.storage.local.set({ 'token' : TOKEN});
+				saveTokenInCookies(TOKEN);
+			}
+		});
+	}
+});
 
 /**
  * Uninstall url

@@ -1205,6 +1205,8 @@ template {
         .main-page .body .stats .content .group .item .name {
           color: #808080;
           float: left; }
+          .main-page .body .stats .content .group .item .name.smaller {
+            font-size: 1.1rem; }
         .main-page .body .stats .content .group .item .value {
           float: right; }
 
@@ -1481,17 +1483,25 @@ template {
   font-size: 12px;
   color: #333; }
   .browser-action .main-container {
-    padding: 10px;
+    padding: 0 10px 10px 10px;
     width: 240px; }
-    .browser-action .main-container .timer .title {
+    .browser-action .main-container .visited-all {
+      display: none;
+      margin: 10px 0 10px;
       text-align: center;
-      font-size: 1.5rem;
-      font-weight: 500; }
-    .browser-action .main-container .timer .time {
-      text-align: center;
-      font-size: 1.5rem;
-      color: #e20158;
-      font-weight: 400; }
+      font-size: 1.1rem;
+      font-weight: 600; }
+    .browser-action .main-container .timer {
+      margin-top: 10px; }
+      .browser-action .main-container .timer .title {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500; }
+      .browser-action .main-container .timer .time {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #e20158;
+        font-weight: 400; }
     .browser-action .main-container .buttons {
       margin-top: 10px; }
 

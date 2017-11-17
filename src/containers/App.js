@@ -32,23 +32,6 @@ class LogButton extends React.Component {
     }
 }
 
-class MiscButton extends React.Component {
-    constructor() {
-        super();
-        this.onClick = this.onClick.bind(this);
-    }
-
-    onClick() {
-        this.props.generateTimer(true);
-    }
-
-    render() {
-        return (
-            <div class='misc-button' onClick = {this.onClick}>!</div>
-        );
-    }
-}
-
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -90,9 +73,6 @@ class App extends React.Component {
                 { component }
                 <ClearButton></ClearButton>
                 <LogButton></LogButton>
-                <MiscButton
-                    generateTimer = {this.props.globalActions.generateTimer}
-                ></MiscButton>
             </div>
         );
     }

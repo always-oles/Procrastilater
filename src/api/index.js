@@ -11,14 +11,8 @@ import {
  */
 
 export default {
-    saveFolders: folders => {
-        chrome.storage.local.set({'folders': folders});
-    },
-
-    getFolders: callback => {
-        chrome.storage.local.get('folders', (result) => {
-            callback(result.folders);
-        })
+    notifyBackground: data => {
+        chrome.runtime.sendMessage(data);
     },
     
     createCustomFolder: callback => {
@@ -34,14 +28,14 @@ export default {
     },
 
     clearData: callback => {
-        // chrome.storage.local.clear( () => {
-        //     console.warn('storage is clear');
-        //     if (callback) callback();
-        // });
-        chrome.storage.local.remove('state', () => {
+        chrome.storage.local.clear( () => {
             console.warn('storage is clear');
             if (callback) callback();
         });
+        // chrome.storage.local.remove('state', () => {
+        //     console.warn('storage is clear');
+        //     if (callback) callback();
+        // });
     },
 
     logData: () => {
@@ -135,9 +129,7 @@ export default {
                 }
 
                 // timer renew
-                if ( currentState.popups.nextPopupTime < storage.popups.nextPopupTime ) {
-                    summary.nextPopupTime = storage.popups.nextPopupTime;
-                }
+                summary.nextPopupTime = storage.popups.nextPopupTime;
 
                 // stats changed
                 if ( currentState.stats.bookmarksPostponed < storage.stats.bookmarksPostponed ) {

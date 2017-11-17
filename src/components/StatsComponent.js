@@ -30,7 +30,7 @@ export default class StatsComponent extends React.Component {
     calculateDays() {
         if (this.props.global.tempo == 0) 
             return null;
-        return Math.round(this.props.stats.bookmarksCount / this.props.global.tempo);
+        return Math.round((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo);
     }
 
     getPercentage() {
@@ -54,7 +54,7 @@ export default class StatsComponent extends React.Component {
                     
                     <div class='group'>
                         <div class='item'>
-                            <div class='name'>bookmarks:</div>
+                            <div class='name smaller'>bookmarks:</div> 
                             <div class='value'>{ this.props.stats.bookmarksCount }</div>
                         </div>
 

@@ -3,27 +3,28 @@ import API from '../api';
 import sharedAPI from '../../extension/sharedAPI';
 let debounceTimeout = null;
 
-import { 
+import {
+    ADDED_LOTS_ACHIEVEMENT_NUMBER,
+    CREATE_CUSTOM_FOLDER,
+    GIVE_ACHIEVEMENT,
+    MANUAL_OPENER_LIMIT,
+    POSTPONER_LIMIT,
+    RESET_RECEIVED_ACHIEVEMENT,
+    SAVE_FOLDERS,
+    SCHEDULE,
+    SEND_MESSAGE_ERROR,
+    SEND_MESSAGE_SUCCESS,
+    SET_NEXT_POPUP,
+    SET_SCHEDULE,
     SET_STEP,
     SET_STEP_PHASE,
-    SET_USERNAME,
-    SAVE_FOLDERS,
-    CREATE_CUSTOM_FOLDER,
-    SET_SCHEDULE,
     SET_TEMPO,
-    UPDATE_BOOKMARKS_STATS,
-    GIVE_ACHIEVEMENT,
+    SET_USERNAME,
     SHARED_IN_SOCIAL,
-    RESET_RECEIVED_ACHIEVEMENT,
-    SEND_MESSAGE_SUCCESS,
-    SEND_MESSAGE_ERROR,
-    ADDED_LOTS_ACHIEVEMENT_NUMBER,
+    UPDATE_BOOKMARKS_STATS,
+    UPDATE_ENTIRE_STATE,
     UPDATE_TOTAL_STATS,
     VISITOR_LIMIT,
-    POSTPONER_LIMIT,
-    MANUAL_OPENER_LIMIT,
-    UPDATE_ENTIRE_STATE,
-    SET_NEXT_POPUP
 } from '../constants';
 
 
@@ -191,11 +192,21 @@ export function setSchedule(schedule) {
         else if (isNaN(schedule.times) || schedule.times <= 0) {
             schedule.times = 1;
         }
-        
+
+        // dispatch everything
         dispatch({
             type: SET_SCHEDULE,
             payload: schedule
         });
+
+        // disable background timer if frequency is manual
+        if (schedule.frequency === SCHEDULE.FREQUENCY.MANUAL) {
+            API.notifyBackground({ action: 'stopTimer' });
+        } 
+        // generate new timer if needed
+        else {
+            generateTimer(false)(dispatch, getState);
+        }
 
         // update tempo
         calculateTempo(dispatch, getState());
@@ -442,7 +453,7 @@ export function listenForVisibilityChange() {
                     payload: {
                         bookmarksCount: bookmarks.length
                     }
-                })
+                });
             });
         }
 
@@ -482,10 +493,13 @@ export function listenForVisibilityChange() {
  */
 export function generateTimer(manualInvoke) {
     return (dispatch, getState) => {
+        let currentState = getState();
+        // do not generate timer if user selected manual call 
+        // or if visited all bookmarks
+        if (currentState.global.scheduleFrequency === SCHEDULE.FREQUENCY.MANUAL)
+            return;
 
-        // notify background script ************
-
-        sharedAPI.generateTimer(manualInvoke, getState(), (nextPopupTime, resetPopupsToday) => {
+        sharedAPI.generateTimer(manualInvoke, currentState, (nextPopupTime, resetPopupsToday) => {
             // notify background script 
             chrome.runtime.sendMessage({ action: 'updateTimer', data: nextPopupTime });            
 

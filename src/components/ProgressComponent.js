@@ -15,11 +15,22 @@ export default class ProgressComponent extends React.Component {
 
     getNote() {
         if (this.props.stats.bookmarksCount > 0) {
-            return (
-                <div class='note'>
-                    You’ve dealt with { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } postponed bookmarks!
-                </div>
-            );
+            // user is done with all bookmarks
+            if (this.props.global.visitedIds.length == this.props.stats.bookmarksCount) {
+                return (
+                    <div class='note'>
+                        Well done! You've visited all postponed bookmarks!
+                    </div>
+                );
+            } 
+            // user has work to do
+            else {
+                return (
+                    <div class='note'>
+                        You’ve dealt with { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } postponed bookmarks!
+                    </div>
+                );
+            }
         } else {
             return (
                 <div class='note'>You have no bookmarks in selected folders yet</div>
