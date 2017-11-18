@@ -87,13 +87,13 @@ export default class StatsComponent extends React.Component {
                         </div>
 
                         <div class='item'>
-                            <div class='name' title='All users statistics'>total bookmarks:</div>
-                            <div class='value'>{ this.props.stats.totalBookmarks }</div>
+                            <div class='name' title='All users statistics'>total visited:</div>
+                            <div class='value'>{ this.props.stats.totalVisited }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name' title='All users statistics'>total visited:</div>
-                            <div class='value'>{ this.props.stats.totalVisited }</div>
+                            <div class='name' title='All users statistics'>total bookmarks:</div>
+                            <div class='value'>{ this.props.stats.totalBookmarks }</div>
                         </div>
 
                         <div class='item'>

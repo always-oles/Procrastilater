@@ -431,7 +431,11 @@ function removeListeners() {
 	injectedPopup = false;
 
 	chrome.tabs.executeScript(null, {
-		code: 'document.getElementById("pl-popup-container").outerHTML="";'
+		code: `
+			if (document.getElementById("pl-popup-container")) {
+				document.getElementById("pl-popup-container").outerHTML="";
+			}
+		`
 	});
 }
 
@@ -450,7 +454,11 @@ function removePopupsScript(tabId) {
 
 	console.warn('injecting removal of popup!');
 	chrome.tabs.executeScript(tabId, {
-		code: 'document.getElementById("pl-popup-container").outerHTML="";'
+		code: `
+			if (document.getElementById("pl-popup-container")) {
+				document.getElementById("pl-popup-container").outerHTML="";
+			}
+		`
 	});
 }
 
