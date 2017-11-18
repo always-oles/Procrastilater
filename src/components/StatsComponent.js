@@ -54,7 +54,7 @@ export default class StatsComponent extends React.Component {
                     
                     <div class='group'>
                         <div class='item'>
-                            <div class='name smaller'>bookmarks:</div> 
+                            <div class='name'>bookmarks:</div> 
                             <div class='value'>{ this.props.stats.bookmarksCount }</div>
                         </div>
 

@@ -154,8 +154,10 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
         });
     
         // check for achievements after new folders selection
-        checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
-        saveFoldersCallback();
+        if (saveFoldersCallback) {
+            checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
+            saveFoldersCallback();
+        }
     }
 }
 
@@ -446,14 +448,15 @@ export function listenForVisibilityChange() {
         }
 
         function checkForFoldersUpdates() {
-            API.checkForFoldersUpdates(getState(), bookmarks => {
-                console.warn('Something changed with folders...');
-                dispatch({
-                    type: UPDATE_BOOKMARKS_STATS,
-                    payload: {
-                        bookmarksCount: bookmarks.length
-                    }
-                });
+            let currentState = getState();
+
+            API.checkForFoldersUpdates(currentState, needToUpdate => {
+                if (needToUpdate) {
+                    console.warn('Something changed with folders...');
+                    prepareStats(dispatch, currentState.global.foldersIds, currentState.global.allVisitedIds, () => {
+                        getStatsFromBackend(dispatch, getState);
+                    });
+                } 
             });
         }
 

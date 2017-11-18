@@ -1,19 +1,5 @@
 /* global chrome */
 
-// chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
-//   console.log('tab received:', message);
-
-//   if (!message.action) return;
-
-//   switch (message.action) {
-//     case 'notify':
-
-//     break;
-//   }
-// });
-
-//-------------------------- font, positioning, image, cursor pointer
-
 (function() {
 
     // check if we added a popup for this tab already
@@ -22,7 +8,11 @@
       return;
     }
 
-    var style = document.createElement('style');
+    /**
+     * Inject PL popup styles
+     */
+    var style;
+    style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
     @keyframes shake {
@@ -99,7 +89,8 @@
       justify-content: flex-end;
       z-index: 9999999;
       font-family: "Roboto", "Open Sans", Arial, sans-serif;
-      font-size: 12px;
+      font-size: 12px !important;
+      font-weight: normal;
       animation: fadeIn 1s 1
     }
     .pl-popup-container.fadeOut {
@@ -254,12 +245,15 @@
       transform: translateY(1px);
     }      
     `;
-
     document.getElementsByTagName('head')[0].appendChild(style);
-    var div = document.createElement('div');
+
+    /**
+     * Inject PL popup div
+     */
+    var div;
+    div = document.createElement('div');
     div.setAttribute('id', 'pl-popup-container');
     div.classList.add('pl-popup-container');
-
     div.innerHTML = `
       <div class='pl-popup'>
           <div class='pl-main-content'>
@@ -298,10 +292,9 @@
      */
     (savePopupData = function(data, withoutSound = false) {
 
-
-      // not passed - first call
+      // data isn't passed - first call
       if (!data) {
-        // get from storage
+        // go get it from storage
         chrome.storage.local.get('popupData', (result) => {
           // save
           save(result);

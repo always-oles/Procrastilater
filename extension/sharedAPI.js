@@ -21,7 +21,7 @@ var sharedAPI = {
         var self = this;
     
         //// debugging
-        return callback(moment().add(30,'seconds').format('X'), false);
+        return callback(moment().add(5,'minutes').format('X'), false);
         ////////////////////////////
     
         let now                 = moment();

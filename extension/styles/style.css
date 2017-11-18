@@ -1087,7 +1087,7 @@ template {
           border-radius: 8px; }
         .main-page header .header-panel .progress-container .progress-bar-full .text {
           position: absolute;
-          left: 48%;
+          left: 45%;
           top: 0;
           text-align: center;
           color: #333;

@@ -80,7 +80,8 @@ $(() => {
         }, result => {
             // exists in bookmarks - hide add to bkmrks button
             if (result.length) {
-                $('.add-to-bookmarks').hide();
+                disabledAdding = true;
+                $('.add-to-bookmarks').addClass('locked');
             }
         })
 	});

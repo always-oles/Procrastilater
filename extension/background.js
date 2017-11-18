@@ -7,10 +7,18 @@ const API = 'http://localhost:3000/';
 var TOKEN = null,
 	intervalHolder = null,
 	nextPopup = null,
-	updateTimer;
+	updateTimer,
+	injectedPopup = false,
+	injectedRemoval = false;
 
 chrome.storage.local.get(null, result => {
 	console.warn('all storage now is:', result);
+
+	// discovered some popup in storage
+	if (result.popupData) {
+		console.warn('there is a popup in storage! call it');
+		addListeners();
+	}
 });
 
 /**
@@ -115,22 +123,13 @@ function checkTime(manualCall) {
 
 			// if this popup is the one in shuffle
 			let lastPopup = (result.state.stats.bookmarksCount - result.state.global.visitedIds.length) <= 1;
- 
-			// if popup is in storage
-			if (result.popupData) {
-				console.warn('popup is in storage');
-				openPopup(result.popupData, manualCall, lastPopup);
-			} 
-			// else generate a new popup
-			else {
-				let foldersIds      = result.state.global.foldersIds.slice();
-				let allVisitedIds   = result.state.global.allVisitedIds.slice();
+			let foldersIds      = result.state.global.foldersIds.slice();
+			let allVisitedIds   = result.state.global.allVisitedIds.slice();
 
-				console.warn('generating new popup');
-				sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
-					openPopup(bookmark, manualCall, lastPopup);
-				});
-			}
+			console.warn('generating new popup');
+			sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+				openPopup(bookmark, manualCall, lastPopup);
+			});
 		});
 	} else {
 		console.warn(now-nextPopup, 'left');
@@ -304,11 +303,6 @@ function shuffle(data) {
  * User clicked on postpone button inside popup
  */
 function postpone() {  
-	removeListeners();
-
-	// remove all listeners to prevent annoying showing
-	removeListeners();
-
 	// remove old popup data
 	chrome.storage.local.remove('popupData');
 
@@ -323,7 +317,8 @@ function postpone() {
 		generateNewTimer(newState);
 	});
 
-	// TODO: inject removing popup script
+	// remove all listeners to prevent annoying showing
+	removeListeners();
 }
 
 /**
@@ -372,6 +367,7 @@ function openPopup(bookmark, manualCall, lastPopup) {
 	chrome.storage.local.set({'popupData': bookmark});
 
 	console.warn('data for popup: ', bookmark);
+	addListeners();
 
 	// check active tab if it's not a service url
 	chrome.tabs.query({
@@ -397,8 +393,6 @@ function openPopup(bookmark, manualCall, lastPopup) {
 				chrome.tabs.update(lastTabId, {selected: true});
 				// inject popup into it
 				injectScript(lastTabId);
-
-				addListeners();
 			});
 
 		} else {
@@ -408,34 +402,47 @@ function openPopup(bookmark, manualCall, lastPopup) {
 }
 
 function addListeners() {
-	//chrome.tabs.onActivated.removeListener(removePopupsScript);
-	//chrome.tabs.onUpdated.removeListener(removePopupsScript);
+	if (injectedPopup) return console.warn('already injected popup');
 
-	console.warn('adding listeners for chrome tabs');
-	//chrome.tabs.onActivated.addListener(injectScript);
-	//chrome.tabs.onUpdated.addListener(injectScript);
-}
-function removeListeners() {
-	console.warn('removing listeners');
-	chrome.tabs.onActivated.removeListener(injectScript);
-	chrome.tabs.onUpdated.removeListener(injectScript);
-
+	console.warn('[adding listeners]');
 	chrome.tabs.onActivated.addListener(injectScript);
 	chrome.tabs.onUpdated.addListener(injectScript);
+	injectedPopup = true;
+
+	chrome.tabs.onActivated.removeListener(removePopupsScript);
+	chrome.tabs.onUpdated.removeListener(removePopupsScript);
+	injectedRemoval = false;
+}
+function removeListeners() {
+	if (injectedRemoval) return console.warn('already injected removal');
+
+	console.warn('[removing listeners]');
+	chrome.tabs.onActivated.addListener(removePopupsScript);
+	chrome.tabs.onUpdated.addListener(removePopupsScript);
+	injectedRemoval = true;
+	
+	chrome.tabs.onActivated.removeListener(injectScript);
+	chrome.tabs.onUpdated.removeListener(injectScript);
+	injectedPopup = false;
+
+	chrome.tabs.executeScript(null, {
+		code: 'document.getElementById("pl-popup-container").outerHTML="";'
+	});
 }
 
 function injectScript(tabId) {
-	if (!tabId) { tabId = null; }
+	if (!tabId) { tabId = null }
+	if (tabId.tabId) { tabId = tabId.tabId }
 
 	console.warn('injecting popup!');
 	chrome.tabs.executeScript(tabId, {
 		file: 'inject.js'
 	});
-
-	// remove listeners upon injection
-	//removeListeners();
 }
 function removePopupsScript(tabId) {
+	if (!tabId) { tabId = null }
+	if (tabId.tabId) { tabId = tabId.tabId }
+
 	console.warn('injecting removal of popup!');
 	chrome.tabs.executeScript(tabId, {
 		code: 'document.getElementById("pl-popup-container").outerHTML="";'
@@ -496,4 +503,15 @@ chrome.contextMenus.removeAll(() => {
 		title: 'Add this page to bookmarks shuffle', 
 		onclick: addNewBookmark,
 	});
+});
+
+/**
+ * Update folders structure and recount bookmarks 
+ * when user changes bookmarks manually
+ */
+chrome.bookmarks.onRemoved.addListener(() => {
+	chrome.storage.local.set({ needsFoldersUpdate: true });
+});
+chrome.bookmarks.onMoved.addListener(() => {
+	chrome.storage.local.set({ needsFoldersUpdate: true });
 });
