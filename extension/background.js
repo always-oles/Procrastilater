@@ -3,7 +3,7 @@
 /**
  * Global variables
  */
-const API = 'http://localhost:3000/';
+const API = 'http://95.85.45.32/pl/';
 var TOKEN = null,
 	intervalHolder = null,
 	nextPopup = null,
@@ -152,6 +152,11 @@ function addNewBookmark() {
 	}, function(tabs) {
 		URL 	= tabs[0].url;
 		title 	= tabs[0].title;
+
+		// nope
+		if (URL.includes('chrome-extension://') || URL.includes('chrome://')) {
+			return;
+		}
 
 		// get selected folders from state
 		chrome.storage.local.get('state', result => {

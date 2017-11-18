@@ -36,9 +36,9 @@ export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;
 export const VISITOR_LIMIT = 20;
 export const POSTPONER_LIMIT = 10;
 export const MANUAL_OPENER_LIMIT = 15;
+export const MAX_BOOKMARKS_DAILY = 20;
 
 // backend consts
-const API_VERSION = '1';
-export const SERVER_API = 'http://localhost:3000/api_v'+API_VERSION+'/';
+export const SERVER_API = 'http://95.85.45.32/pl/api/';
 export const API_SEND_MESSAGE = 'sendMessage';
-export const API_STATS = 'stats';
+export const API_STATS = 'stats'; 

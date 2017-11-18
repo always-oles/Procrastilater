@@ -2,7 +2,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SCHEDULE } from '../constants';
+import { 
+    SCHEDULE,
+    MAX_BOOKMARKS_DAILY
+} from '../constants';
 
 export default class ScheduleComponent extends React.Component {
     constructor(props) {
@@ -75,7 +78,7 @@ export default class ScheduleComponent extends React.Component {
                         <label for={ SCHEDULE.FREQUENCY.MANUAL } >I will open bookmarks manually</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
-                        <input type='text' onChange={ this.onTimesChange } class='blue-input' title='Max value is 10' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
+                        <input type='text' onChange={ this.onTimesChange } class='blue-input' title={'Max value is ' + MAX_BOOKMARKS_DAILY} placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
                         <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >times a day</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 

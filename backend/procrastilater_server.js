@@ -10,7 +10,7 @@ const cookieParser  = require('cookie-parser');
 
 // mongoose basic setup, thanks stack overflow
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Procrastilater', {
+mongoose.connect('mongodb://localhost/Procrastilater', {
   keepAlive: true,
   reconnectTries: Number.MAX_VALUE,
   useMongoClient: true
@@ -23,21 +23,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 let router = express.Router();
-
-/**
- * If user sends message from extension
- */
-router.route('/sendMessage')
-    .post( (request, response) => {
-        // new message entity
-        let message = new Message(request.body);
-
-        // save it
-        message.save((error) => {
-            if (error) return response.send(error);
-            response.json({ status: true });
-        })
-    });
 
 /*
  * Aggregate stats from db and return as json to app
@@ -112,14 +97,29 @@ router.route('/stats')
         }
     });
 
-app.use('/api_v1', router);
+/**
+ * If user sends message from extension
+ */
+router.route('/sendMessage')
+    .post((request, response) => {
+        // new message entity
+        let message = new Message(request.body);
+
+        // save it
+        message.save((error) => {
+            if (error) return response.send(error);
+            response.json({ status: true });
+        });
+});
+
+app.use('/pl/api', router);
 
 /**
  * If user decided to uninstall the extension - he is directed to this page
  */
-app.get('/uninstall', (request, response) => {
+app.get('/pl/uninstall', (request, response) => {
     // let's remove user from db to ignore his statistics
-    User.remove({ token: request.cookies.token }, error => {
+    User.remove({ token: request.cookies.token }, () => {
 
         // and send a farewell html page
         response.sendFile(path.join(__dirname, 'public', 'uninstall.html'));
@@ -127,5 +127,5 @@ app.get('/uninstall', (request, response) => {
 });
 
 // serve favicon
-app.use('/favicon.ico', express.static('public/favicon.ico'));
-app.listen(3000, () => console.log('server started'));
+app.use('/pl/favicon.ico', express.static('public/favicon.ico'));
+app.listen(8081, () => console.log('server started'));

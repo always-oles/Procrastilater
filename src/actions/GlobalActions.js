@@ -25,6 +25,7 @@ import {
     UPDATE_ENTIRE_STATE,
     UPDATE_TOTAL_STATS,
     VISITOR_LIMIT,
+    MAX_BOOKMARKS_DAILY
 } from '../constants';
 
 
@@ -187,8 +188,8 @@ export function createCustomFolder(callback) {
 export function setSchedule(schedule) {
     return (dispatch, getState) => {
         // max
-        if (schedule.times > 10) {
-            schedule.times = 10;
+        if (schedule.times > MAX_BOOKMARKS_DAILY) {
+            schedule.times = MAX_BOOKMARKS_DAILY;
         } 
         // min
         else if (isNaN(schedule.times) || schedule.times <= 0) {
