@@ -28,14 +28,14 @@ export default {
     },
 
     clearData: callback => {
-        chrome.storage.local.clear( () => {
-            console.warn('storage is clear');
-            if (callback) callback();
-        });
-        // chrome.storage.local.remove('state', () => {
+        // chrome.storage.local.clear( () => {
         //     console.warn('storage is clear');
         //     if (callback) callback();
         // });
+        chrome.storage.local.remove('state', () => {
+            console.warn('storage is clear');
+            if (callback) callback();
+        });
     },
 
     logData: () => {

@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "watch": "webpack --watch",
+    "watch": "set NODE_ENV=dev&&webpack --watch",
     "dev": "webpack-dev-server --content-base=src",
+    "build": "set NODE_ENV=production&&webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -11,7 +11,9 @@ module.exports = {
         path: __dirname + '/extension/',
         filename: 'bundle.js'
     },
-    devtool: debug ? 'inline-sourcemap' : false,
+    devtool: debug 
+        ? 'inline-sourcemap' 
+        : 'cheap-module-source-map',
     module: {
         loaders: [{
                 test: /\.js?$/,
@@ -42,8 +44,29 @@ module.exports = {
             }
         ]
     },
-    plugins: debug ? [new ExtractTextPlugin('styles/style.css')] : [
-        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-        new ExtractTextPlugin('styles.style.css')
-    ]
+    plugins: debug 
+        ? [new ExtractTextPlugin('styles/style.css')] 
+        : [
+            new webpack.optimize.UglifyJsPlugin({
+                comments: false,
+                sourcemap: true,
+                compress: {
+                    warnings: false,
+                    screw_ie8: true,
+                    conditionals: true,
+                    unused: true,
+                    comparisons: true,
+                    sequences: true,
+                    dead_code: true,
+                    evaluate: true,
+                    if_return: true,
+                    join_vars: true,
+                    drop_console: true
+                },
+            }),
+            new webpack.HashedModuleIdsPlugin(),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            })
+        ]
 };
