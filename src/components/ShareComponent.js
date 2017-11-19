@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { SHARE_LINK } from '../constants';
 
 export default class ShareComponent extends React.Component {
     constructor() {
@@ -30,13 +31,44 @@ export default class ShareComponent extends React.Component {
     render() {
         return (
             <div class='socials'>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/facebook.svg" width="32" height="32"/></a>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/twitter.svg" width="32" height="32"/></a>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/google_plus?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/google_plus.svg" width="32" height="32"/></a>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/telegram?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/telegram.svg" width="32" height="32"/></a>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/vk?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/vk.svg" width="32" height="32"/></a>
-                <a onClick = {this.onClick} href="https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/email.svg" width="32" height="32"/></a>
-                <a href="https://www.addtoany.com/add_to/copy_link?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me" target="_blank"><img src="https://static.addtoany.com/buttons/link.svg" width="32" height="32"/></a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/facebook?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img 
+                        src='https://static.addtoany.com/buttons/facebook.svg' 
+                        width='32' 
+                        height='32'
+                    />
+                </a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/twitter?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/twitter.svg' width='32' height='32'/>
+                </a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/google_plus?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/google_plus.svg' width='32' height='32'/>
+                </a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/telegram?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/telegram.svg' width='32' height='32'/>
+                </a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/vk?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/vk.svg' width='32' height='32'/>
+                </a>
+                <a  onClick = {this.onClick} 
+                    href={'https://www.addtoany.com/add_to/email?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/email.svg' width='32' height='32'/>
+                </a>
+                <a  href={'https://www.addtoany.com/add_to/copy_link?linkurl=' + SHARE_LINK} 
+                    target='_blank'>
+                    <img src='https://static.addtoany.com/buttons/link.svg' width='32' height='32'/>
+                </a>
             </div>
         );
     }

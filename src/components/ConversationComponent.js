@@ -103,28 +103,28 @@ export default class ConversationComponent extends React.Component {
                 <div class = 'conversation-icon' ref='icon' onClick = {this.onIconClick}> <img src={ConversationIcon} /> </div>
                 <div class = 'conversation-container' ref='container' onClick = {this.close} >
                     <div class = 'panel conversation' ref='conversation' onClick = { (e) => e.stopPropagation() }>
-                        <div class='header'> Let's talk <span class='close' onClick = {this.close}>✕</span></div>
+                        <div class='header'>{chrome.i18n.getMessage('conversation_title')}<span class='close' onClick = {this.close}>✕</span></div>
                         
                         <div class = 'slidable'>
-                            <div class='title'>We would like to know how can we improve your experience. Feel free to send us your thoughts!</div>
+                            <div class='title'>{chrome.i18n.getMessage('conversation_description')}</div>
                             <form>
-                                <label>Letter from:</label>
+                                <label>{chrome.i18n.getMessage('conversation_from')}:</label>
                                 <input type='text' value={this.props.userName} disabled ref='userName'/>
             
-                                <label title='Can be blank'>How can we answer you?</label>
+                                <label title={chrome.i18n.getMessage('conversation_can_be_blank')}>{chrome.i18n.getMessage('conversation_answer')}</label>
                                 <input type='email' name='email' placeholder='Email' ref='userEmail'/>
             
-                                <label>What do you think, what do you suggest?</label>
+                                <label>{chrome.i18n.getMessage('conversation_uhm_whacha_say')}</label>
                                 <textarea onChange = {this.onTextChange} onKeyDown = {this.onKeyDown} name='letter' ref='text'></textarea>
             
-                                <button onClick = { this.onSendClick } class= {'button-send ' + (this.state.locked ? 'locked': '') }>Send</button>
+                                <button onClick = { this.onSendClick } class= {'button-send ' + (this.state.locked ? 'locked': '') }>{chrome.i18n.getMessage('global_send')}</button>
                             </form>
                         </div>
 
                         <div class='success-container'>
                             <div class='success-message'>
                                 <img src={Check} />
-                                <div class='text'>Message is sent. <br/>We will read it soon!</div>
+                                <div class='text'>{chrome.i18n.getMessage('conversation_is_sent')}<br/>{chrome.i18n.getMessage('conversation_we_will_read')}</div>
                             </div>
                         </div>
                     </div>

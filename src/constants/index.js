@@ -42,3 +42,5 @@ export const MAX_BOOKMARKS_DAILY = 20;
 export const SERVER_API = 'http://95.85.45.32/pl/api/';
 export const API_SEND_MESSAGE = 'sendMessage';
 export const API_STATS = 'stats'; 
+export const YT_LINK = 'https://www.youtube.com/embed/5wrwcEZ3Btw?rel=0';
+export const SHARE_LINK = 'https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fscroll-it%2Fnlndoolndemidhlomaokpfbicfnjeeed&amp;linkname=Check%20out%20the%20Procrastilater%20browser%20extension%2C%20seems%20useful%20for%20me';

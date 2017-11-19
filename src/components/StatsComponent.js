@@ -44,37 +44,36 @@ export default class StatsComponent extends React.Component {
     render() {
         return (
             <div class='panel stats panel--gray'>
-                <div class='header'>Stats</div>
+                <div class='header'>{chrome.i18n.getMessage('stats_header')}</div>
                 <div class='content'>
                     
-                    <div class='important' style={{ display: (this.calculateDays() ? 'block' : 'none') }}>if you continue with such tempo - you 
-                    will deal with all bookmarks in <span class='value'>{ this.calculateDays() } days</span></div>
+                    <div class='important' style={{ display: (this.calculateDays() ? 'block' : 'none') }}>{chrome.i18n.getMessage('stats_such_tempo')} <span class='value'>{ this.calculateDays() } {chrome.i18n.getMessage('stats_days')}</span></div>
 
-                    <div class='important' style={{ display: (this.getPercentage() ? 'block' : 'none') }} >You have <span class='value'>{ this.getPercentage() }%</span> of all users bookmarks</div>
+                    <div class='important' style={{ display: (this.getPercentage() ? 'block' : 'none') }} >{chrome.i18n.getMessage('stats_you_have')} <span class='value'>{ this.getPercentage() }%</span> {chrome.i18n.getMessage('stats_of_all_users')}</div>
                     
                     <div class='group'>
                         <div class='item'>
-                            <div class='name'>bookmarks:</div> 
+                            <div class='name'>{chrome.i18n.getMessage('stats_bookmarks')}:</div> 
                             <div class='value'>{ this.props.stats.bookmarksCount }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>visited of them:</div>
+                            <div class='name'>{chrome.i18n.getMessage('stats_visited_of_them')}:</div>
                             <div class='value'>{ this.props.visitedIds.length }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>visited (all time):</div>
+                            <div class='name'>{chrome.i18n.getMessage('stats_visited_all_time')}:</div>
                             <div class='value'>{ this.props.stats.bookmarksVisited + this.props.stats.bookmarksVisitedManually }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>postponed:</div>
+                            <div class='name'>{chrome.i18n.getMessage('stats_postponed')}:</div>
                             <div class='value'>{ this.props.stats.bookmarksPostponed }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>achievements:</div>
+                            <div class='name'>{chrome.i18n.getMessage('stats_achievements')}:</div>
                             <div class='value'>{ this.countAchievements() }</div>
                         </div>
                     </div>
@@ -82,23 +81,31 @@ export default class StatsComponent extends React.Component {
                 
                     <div class='group'>
                         <div class='item'>
-                            <div class='name' title='All users statistics'>total users:</div>
+                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
+                                {chrome.i18n.getMessage('stats_total_users')}:
+                            </div>
                             <div class='value'>{ this.props.stats.totalUsers }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name' title='All users statistics'>total visited:</div>
+                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
+                                {chrome.i18n.getMessage('stats_total_visited')}:
+                            </div>
                             <div class='value'>{ this.props.stats.totalVisited }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name' title='All users statistics'>total bookmarks:</div>
+                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
+                                {chrome.i18n.getMessage('stats_total_bookmarks')}:
+                            </div>
                             <div class='value'>{ this.props.stats.totalBookmarks }</div>
                         </div>
 
                         <div class='item'>
-                            <div class='name'>average per user:</div>
-                            <div class='value'>{ Math.round(this.props.stats.totalBookmarks / this.props.stats.totalUsers) || 0 }</div>
+                            <div class='name'>{chrome.i18n.getMessage('stats_average')}:</div>
+                            <div class='value'>
+                                { Math.round(this.props.stats.totalBookmarks / this.props.stats.totalUsers) || 0 }
+                            </div>
                         </div>
                     </div>
                 </div>

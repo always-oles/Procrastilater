@@ -13,7 +13,6 @@ export default class FoldersList extends React.Component {
     };
 
     this.list = [];
-    this.keyWords = ['speed dials', 'bin'];
     this.notifyTimeout = null;
     
     // if folders ids passed - use them as already in set
@@ -112,11 +111,6 @@ export default class FoldersList extends React.Component {
 
     tree.forEach( item => {
 
-      // return if title of bookmark contains any of keywords
-      if ( this.keyWords.indexOf(item.title.toLowerCase()) > -1 ) {
-        return;
-      }
-
       // skip bookmarks but not folders
       if ( !item.children ) {
         return;
@@ -141,7 +135,7 @@ export default class FoldersList extends React.Component {
         folderIcon = <div class='folder-icon'/>;
       }
 
-      this.list.push(
+      this.list.push( 
         <li style={divStyle} id={item.id} data-id={item.id} data-type={type} className={ 'parent-'+item.parentId + ' ' + selected } key={item.id} onClick={ this.handleClick }>
           { folderIcon }
           {item.title}

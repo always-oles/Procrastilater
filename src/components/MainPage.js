@@ -48,9 +48,9 @@ class MainPage extends React.Component {
                     <img class='logo' src={Logo}/> 
 
                     <div class='header-panel'>
-                        <div class='col-sm-4 greeting'>Hello, {this.props.global.userName} <HelpComponent/> </div>
+                        <div class='col-sm-4 greeting'>{chrome.i18n.getMessage('main_hello')}, {this.props.global.userName} <HelpComponent/> </div>
                         <div class='col-sm-4 timer-container'>
-                            <div class='title'>Next bookmark will appear in:</div>
+                            <div class='title'>{chrome.i18n.getMessage('main_next_bookmark_appear')}:</div>
                             <Timer 
                                 nextPopup           = {this.props.popups.nextPopupTime}
                                 generateTimer       = {this.props.globalActions.generateTimer}
@@ -104,9 +104,10 @@ class MainPage extends React.Component {
                     </div>
 
                     <footer>
-                        <div class='text'>If you like Procrastilater - share it with friends! </div>
-                        <div class='note'>You will get an achievement if you'll share it at least in 2 social networks!<br/>
-                            It is a <a href='https://github.com/always-oles/Procrastilater' target='_blank'>free open source</a> project.
+                        <div class='text'>{chrome.i18n.getMessage('main_if_u_like')}</div>
+                        <div class='note'>
+                            {chrome.i18n.getMessage('main_you_will_get')}<br/>
+                            {chrome.i18n.getMessage('main_itsa')} <a href='https://github.com/always-oles/Procrastilater' target='_blank'>{chrome.i18n.getMessage('main_free_open_source')}</a> {chrome.i18n.getMessage('main_project')}.
                         </div>
                         <ShareComponent
                             sharedInSocial = { this.props.globalActions.sharedInSocial }

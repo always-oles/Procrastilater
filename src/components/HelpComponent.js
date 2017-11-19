@@ -1,12 +1,13 @@
 import React from 'react';
 import HelpButton from '../assets/images/help-button.svg';
+import { YT_LINK } from '../constants';
 
 export default class HelpComponent extends React.Component {
     constructor() {
         super();     
         this.onClick     = this.onClick.bind(this);
         this.close       = this.close.bind(this);
-        this.videoSource = 'https://www.youtube.com/embed/NLmqqimN_6M?rel=0' + '&enablejsapi=1';
+        this.videoSource = YT_LINK + '&enablejsapi=1';
         this.state       = { loaded: false }
     }
 
@@ -36,7 +37,12 @@ export default class HelpComponent extends React.Component {
                 <div class='help-container'>
                     <div class='video-container'>
                         <iframe width="560" height="315" id="yt-iframe" src="" frameBorder="0" allowFullScreen></iframe>
-                        <a href='#' class='close-button' onClick = { this.close }>✕</a>
+                        <a 
+                            href='#' 
+                            class='close-button' 
+                            title={chrome.i18n.getMessage('global_close')} 
+                            onClick = { this.close }
+                        >✕</a>
                     </div>
                 </div>
             </div>

@@ -33,7 +33,7 @@ export default class ScheduleComponent extends React.Component {
         this.notifyTimeout = setTimeout(() => {
             this.props.setSchedule(this.state);
 
-            toastr.success('Saved new schedule', null, {
+            toastr.success(chrome.i18n.getMessage('schedule_saved'), null, {
                 positionClass: 'toast-bottom-left'
             });
         }, 500);
@@ -69,29 +69,29 @@ export default class ScheduleComponent extends React.Component {
     render() {
         return (
             <div class='panel schedule' ref='container'>
-                <div class='header'>Schedule</div>
+                <div class='header'>{chrome.i18n.getMessage('steps_title_3')}</div>
                 <form>
                     <div class='list'>
-                        <div class='title'>Reminder will appear:</div>
+                        <div class='title'>{chrome.i18n.getMessage('schedule_reminder_will_appear')}:</div>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.MANUAL } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.MANUAL }/>
-                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >I will open bookmarks manually</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >{chrome.i18n.getMessage('schedule_manually')}</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
-                        <input type='text' onChange={ this.onTimesChange } class='blue-input' title={'Max value is ' + MAX_BOOKMARKS_DAILY} placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
-                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >times a day</label><br/>
+                        <input type='text'  onChange={ this.onTimesChange } class='blue-input' title={chrome.i18n.getMessage('schedule_max_value') + ' ' + MAX_BOOKMARKS_DAILY} placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
+                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >{chrome.i18n.getMessage('schedule_times')}</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
-                        <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >every day</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >{chrome.i18n.getMessage('schedule_every_day')}</label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_2_DAYS } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_2_DAYS }/> 
-                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >every 2 days</label>
+                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >{chrome.i18n.getMessage('schedule_every_2_days')}</label>
                     </div>
 
                     <div class='list'>
-                        <div class='title'>Period:</div>
+                        <div class='title'>{chrome.i18n.getMessage('schedule_period')}:</div>
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.RANDOM } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.RANDOM } /> 
-                        <label for={ SCHEDULE.PERIOD.RANDOM } >totally random</label><br/>
+                        <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label><br/>
 
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.MORNING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.MORNING } /> 
                         <label for={ SCHEDULE.PERIOD.MORNING } >6:00 - 12:00</label><br/>
@@ -114,11 +114,3 @@ ScheduleComponent.propTypes = {
     scheduleTimes: PropTypes.number,
     setSchedule: PropTypes.func.isRequired
 }
-
-/**
- *                 <div class='buttons-container'>
-                    <button class={'button-save ' + (this.state.changed ? '' : 'locked')} onClick = { this.onSaveClick }>Save</button>
-                </div>
-
-                <div class='check'><img src={ Check }/></div>   
- */

@@ -1,21 +1,23 @@
-import { saveFolders } from '../actions/GlobalActions';
 import React from 'react';
 import PropTypes from 'prop-types';
 import BookmarksList from './BookmarksList';
-import Check from '../assets/images/check.svg';
 
 export default class FolderSelectionComponent extends React.Component {
     render() {
         return (
             <div class='panel np'>
-                <div class='header'>Folders 
+                <div class='header'>{chrome.i18n.getMessage('global_folders')} 
                     <span 
-                        title="You have 0 bookmarks in selected folders" 
+                        title={chrome.i18n.getMessage('folders_0_bookmarks')} 
                         class={'alert ' + (this.props.emptyFolders && this.props.foldersIds.length ? '' : 'hidden')} 
+                    >!</span>
+                    <span 
+                        title={chrome.i18n.getMessage('folders_no_folders')} 
+                        class={'alert ' + (this.props.foldersIds.length ? 'hidden' : '')} 
                     >!</span>
                 </div>
                 <div class='content'>
-                    Change folders where I should take bookmarks from
+                    {chrome.i18n.getMessage('folders_where_from')}
                     <BookmarksList 
                         foldersIds  = { this.props.foldersIds }
                         saveFolders = { this.props.saveFolders }

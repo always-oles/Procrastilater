@@ -69,13 +69,16 @@ export default class Steps extends React.Component {
     render() {  
         return ( 
             <div class='step step-1' ref='step1' style={{display: this.props.step == 1 ? 'block' : 'none' }}>
-                <div class='header'>Basic info</div>
+                <div class='header'>{chrome.i18n.getMessage('steps_title_1')}</div>
 
                 <div class='name-container'>
-                    type your name here: <input type='text' class='name-input' ref='nameInput' onChange = { this.nameChanged } onKeyPress = {this.handleKeyPress} /><br/>
-                    or click <a href='#' onClick = { () => this.prepareName('Incognito') } class='incognito'>here</a> to stay incognito
+                    {chrome.i18n.getMessage('step1_type_your_name')}: <input type='text' class='name-input' ref='nameInput' onChange = { this.nameChanged } onKeyPress = {this.handleKeyPress} /><br/>
+                    
+                    {chrome.i18n.getMessage('step1_or_click')} <a href='#' onClick = { () => this.prepareName('Incognito') } class='incognito'>{chrome.i18n.getMessage('global_here')}</a> {chrome.i18n.getMessage('step1_to_stay')}
                 </div>
-                <button class='button-save locked' ref='setNameButton' onClick = { this.prepareName }>Next</button>
+                <button class='button-save locked' ref='setNameButton' onClick = { this.prepareName }>
+                    {chrome.i18n.getMessage('global_next')}
+                </button>
 
                 <div class='check'><img src={ Check }/></div>
             </div>

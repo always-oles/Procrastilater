@@ -217,16 +217,16 @@ function addNewBookmark() {
 		chrome.storage.local.set({ needsFoldersUpdate: moment().format('X')	});
 
 		// notification message
-		let message = pageTitle + ' is added to ' + folderTitle + ' folder';
+		let message = pageTitle + chrome.i18n.getMessage('background_is_added_to') + folderTitle + ' ' + chrome.i18n.getMessage('background_folder');
 
 		// add explanation
 		if (!custom) {
-			message += ', because it\'s currently in our pool!';
+			message += ', ' + chrome.i18n.getMessage('background_because');
 		}
 
 		chrome.notifications.create('1', {
 			type: 'basic',
-			title: 'Success!',
+			title: chrome.i18n.getMessage('background_success'),
 			iconUrl: '/icons/icon48.png',
 			message: message
 		}, id => {
@@ -466,13 +466,10 @@ function removePopupsScript(tabId) {
 
 
 
-
-
-
-
-
-
-
+/**
+ * Generate new token for user
+ * it's used for backend calls + uninstall tracking
+ */
 function getRandomToken() {
     var randomPool = new Uint8Array(16);
     crypto.getRandomValues(randomPool);
@@ -484,7 +481,8 @@ function getRandomToken() {
 }
 
 /**
- * Once extension is installed - generate unique token for user
+ * Once extension is installed/updated
+ * Generate unique token for user if not exists
  */
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason == 'install') {

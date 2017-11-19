@@ -32,11 +32,6 @@ export default class Steps extends React.Component {
     }
 
     onNextClick() {
-        // check if user checked few times and didnt enter amount
-        if ( this.state.frequency === SCHEDULE.FREQUENCY.FEW_TIMES && this.state.times === null ) {
-            return toastr.error('Please enter how many times a day you want PL to remind you about bookmarks');
-        }
-
         // save schedule
         this.props.setSchedule(this.state);
 
@@ -73,29 +68,29 @@ export default class Steps extends React.Component {
         return (
             <div class='step step-3 schedule' ref='step3' style={{display: this.props.step == 3 ? 'block' : 'none' }}>
                 <form>
-                    <div class='header'>Schedule</div>
+                    <div class='header'>{chrome.i18n.getMessage('steps_title_3')}</div>
                 
                     <div class='list'>
-                        <div class='title'>Reminder will appear:</div>
+                        <div class='title'>{chrome.i18n.getMessage('schedule_reminder_will_appear')}:</div>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.MANUAL } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.MANUAL }/>
-                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >I will open bookmarks manually</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >{chrome.i18n.getMessage('schedule_manually')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
                         <input type='text' onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
-                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >times a day</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >{chrome.i18n.getMessage('schedule_times')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
-                        <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >every day</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >{chrome.i18n.getMessage('schedule_every_day')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_2_DAYS } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_2_DAYS }/> 
-                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >every 2 days</label>
+                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >{chrome.i18n.getMessage('schedule_every_2_days')}</label>
                     </div>
     
                     <div class='list'>
-                        <div class='title'>Period:</div>
+                        <div class='title'>{chrome.i18n.getMessage('schedule_period')}:</div>
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.RANDOM } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.RANDOM } /> 
-                        <label for={ SCHEDULE.PERIOD.RANDOM } >totally random</label><br/>
+                        <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label><br/>
     
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.MORNING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.MORNING } /> 
                         <label for={ SCHEDULE.PERIOD.MORNING } >6:00 - 12:00</label><br/>
@@ -109,8 +104,12 @@ export default class Steps extends React.Component {
                 </form>
 
                 <div class='buttons-container'>
-                    <button class='button-back' onClick = { this.onPreviousClick }>Back</button>
-                    <button class='button-save' onClick = { this.onNextClick }>Done</button>
+                    <button class='button-back' onClick = { this.onPreviousClick }>
+                        {chrome.i18n.getMessage('global_back')}
+                    </button>
+                    <button class='button-save' onClick = { this.onNextClick }>
+                        {chrome.i18n.getMessage('global_done')}
+                    </button>
                 </div>
 
                 <div class='check'><img src={ Check }/></div>                                

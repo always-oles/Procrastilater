@@ -43,6 +43,5 @@
     "notifications",
     "storage",
     "cookies"
-  ],
-  "content_security_policy": "script-src 'self' https://google.com/; object-src 'self'"
+  ]
 }

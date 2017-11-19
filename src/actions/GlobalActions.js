@@ -77,6 +77,7 @@ export function saveFolders(folders) {
         prepareStats(dispatch, folders, state.global.allVisitedIds, () => {
             // when everything is finished - update backend and get new total stats from it
             getStatsFromBackend(dispatch, getState);
+            checkAndGenerateTimer(dispatch, getState);
         });
     }
 }
@@ -85,7 +86,8 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
     var 
         bookmarks       = [],
         foldersCount    = 0, 
-        foldersDone     = 0;
+        foldersDone     = 0,
+        foldersFound    = false;
     
     // get all user bookmarks as a tree object
     chrome.bookmarks.getTree((results) => {
@@ -104,6 +106,11 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
     function findObjects(items) {
         // go through objects
         for (let i in items) {
+
+            // check if at least one folder selected exists
+            if ( foldersIds.indexOf(items[i].id)!== -1 ) {
+                foldersFound = true;
+            }
         
             // if it's a folder - go deeper
             if ( items[i].children ) {
@@ -153,10 +160,18 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
                 bookmarksCount: bookmarks.length
             }
         });
-    
-        // check for achievements after new folders selection
+
+        // rare case: not a single selected folders exist
+        if (foldersFound == false) {
+            dispatch({
+                type: SAVE_FOLDERS,
+                payload: []
+            });
+        }
+
+        checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
+        
         if (saveFoldersCallback) {
-            checkAchievements(dispatch, bookmarks.length, 'foldersChanged');
             saveFoldersCallback();
         }
     }
@@ -488,6 +503,18 @@ export function listenForVisibilityChange() {
         // set the initial state (but only if browser supports the Page Visibility API)
         if( document[hidden] !== undefined )
             onchange({type: document[hidden] ? 'blur' : 'focus'});
+    }
+}
+
+/**
+ * Check if timer is expired and generate new if so
+ */
+function checkAndGenerateTimer(dispatch, getState) {
+    let currentState = getState();
+
+    // if timer is expired af
+    if (moment().format('X') > currentState.popups.nextPopupTime) {
+        generateTimer(false)(dispatch, getState);
     }
 }
 

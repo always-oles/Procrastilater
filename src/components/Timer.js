@@ -62,7 +62,7 @@ export default class Timer extends React.Component {
     getOutput(ends, manual) {
 
         if  ((this.state && this.state.manual) || manual ) {
-            return 'timer is disabled if you\'ve chosen a manual reminder appearance';
+            return chrome.i18n.getMessage('timer_disabled');
         }
 
         // // difference between next bookmark time expiration and now
@@ -93,7 +93,7 @@ export default class Timer extends React.Component {
         return ( 
             <div 
                 class = { 'timer ' + (this.state.manual ? 'text' : '')} 
-                title = { this.state.manual ? '' : 'Click to generate new timer'}
+                title = { this.state.manual ? '' : chrome.i18n.getMessage('timer_click_to_generate')}
                 onClick = { this.onClick }
                 ref = 'timerContainer'
             >{ this.state.output }</div>

@@ -1125,13 +1125,11 @@ template {
       background: #ccc; }
     .main-page .body .panel .alert {
       display: inline-block;
-      position: relative;
-      top: -2px;
       color: #fff;
       background: #ff0000;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 21px;
+      height: 21px;
       font-weight: 500;
       font-size: 1.5rem;
       line-height: normal;
@@ -1211,6 +1209,7 @@ template {
           float: right; }
 
 .main-page footer {
+  clear: both;
   text-align: center;
   padding: 0 0 15px 0; }
   .main-page footer .text {
@@ -1495,7 +1494,7 @@ template {
       margin-top: 10px; }
       .browser-action .main-container .timer .title {
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: 500; }
       .browser-action .main-container .timer .time {
         text-align: center;

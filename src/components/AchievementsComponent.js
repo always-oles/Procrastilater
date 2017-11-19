@@ -1,6 +1,3 @@
-import { checkAchievementsCaller, resetReceivedAchievement } from '../actions/GlobalActions';
-/* global $:jQuery */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -58,49 +55,55 @@ export default class AchievementsComponent extends React.Component {
     render() {
         return (
             <div class='panel achievements panel--blue'>
-                <div class='header'>Achievements</div>
+                <div class='header'>{chrome.i18n.getMessage('global_achievements')}</div>
                 <div class='list'>
                     <img 
                         class = {'item ' + (this.props.achievements.addedLots ? '' : 'locked')} 
                         src = {AchievementFolder}
                         title = { this.props.achievements.addedLots
-                            ? 'You\'ve added more than 40 bookmarks to shuffle!'
-                            : 'Locked: add 40+ bookmarks to shuffle to unlock'}
+                            ? chrome.i18n.getMessage('achievements_addedLots_unlocked')
+                            : chrome.i18n.getMessage('achievements_addedLots_locked')
+                        }
                     />
                     <img 
                         class = {'item opacity-06 ' + (this.props.achievements.social ? '' : 'locked')} 
                         src = {AchievementSocial} 
                         title = { this.props.achievements.social 
-                                ? 'You\'ve shared Procrastilater in 2 social networks!'
-                                : 'Locked: share Procrastilater in at least 2 social networks to unlock' }
+                                ? chrome.i18n.getMessage('achievements_social_unlocked')
+                                : chrome.i18n.getMessage('achievements_social_locked')
+                            }
                     />
                     <img 
                         class = {'item opacity-05 ' + (this.props.achievements.reviewer ? '' : 'locked')} 
                         src = {AchievementReviewer} 
                         title = { this.props.achievements.reviewer 
-                                ? 'You\'ve sent a message to developer!'
-                                : 'Locked: send your review/thoughts to developer to unlock' }
+                                ? chrome.i18n.getMessage('achievements_reviewer_unlocked')
+                                : chrome.i18n.getMessage('achievements_reviewer_locked')
+                            }
                     />
                     <img 
                         class = {'item ' + (this.props.achievements.visitor ? '' : 'locked')} 
                         src =  {AchievementMedal}
                         title = { this.props.achievements.visitor
-                                ? 'Good job! You\'ve visited more than 20 postponed bookmarks already!' 
-                                : 'Locked: visit 20+ bookmarks at all time to unlock'}
+                                ? chrome.i18n.getMessage('achievements_visitor_unlocked')
+                                : chrome.i18n.getMessage('achievements_visitor_locked')
+                            }
                     />
                     <img 
                         class = {'item opacity-06 ' + (this.props.achievements.postponer ? '' : 'locked')} 
                         src = {AchievementLazy}   
                         title = { this.props.achievements.postponer
-                                ? 'Ahh, come on! You\'ve postponed more than 10 bookmarks already'
-                                : 'Locked: postpone 10+ bookmarks to unlock'}
+                                ? chrome.i18n.getMessage('achievements_postponer_unlocked')
+                                : chrome.i18n.getMessage('achievements_postponer_locked')
+                            }
                     />
                     <img 
                         class = {'item ' + (this.props.achievements.manualOpener ? '' : 'locked')} 
                         src = {AchievementFinger} 
                         title = { this.props.achievements.manualOpener 
-                                ? 'Wow, what a dedication! You\'ve opened more than 15 bookmarks manually!'
-                                : 'Locked: open 15+ bookmarks manually to unlock' }
+                                ? chrome.i18n.getMessage('achievements_manualOpener_unlocked')
+                                : chrome.i18n.getMessage('achievements_manualOpener_locked')
+                            }
                     />
                 </div>
 
@@ -114,10 +117,14 @@ export default class AchievementsComponent extends React.Component {
                         <img class='finger' src={ Trophy }/> 
                         <img class='finger' src={ Trophy }/> 
 
-                        <div class='close' onClick = { this.onCloseClick } >✕</div>
+                        <div 
+                            class = 'close' 
+                            onClick = { this.onCloseClick }
+                            title = {chrome.i18n.getMessage('global_close')}
+                        >✕</div>
 
                         <div class='text'>
-                            Congratulations! You've just unlocked an achievement! Keep the good work!
+                            {chrome.i18n.getMessage('achievements_grats')}
                         </div>
                     </div>
                 </div>

@@ -24,31 +24,25 @@ var sharedAPI = {
         //return callback(moment().add(5,'minutes').format('X'), false);
         ////////////////////////////
     
-        let now                 = moment();
-    
-        let todayStart          = moment().startOf('day');
-        let todayEnd            = moment().endOf('day');
-    
-        let yesterdayStart      = moment().subtract(1, 'day').startOf('day');
-        let yesterdayEnd        = moment().subtract(1, 'day').endOf('day');
+        let 
+            now                 = moment(),
+            todayStart          = moment().startOf('day'),
+            todayEnd            = moment().endOf('day'),
         
-        let tomorrowStart       = moment().add(1, 'day').startOf('day');
-        let tomorrowEnd         = moment().add(1, 'day').endOf('day');
-    
-        let afterTomorrowEnd    = moment().add(2, 'day').endOf('day');
-    
-        let nextPopupTime     = moment.unix(state.popups.nextPopupTime);
-        //let nextPopupTime       = moment().add(1,'d');
-    
-        let scheduleTimes   = state.global.scheduleTimes;
-    
-        let popupsToday     = state.popups.popupsToday;
-        //let popupsToday     = 1;
-    
-        let period          = state.global.schedulePeriod;
-    
-        let resetPopupsToday = false;
-        console.log('nextPopupTime:',moment(nextPopupTime).format('ddd MMMM Do YYYY, HH:mm:ss'));
+            yesterdayStart      = moment().subtract(1, 'day').startOf('day'),
+            yesterdayEnd        = moment().subtract(1, 'day').endOf('day'),
+            
+            tomorrowStart       = moment().add(1, 'day').startOf('day'),
+            tomorrowEnd         = moment().add(1, 'day').endOf('day'),
+            afterTomorrowEnd    = moment().add(2, 'day').endOf('day'),
+        
+            nextPopupTime       = moment.unix(state.popups.nextPopupTime),
+            scheduleTimes       = state.global.scheduleTimes,
+            popupsToday         = state.popups.popupsToday,
+            period              = state.global.schedulePeriod,
+            resetPopupsToday    = false;
+
+        console.log('nextPopupTime:', moment(nextPopupTime).format('ddd MMMM Do YYYY, HH:mm:ss'));
     
         // if there is no timer yet
         if ( state.popups.nextPopupTime == null && state.global.scheduleFrequency != SCHEDULE.FREQUENCY.MANUAL ) {
@@ -73,8 +67,8 @@ var sharedAPI = {
                         prepareTimer('today', period);
                     } else {
                         // everything is ok and we have next timer
-                        // but if invoked manually - generate new anyway
-                        if (manualInvoke) 
+                        // but if invoked manually - force generate new anyway
+                        if (manualInvoke)
                             prepareTimer('today', period);
                     }
                 break;
@@ -159,9 +153,10 @@ var sharedAPI = {
         function prepareTimer(when, period, timesPerDay = 1, popupsToday = 0) {
             console.warn('going to generate timer:', when, period);
     
-            let periodStart, periodEnd;    
+            let periodStart, periodEnd;
+        
+            // add 5 minutes from now to prevent popping up immediately
             let now = moment().add(5, 'minutes');
-            //let now = moment().startOf('day').add(23,'h');
     
             // generate for today
             if ( when === 'today' ) {

@@ -30,7 +30,7 @@ export default class Steps extends React.Component {
 
     onNextClick() {
         if ( !this.props.foldersIds.length ) {
-            toastr.error('Please choose at least 1 folder or create one');
+            toastr.error(chrome.i18n.getMessage('step2_nofolders'));
         } else {
             this.nextStep();
         }
@@ -68,16 +68,15 @@ export default class Steps extends React.Component {
     render() {  
         return ( 
             <div class='step step-2' ref='step2' style={{display: this.props.step == 2 ? 'block' : 'none' }}>
-                <div class='header'>Workspace</div>
+                <div class='header'>{chrome.i18n.getMessage('steps_title_2')}</div>
 
                 <div class='description'>
-                    You have to select folders where I should take 
-                    bookmarks from.
+                    {chrome.i18n.getMessage('step2_description')}
                 </div>
 
                 <div class='create-folder' style = {{display: this.state.createdCustom ? 'none' : 'block' }}>
-                    We <strong>suggest</strong> you creating a custom folder where you can store your new bookmarks for reminding.
-                    Click <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>here</a> to create it.
+                    {chrome.i18n.getMessage('step2_we')} <strong>{chrome.i18n.getMessage('step2_suggest')}</strong> {chrome.i18n.getMessage('step2_creating')} <br/>
+                    {chrome.i18n.getMessage('step2_click')} <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>{chrome.i18n.getMessage('global_here')}</a> {chrome.i18n.getMessage('step2_to_create_it')}
                 </div> 
                 
                 <BookmarksList 
@@ -87,8 +86,13 @@ export default class Steps extends React.Component {
                 ></BookmarksList>
 
                 <div class='buttons-container'>
-                    <button class='button-back' onClick = { this.onPreviousClick }>Back</button>
-                    <button class={'button-save ' + (this.state.nextLocked ? 'locked': '') } onClick = { this.onNextClick }>Next</button>
+                    <button class='button-back' onClick = { this.onPreviousClick }>
+                        {chrome.i18n.getMessage('global_back')}
+                    </button>
+
+                    <button class={'button-save ' + (this.state.nextLocked ? 'locked': '') } onClick = { this.onNextClick }>
+                        {chrome.i18n.getMessage('global_next')}
+                    </button>
                 </div>
 
                 <div class='check'><img src={ Check }/></div>                

@@ -19,7 +19,7 @@ export default class ProgressComponent extends React.Component {
             if (this.props.global.visitedIds.length == this.props.stats.bookmarksCount) {
                 return (
                     <div class='note'>
-                        Well done! You've visited all postponed bookmarks!
+                        {chrome.i18n.getMessage('progress_done')}
                     </div>
                 );
             } 
@@ -27,13 +27,15 @@ export default class ProgressComponent extends React.Component {
             else {
                 return (
                     <div class='note'>
-                        You’ve dealt with { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } postponed bookmarks!
+                        {chrome.i18n.getMessage('progress_youve_dealt')} { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } {chrome.i18n.getMessage('progress_postponed_bookmarks')}!
                     </div>
                 );
             }
         } else {
             return (
-                <div class='note'>You have no bookmarks in selected folders yet</div>
+                <div class='note'>
+                    {chrome.i18n.getMessage('progress_no_bookmarks')}
+                </div>
             );
         }
     }
@@ -41,8 +43,11 @@ export default class ProgressComponent extends React.Component {
     render() {
         return (
             <div class='progress-container'>
-                <div class='title'>Your overall progress:</div>
-                <div class= {'progress-bar-full ' + (this.calculate() == 1 ? 'onepercent' : '')} title='Your progress bar'>
+                <div class='title'>{chrome.i18n.getMessage('progress_overall_progress')}:</div>
+                <div 
+                    class={'progress-bar-full ' + (this.calculate() == 1 ? 'onepercent' : '')} 
+                    title={chrome.i18n.getMessage('progress_your_progressbar')}
+                >
                     <div class='bar' style={{ width: this.calculate() + '%' }}></div>
                     <div class='text'>{ this.calculate() }%</div>
                 </div>
