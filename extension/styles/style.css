@@ -1461,6 +1461,8 @@ template {
   animation: fadeIn 1s 1; }
   .help-container .video-container {
     position: relative; }
+    .help-container .video-container iframe {
+      border: 1px solid #000; }
     .help-container .video-container .close-button {
       position: absolute;
       top: -20px;

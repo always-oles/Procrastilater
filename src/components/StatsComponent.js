@@ -30,7 +30,8 @@ export default class StatsComponent extends React.Component {
     calculateDays() {
         if (this.props.global.tempo == 0) 
             return null;
-        return Math.round((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo);
+        console.warn((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo)
+        return Math.ceil((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo);
     }
 
     getPercentage() {
@@ -47,9 +48,13 @@ export default class StatsComponent extends React.Component {
                 <div class='header'>{chrome.i18n.getMessage('stats_header')}</div>
                 <div class='content'>
                     
-                    <div class='important' style={{ display: (this.calculateDays() ? 'block' : 'none') }}>{chrome.i18n.getMessage('stats_such_tempo')} <span class='value'>{ this.calculateDays() } {chrome.i18n.getMessage('stats_days')}</span></div>
+                    <div class='important' style={{ display: (this.calculateDays() ? 'block' : 'none') }}>
+                        {chrome.i18n.getMessage('stats_such_tempo')} <span class='value'>{ this.calculateDays() } {chrome.i18n.getMessage('stats_days')}</span>
+                    </div>
 
-                    <div class='important' style={{ display: (this.getPercentage() ? 'block' : 'none') }} >{chrome.i18n.getMessage('stats_you_have')} <span class='value'>{ this.getPercentage() }%</span> {chrome.i18n.getMessage('stats_of_all_users')}</div>
+                    <div class='important' style={{ display: (this.getPercentage() ? 'block' : 'none') }} >
+                        {chrome.i18n.getMessage('stats_you_have')} <span class='value'>{ this.getPercentage() }%</span> {chrome.i18n.getMessage('stats_of_all_users')}
+                    </div>
                     
                     <div class='group'>
                         <div class='item'>

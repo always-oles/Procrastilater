@@ -2,49 +2,36 @@
   "context_menu_main": {
     "message": "ProcrastiLater"
   }
-
   ,"description": {
     "message": "Stop procrastinating! I will remind you about postponed bookmarks."
   }
-
   ,"popup_header_1": {
     "message": "The time has come" 
   }
-
   ,"popup_header_2": {
     "message": "Stop postponing" 
   }
-
   ,"popup_header_3": {
     "message": "Hey, make a break" 
   }
-
   ,"popup_suggests": {
     "message": "The magic shuffle suggests you to open:" 
   }
-
   ,"popup_agree": {
     "message": "Do you agree?" 
   }
-
   ,"popup_button_yes": {
     "message": "Yes, open it" 
   }
-
   ,"popup_button_shuffle": {
     "message": "No, reshuffle" 
   }
-
   ,"popup_button_postpone": {
     "message": "No, postpone" 
   }
-
   ,"popup_button_postpone": {
     "message": "No, postpone" 
   }
-
-
-
 
 
   ,"global_back": {
@@ -95,10 +82,6 @@
   }
 
 
-
-
-
-
   
   ,"step2_description": {
     "message": "You have to select folders where I should take bookmarks from"
@@ -121,9 +104,6 @@
   ,"step2_nofolders": {
     "message": "Please choose at least 1 folder or create one"
   }
-
-
-
 
 
   ,"schedule_reminder_will_appear": {
@@ -153,6 +133,7 @@
   ,"schedule_saved": {
     "message": "Saved new schedule"
   }
+
 
   ,"achievements_grats": {
     "message": "Congratulations! You've just unlocked an achievement! Keep the good work!"
@@ -193,10 +174,6 @@
   ,"achievements_manualOpener_locked": {
     "message": "Locked: open 15+ bookmarks manually to unlockT"
   }
-
-
-
-
 
 
   ,"conversation_title": {
@@ -257,8 +234,6 @@
   ,"main_project": {
     "message": "project"
   }
-
-
 
 
   ,"progress_done": {
