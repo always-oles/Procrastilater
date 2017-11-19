@@ -247,6 +247,9 @@
     `;
     document.getElementsByTagName('head')[0].appendChild(style);
 
+    // 3 random headers
+    var randomHeader = Math.floor(Math.random() * 3) + 1;
+
     /**
      * Inject PL popup div
      */
@@ -258,7 +261,7 @@
       <div class='pl-popup'>
           <div class='pl-main-content'>
               <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
-              <div class='pl-title'>${chrome.i18n.getMessage('popup_header')}</div>
+              <div class='pl-title'>${chrome.i18n.getMessage('popup_header_'+randomHeader)}</div>
               <div class='pl-text'>
                 ${chrome.i18n.getMessage('popup_suggests')}<br/>
                 <span class='pl-bookmark-title'></span><br/>

@@ -7,8 +7,16 @@
     "message": "Stop procrastinating! I will remind you about postponed bookmarks."
   }
 
-  ,"popup_header": {
-    "message": "The time has come." 
+  ,"popup_header_1": {
+    "message": "The time has come" 
+  }
+
+  ,"popup_header_2": {
+    "message": "Stop postponing" 
+  }
+
+  ,"popup_header_3": {
+    "message": "Hey, make a break" 
   }
 
   ,"popup_suggests": {
