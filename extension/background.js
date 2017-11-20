@@ -272,16 +272,18 @@ function accept(data) {
 			}
 
 			// save new timer
-			newState.popups.nextPopupTime = newTime;
+			if (newTime) {
+				newState.popups.nextPopupTime = newTime;
+
+				// update background timer
+				updateTimer(newTime);
+			}
 			
 			// set new storage
 			chrome.storage.local.set({
 				state: newState,
 				needUpdate: moment().format('X')
 			});
-
-			// update background timer
-			updateTimer(newTime);
 		});
 	});
 }
@@ -336,7 +338,9 @@ function generateNewTimer(currentState) {
 	sharedAPI.generateTimer(false, currentState, newTime => {
 		
 		// save new timer
-		currentState.popups.nextPopupTime = newTime;
+		if (newTime) {
+			currentState.popups.nextPopupTime = newTime;
+		}
 		
 		// set new storage
 		chrome.storage.local.set({

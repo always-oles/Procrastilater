@@ -539,6 +539,9 @@ export function generateTimer(manualInvoke) {
             return;
 
         sharedAPI.generateTimer(manualInvoke, currentState, (nextPopupTime, resetPopupsToday) => {
+            // happens when no condition was met
+            if (!nextPopupTime) return;
+
             // notify background script 
             chrome.runtime.sendMessage({ action: 'updateTimer', data: nextPopupTime });            
 

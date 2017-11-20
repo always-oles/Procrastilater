@@ -90,17 +90,17 @@ class MainPage extends React.Component {
                         </div>
 
                         <div class='col-sm-4'>
-                            <AchievementsComponent 
-                                achievements             = { this.props.achievements }
-                                resetReceivedAchievement = { this.props.globalActions.resetReceivedAchievement }
-                                justReceived             = { this.props.global.justReceived }
-                                checkAchievementsCaller  = { this.props.globalActions.checkAchievementsCaller }
-                            />
                             <StatsComponent 
                                 visitedIds   = { this.props.global.visitedIds }
                                 stats        = { this.props.stats }
                                 global       = { this.props.global }
                                 achievements = { this.props.achievements }
+                            />
+                            <AchievementsComponent 
+                                achievements             = { this.props.achievements }
+                                resetReceivedAchievement = { this.props.globalActions.resetReceivedAchievement }
+                                justReceived             = { this.props.global.justReceived }
+                                checkAchievementsCaller  = { this.props.globalActions.checkAchievementsCaller }
                             />
                         </div>
                     </div>

@@ -42,7 +42,7 @@ var sharedAPI = {
             period              = state.global.schedulePeriod,
             resetPopupsToday    = false;
 
-        console.log('nextPopupTime:', moment(nextPopupTime).format('ddd MMMM Do YYYY, HH:mm:ss'));
+        //console.log('nextPopupTime:', moment(nextPopupTime).format('ddd MMMM Do YYYY, HH:mm:ss'));
     
         // if there is no timer yet
         if ( state.popups.nextPopupTime == null && state.global.scheduleFrequency != SCHEDULE.FREQUENCY.MANUAL ) {
@@ -280,7 +280,7 @@ var sharedAPI = {
             console.warn('random between in normal time: ', moment.unix(result).format('ddd MMMM Do YYYY, HH:mm:ss'));
     
             // call the main callback to action creator
-            callback(result, resetPopupsToday);
+            return callback(result, resetPopupsToday);
     
             /**
              * Helper function to call self with other first 
@@ -297,6 +297,12 @@ var sharedAPI = {
                 // just call self with new arguments
                 return prepareTimer(...newArguments);
             }
+        }
+
+        // if no condition was met - just call a callback
+        if (callback) {
+            console.warn('no condition was met');
+            return callback();
         }
     },
     

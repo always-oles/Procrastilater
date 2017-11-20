@@ -55,7 +55,7 @@ export default class StatsComponent extends React.Component {
 
     render() {
         return (
-            <div class='panel stats panel--gray'>
+            <div class='panel stats'>
                 <div class='header'>{chrome.i18n.getMessage('stats_header')}</div>
                 <div class='content'>
                     
