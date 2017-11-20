@@ -15,7 +15,7 @@
     "message": "Hey, make a break" 
   }
   ,"popup_suggests": {
-    "message": "The magic shuffle suggests you to open:" 
+    "message": "The magic shuffle suggests you to open" 
   }
   ,"popup_agree": {
     "message": "Do you agree?" 
@@ -35,7 +35,7 @@
     "message": "Back" 
   }
   ,"global_next": {
-    "message": "Next" 
+    "message": "Continue" 
   }
   ,"global_here": {
     "message": "here" 
@@ -58,7 +58,7 @@
 
 
   ,"steps_title_1": {
-    "message": "Basic info" 
+    "message": "Introduction" 
   }
   ,"steps_title_2": {
     "message": "Workspace" 
@@ -69,7 +69,7 @@
 
 
   ,"step1_type_your_name": {
-    "message": "type your name here" 
+    "message": "Your name here" 
   }
   ,"step1_or_click": {
     "message": "or click" 
@@ -227,8 +227,14 @@
   ,"folders_where_from": {
     "message": "You can change folders where I will take bookmarks from"
   }
+  ,"folders_saved": {
+    "message": "Saved new folders selection"
+  }
+  ,"folders_at_least_one": {
+    "message": "You must have at least 1 folder with bookmarks selected"
+  }
 
-
+  
   ,"main_hello": {
     "message": "Hello"
   }

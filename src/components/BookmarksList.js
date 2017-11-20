@@ -32,7 +32,7 @@ export default class FoldersList extends React.Component {
       // show error if user deselected all bookmarks
       if ( this.props.notify === true && Array.from(this.selectedFoldersSet).length == 1 ) {
         toastr.remove();
-        toastr.error('You must have at least 1 folder with bookmarks selected', null, {
+        toastr.error(chrome.i18n.getMessage('folders_at_least_one'), null, {
           positionClass: 'toast-bottom-left'
         });
         return;
@@ -56,7 +56,7 @@ export default class FoldersList extends React.Component {
 
       // debounce notification
       this.notifyTimeout = setTimeout(() => {
-        toastr.success('Saved new folders selection', null, {
+        toastr.success(chrome.i18n.getMessage('folders_saved'), null, {
           positionClass: 'toast-bottom-left'
         });
       }, 500);

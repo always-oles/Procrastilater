@@ -1,0 +1,369 @@
+{
+  "context_menu_main": {
+    "message": "Procrastilater"
+  }
+  ,"description": {
+    "message": "Досить відкладати на потім! Я нагадаю вам про відкладені та забуті закладки."
+  }
+  ,"popup_header_1": {
+    "message": "Час прийшов!" 
+  }
+  ,"popup_header_2": {
+    "message": "Досить відкладати!" 
+  }
+  ,"popup_header_3": {
+    "message": "Як на рахунок перерви?" 
+  }
+  ,"popup_suggests": {
+    "message": "Магічна випадковість пропонує вам відкрити" 
+  }
+  ,"popup_agree": {
+    "message": "Ви згодні?" 
+  }
+  ,"popup_button_yes": {
+    "message": "Так, відкрити" 
+  }
+  ,"popup_button_shuffle": {
+    "message": "Ні, іншу" 
+  }
+  ,"popup_button_postpone": {
+    "message": "Ні, відкласти" 
+  }
+
+
+  ,"global_back": {
+    "message": "Назад" 
+  }
+  ,"global_next": {
+    "message": "Продовжити" 
+  }
+  ,"global_here": {
+    "message": "сюди" 
+  }
+  ,"global_done": {
+    "message": "Завершити" 
+  }
+  ,"global_achievements": {
+    "message": "Досягнення" 
+  }
+  ,"global_send": {
+    "message": "Надіслати" 
+  }
+  ,"global_folders": {
+    "message": "Папки" 
+  }
+  ,"global_close": {
+    "message": "Закрити"
+  }
+
+
+  ,"steps_title_1": {
+    "message": "Знайомство" 
+  }
+  ,"steps_title_2": {
+    "message": "Робоча область" 
+  }
+  ,"steps_title_3": {
+    "message": "Розклад" 
+  }
+
+
+  ,"step1_type_your_name": {
+    "message": "Ваше ім'я" 
+  }
+  ,"step1_or_click": {
+    "message": "або натисніть" 
+  }
+  ,"step1_to_stay": {
+    "message": "щоб залишитись анонімом" 
+  }
+
+
+  ,"step2_description": {
+    "message": "Оберіть папки, звідки я буду брати закладки"
+  }
+  ,"step2_I": {
+    "message": "Я"
+  }
+  ,"step2_recommend": {
+    "message": "рекомендую"
+  }
+  ,"step2_you_to": {
+    "message": "вам"
+  }
+  ,"step2_click_here": {
+    "message": "натиснути сюди"
+  }
+  ,"step2_it_will": {
+    "message": "це створить нову папку, де я буду зберігати нові закладки"
+  }
+  ,"step2_nofolders": {
+    "message": "Виберіть хоча б 1 папку щоб продовжити"
+  }
+
+  ,"schedule_reminder_will_appear": {
+    "message": "Нагадувати"
+  }
+  ,"schedule_manually": {
+    "message": "Я буду відкривати вручну"
+  }
+  ,"schedule_times": {
+    "message": "разів в день"
+  }
+  ,"schedule_every_day": {
+    "message": "кожного дня"
+  }
+  ,"schedule_every_2_days": {
+    "message": "через день"
+  }
+  ,"schedule_period": {
+    "message": "Час нагадування"
+  }
+  ,"schedule_random": {
+    "message": "будь-який"
+  }
+  ,"schedule_max_value": {
+    "message": "Максимальне значення"
+  }
+  ,"schedule_saved": {
+    "message": "Новий розклад збережений"
+  }
+  ,"schedule_format": {
+    "message": "Формат"
+  }
+  ,"schedule_morning_24": {
+    "message": "6:00 - 12:00"
+  }
+  ,"schedule_morning_12": {
+    "message": "6 AM - 12 PM"
+  }
+  ,"schedule_noon_24": {
+    "message": "12:00 - 18:00"
+  }
+  ,"schedule_noon_12": {
+    "message": "12 PM - 6 PM"
+  }
+  ,"schedule_evening_24": {
+    "message": "18:00 - 0:00"
+  }
+  ,"schedule_evening_12": {
+    "message": "6 PM - 12 AM"
+  }
+
+  ,"achievements_grats": {
+    "message": "Вітаємо! Ви відкрили нове досягнення! Продовжуйте у тому ж дусі!"
+  }
+  ,"achievements_addedLots_unlocked": {
+    "message": "Ви додали більш ніж 40 закладок в загальний масив!"
+  }
+  ,"achievements_addedLots_locked": {
+    "message": "Заблоковано: додайте більш ніж 40 закладок в загальний масив, щоб розблокувати"
+  }
+  ,"achievements_social_unlocked": {
+    "message": "Ви поділились Прокрастилейтором більш ніж в двох соц. мережах!"
+  }
+  ,"achievements_social_locked": {
+    "message": "Заблоковано: поділіться розширенням в двох або більше соц. мережах, щоб розблокувати"
+  }
+  ,"achievements_reviewer_unlocked": {
+    "message": "Ви відправили повідомлення розробнику!"
+  }
+  ,"achievements_reviewer_locked": {
+    "message": "Заблоковано: надішліть свої думки/ідеї/відгук розробнику, щоб розблокувати"
+  }
+  ,"achievements_visitor_unlocked": {
+    "message": "Так тримати! Ви переглянули більш ніж 20 закладок!"
+  }
+  ,"achievements_visitor_locked": {
+    "message": "Заблоковано: перегляньте більш ніж 20 закладок, щоб розблокувати"
+  }
+  ,"achievements_postponer_unlocked": {
+    "message": "Може досить? Ви відклали на потім більш ніж 10 закладок"
+  }
+  ,"achievements_postponer_locked": {
+    "message": "Заблоковано: відкладіть на потім більш ніж 10 закладок, щоб розблокувати"
+  }
+  ,"achievements_manualOpener_unlocked": {
+    "message": "Вау, оце самовідданість! Ви відкрили більш ніж 15 закладок вручну!"
+  }
+  ,"achievements_manualOpener_locked": {
+    "message": "Заблоковано: відкрийте більш ніж 15 закладок вручну, щоб розблокувати"
+  }
+
+
+  ,"conversation_title": {
+    "message": "Давайте поспілкуємося"
+  }
+  ,"conversation_description": {
+    "message": "Ми б хотіли дізнатись як покращити розширення. Пишіть нам про свої ідеї та проблеми при роботі з ним!"
+  }
+  ,"conversation_from": {
+    "message": "Лист від"
+  }
+  ,"conversation_answer": {
+    "message": "Куди вам відповісти?"
+  }
+  ,"conversation_uhm_whacha_say": {
+    "message": "Що думаєте, що пропонуєте?"
+  }
+  ,"conversation_is_sent": {
+    "message": "Повідомлення надіслане."
+  }
+  ,"conversation_we_will_read": {
+    "message": "Ми дуже скоро його прочитаємо!"
+  }
+  ,"conversation_can_be_blank": {
+    "message": "Може бути порожнім"
+  }
+  
+
+  ,"folders_0_bookmarks": {
+    "message": "У вас немає закладок в обраних папках"
+  }
+  ,"folders_no_folders": {
+    "message": "Ви не вибрали жодної папки"
+  }
+  ,"folders_where_from": {
+    "message": "Ви можете обрати папки, звідки як буду брати закладки"
+  }
+  ,"folders_saved": {
+    "message": "Обрані папки збережені"
+  }
+  ,"folders_at_least_one": {
+    "message": "У вас має залишатись хоча б 1 вибрана папка"
+  }
+
+  ,"main_hello": {
+    "message": "Привіт"
+  }
+  ,"main_next_bookmark_appear": {
+    "message": "Наступне нагадування через"
+  }
+  ,"main_if_u_like": {
+    "message": "Якщо вам подобається цей додаток поділіться ним з друзями!"
+  }
+  ,"main_you_will_get": {
+    "message": "Ви розблокуєте досягнення, якщо поділитесь додатком мінімум в 2-х соц. мережах!"
+  }
+  ,"main_itsa": {
+    "message": "Це"
+  }
+  ,"main_free_open_source": {
+    "message": "безкоштовний проект з відкритим кодом"
+  }
+
+  ,"progress_done": {
+    "message": "Ви молодець! Всі закладки з вибраних папок відвідані!"
+  }
+  ,"progress_youve_dealt": {
+    "message": "Ви справились з"
+  }
+  ,"progress_postponed_bookmarks_1": {
+    "message": "відкладеної закладки"
+  }
+  ,"progress_postponed_bookmarks_2": {
+    "message": "відкладених закладок"
+  }
+  ,"progress_no_bookmarks": {
+    "message": "У вас немає закладок у вибраних папках"
+  }
+  ,"progress_overall_progress": {
+    "message": "Ваш загальний прогрес"
+  }
+  ,"progress_your_progressbar": {
+    "message": "Повзунок прогресу"
+  }
+
+
+  ,"stats_header": {
+    "message": "Статистика"
+  }
+  ,"stats_such_tempo": {
+    "message": "якщо ви продовжуватимете з таким темпом - ви переглянете всі закладки за"
+  }
+  ,"stats_day": {
+    "message": "день"
+  }
+  ,"stats_days_sm": {
+    "message": "дні"
+  }
+  ,"stats_days": {
+    "message": "днів"
+  }
+  ,"stats_you_have": {
+    "message": "У вас"
+  }
+  ,"stats_of_all_users": {
+    "message": "закладок всіх користувачів"
+  }
+  ,"stats_bookmarks": {
+    "message": "закладок"
+  }
+  ,"stats_visited_of_them": {
+    "message": "пройдено"
+  }
+  ,"stats_visited_all_time": {
+    "message": "всього пройдено"
+  }
+  ,"stats_postponed": {
+    "message": "відкладено"
+  }
+  ,"stats_achievements": {
+    "message": "досягнень"
+  }
+  ,"stats_total_users": {
+    "message": "всього користувачів"
+  }
+  ,"stats_total_visited": {
+    "message": "всього пройдено"
+  }
+  ,"stats_total_bookmarks": {
+    "message": "всього закладок"
+  }
+  ,"stats_average": {
+    "message": "в середньому"
+  }
+  ,"stats_all_users": {
+    "message": "Статистика всіх користувачів"
+  }
+
+
+  ,"timer_disabled": {
+    "message": "таймер вимкнений, якщо ви обрали відкриття вручну"
+  }
+  ,"timer_click_to_generate": {
+    "message": "Натисніть, щоб згенерувати інший час"
+  }
+
+
+  ,"browserAction_done": {
+    "message": "Ви відвідали всі закладки у вибраних папках!"
+  }
+  ,"browserAction_select_other": {
+    "message": "Виберить інші папки або додайте нові закладки, щоб продовжити"
+  }
+  ,"browserAction_open_now": {
+    "message": "Відкрити випадкову закладку"
+  }
+  ,"browserAction_add_this": {
+    "message": "Додати сайт в закладки"
+  }
+  ,"browserAction_open_settings": {
+    "message": "Відкрити налаштування"
+  }
+
+
+  ,"background_success": {
+    "message": "Успіх!"
+  }
+  ,"background_is_added_to": {
+    "message": "додано"
+  }
+  ,"background_folder": {
+    "message": "папку"
+  }
+  ,"background_because": {
+    "message": "тому що вона в списку обраних папок"
+  }
+
+}

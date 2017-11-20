@@ -865,6 +865,8 @@ template {
       margin: 40px auto;
       padding: 0 20px;
       font-size: 1.6rem; }
+      .steps .step.step-1 .name-container .br {
+        height: 15px; }
       .steps .step.step-1 .name-container .name-input {
         width: 120px;
         font-size: 1.5rem;
@@ -883,9 +885,9 @@ template {
         text-align: center;
         color: #F46464; }
       .steps .step.step-2 .description {
-        padding: 10px; }
+        padding: 20px 4px 10px; }
       .steps .step.step-2 .create-folder {
-        padding: 0 10px;
+        padding: 0 4px;
         margin: 5px 0 20px; }
     .steps .step.step-3 .title {
       font-size: 1.3rem;
@@ -1198,7 +1200,7 @@ template {
       vertical-align: top;
       margin: 10px 10px 0 0;
       width: 47%;
-      font-size: 1.2rem; }
+      font-size: 1.15rem; }
       .main-page .body .stats .content .group:nth-child(3) {
         padding-right: 10px;
         border-right: 1px solid #ccc; }
