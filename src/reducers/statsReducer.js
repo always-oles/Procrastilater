@@ -8,7 +8,10 @@ import {
 export default function stats(state = {}, action) {
     switch (action.type) {
         case SHARED_IN_SOCIAL:
-            return { ...state, shared: state.shared+1 }
+            return { 
+                ...state, 
+                shared: state.shared + 1 
+            }
         case UPDATE_BOOKMARKS_STATS:
             return { 
                 ...state, 

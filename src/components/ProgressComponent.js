@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import API from '../api';
 
 export default class ProgressComponent extends React.Component {
     constructor() {
@@ -11,6 +11,14 @@ export default class ProgressComponent extends React.Component {
 
     calculate() {
         return Math.round(this.props.global.visitedIds.length * 100 / this.props.stats.bookmarksCount) || 0;
+    }
+
+    pluralize(number) {
+        let one = chrome.i18n.getMessage('progress_postponed_bookmarks_1'),
+            two = chrome.i18n.getMessage('progress_postponed_bookmarks_2'),
+            five = two;
+
+        return API.pluralize(number, one, two, five);        
     }
 
     getNote() {
@@ -27,7 +35,7 @@ export default class ProgressComponent extends React.Component {
             else {
                 return (
                     <div class='note'>
-                        {chrome.i18n.getMessage('progress_youve_dealt')} { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } {chrome.i18n.getMessage('progress_postponed_bookmarks')}!
+                        {chrome.i18n.getMessage('progress_youve_dealt')} { this.props.global.visitedIds.length }/{ this.props.stats.bookmarksCount } {this.pluralize(this.props.stats.bookmarksCount)}!
                     </div>
                 );
             }

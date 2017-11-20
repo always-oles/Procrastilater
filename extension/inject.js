@@ -263,7 +263,7 @@
               <div class='pl-icon'><img src="${chrome.extension.getURL('images/alarm.svg')}" class='pl-alarm'/></div>
               <div class='pl-title'>${chrome.i18n.getMessage('popup_header_'+randomHeader)}</div>
               <div class='pl-text'>
-                ${chrome.i18n.getMessage('popup_suggests')}<br/>
+                ${chrome.i18n.getMessage('popup_suggests')}:<br/>
                 <span class='pl-bookmark-title'></span><br/>
                 ${chrome.i18n.getMessage('popup_agree')}
               </div>

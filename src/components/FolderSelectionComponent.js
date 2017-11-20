@@ -6,7 +6,7 @@ export default class FolderSelectionComponent extends React.Component {
     render() {
         return (
             <div class='panel np'>
-                <div class='header'>{chrome.i18n.getMessage('global_folders')} 
+                <div class='header'>{chrome.i18n.getMessage('steps_title_2')} 
                     <span 
                         title={chrome.i18n.getMessage('folders_0_bookmarks')} 
                         class={'alert ' + (this.props.emptyFolders && this.props.foldersIds.length ? '' : 'hidden')} 

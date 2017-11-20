@@ -94,7 +94,7 @@ html
   
   .list
     width: 80%
-    margin: 10px auto
+    margin: 10px auto 30px
     font-size: 1.2rem
     color: #666
     padding-left: 10px
@@ -139,7 +139,7 @@ html
     &.hidden
       display: none
     &.selected
-      background: #3FA9F5
+      background: #9ccbec
       &:hover
         color: inherit
 
@@ -189,3 +189,33 @@ html
 
 .clickable
   cursor: pointer
+
+.format
+  margin: 10px 0 10px
+  border-bottom: 1px dashed #ccc
+  display: inline-block
+
+  .format-label
+    top: 1px !important
+    left: 0  !important
+    
+  .format-buttons
+    display: inline-block
+    margin: 0 0 0 15px
+    a
+      font-size: 1rem
+      font-weight: 500 
+      color: #222
+      padding: 5px
+      text-decoration: none
+      border: 0px solid #ddd
+      background: #fff
+
+      &:hover,
+      &:focus
+        color: #222
+        text-decoration: none
+      
+      &.active
+        border: 0px solid #ffa73c
+        background: #ffa73c

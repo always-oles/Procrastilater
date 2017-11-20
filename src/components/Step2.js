@@ -75,8 +75,8 @@ export default class Steps extends React.Component {
                 </div>
 
                 <div class='create-folder' style = {{display: this.state.createdCustom ? 'none' : 'block' }}>
-                    {chrome.i18n.getMessage('step2_we')} <strong>{chrome.i18n.getMessage('step2_suggest')}</strong> {chrome.i18n.getMessage('step2_creating')} <br/>
-                    {chrome.i18n.getMessage('step2_click')} <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>{chrome.i18n.getMessage('global_here')}</a> {chrome.i18n.getMessage('step2_to_create_it')}
+                    {chrome.i18n.getMessage('step2_I')} <strong>{chrome.i18n.getMessage('step2_recommend')}</strong> {chrome.i18n.getMessage('step2_you_to')} <a href='#' onClick = { this.onCreateFolderClick } class='create-folder__button'>{chrome.i18n.getMessage('step2_click_here')}</a><br/>
+                    {chrome.i18n.getMessage('step2_it_will')}
                 </div> 
                 
                 <BookmarksList 

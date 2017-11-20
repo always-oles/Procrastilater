@@ -30,6 +30,7 @@ export const SEND_MESSAGE_ERROR = 'SEND_MESSAGE_ERROR';
 export const UPDATE_TOTAL_STATS = 'UPDATE_TOTAL_STATS';
 export const SET_NEXT_POPUP = 'SET_NEXT_POPUP';
 export const UPDATE_ENTIRE_STATE = 'UPDATE_ENTIRE_STATE';
+export const SET_HOUR_FORMAT = 'SET_HOUR_FORMAT';
 
 // achievements data
 export const ADDED_LOTS_ACHIEVEMENT_NUMBER = 40;

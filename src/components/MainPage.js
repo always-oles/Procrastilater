@@ -1,3 +1,4 @@
+import { setHourFormat } from '../actions/GlobalActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -84,20 +85,21 @@ class MainPage extends React.Component {
                                 schedulePeriod      = { this.props.global.schedulePeriod }
                                 scheduleTimes       = { this.props.global.scheduleTimes }
                                 setSchedule         = { this.props.globalActions.setSchedule }
+                                hourFormat          = { this.props.global.hourFormat}
                             />
                         </div>
 
                         <div class='col-sm-4'>
                             <AchievementsComponent 
-                                achievements = { this.props.achievements }
+                                achievements             = { this.props.achievements }
                                 resetReceivedAchievement = { this.props.globalActions.resetReceivedAchievement }
-                                justReceived = { this.props.global.justReceived }
-                                checkAchievementsCaller = { this.props.globalActions.checkAchievementsCaller }
+                                justReceived             = { this.props.global.justReceived }
+                                checkAchievementsCaller  = { this.props.globalActions.checkAchievementsCaller }
                             />
                             <StatsComponent 
-                                visitedIds = { this.props.global.visitedIds }
-                                stats = { this.props.stats }
-                                global = { this.props.global }
+                                visitedIds   = { this.props.global.visitedIds }
+                                stats        = { this.props.stats }
+                                global       = { this.props.global }
                                 achievements = { this.props.achievements }
                             />
                         </div>
@@ -107,7 +109,7 @@ class MainPage extends React.Component {
                         <div class='text'>{chrome.i18n.getMessage('main_if_u_like')}</div>
                         <div class='note'>
                             {chrome.i18n.getMessage('main_you_will_get')}<br/>
-                            {chrome.i18n.getMessage('main_itsa')} <a href='https://github.com/always-oles/Procrastilater' target='_blank'>{chrome.i18n.getMessage('main_free_open_source')}</a> {chrome.i18n.getMessage('main_project')}.
+                            {chrome.i18n.getMessage('main_itsa')} <a href='https://github.com/always-oles/Procrastilater' target='_blank'>{chrome.i18n.getMessage('main_free_open_source')}</a>.
                         </div>
                         <ShareComponent
                             sharedInSocial = { this.props.globalActions.sharedInSocial }
@@ -116,7 +118,7 @@ class MainPage extends React.Component {
                 </div>
 
                 <ConversationComponent 
-                    userName = {this.props.global.userName}
+                    userName    = {this.props.global.userName}
                     sendMessage = {this.props.globalActions.sendMessage}
                 />
             </div>

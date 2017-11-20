@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import API from '../api';
 
 export default class StatsComponent extends React.Component {
     constructor(props) {
@@ -8,6 +8,7 @@ export default class StatsComponent extends React.Component {
         this.countAchievements  = this.countAchievements.bind(this);
         this.calculateDays      = this.calculateDays.bind(this);
         this.getPercentage      = this.getPercentage.bind(this);
+        this.pluralize          = this.pluralize.bind(this);
     }
 
     componentWillReceiveProps() {
@@ -30,7 +31,6 @@ export default class StatsComponent extends React.Component {
     calculateDays() {
         if (this.props.global.tempo == 0) 
             return null;
-        console.warn((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo)
         return Math.ceil((this.props.stats.bookmarksCount-this.props.visitedIds.length) / this.props.global.tempo);
     }
 
@@ -42,6 +42,17 @@ export default class StatsComponent extends React.Component {
         return Math.min(Math.round(this.props.stats.bookmarksCount * 100 / this.props.stats.totalBookmarks), 100);
     }
 
+    // thanks https://gist.github.com/tomfun/830fa6d8030d16007bbab50a5b21ef97
+    pluralize() {
+        let number = this.calculateDays();
+
+        let one  = chrome.i18n.getMessage('stats_day'),
+            two  = chrome.i18n.getMessage('stats_days_sm'),
+            five = chrome.i18n.getMessage('stats_days');
+
+        return API.pluralize(number, one, two, five);
+    }
+
     render() {
         return (
             <div class='panel stats panel--gray'>
@@ -49,7 +60,7 @@ export default class StatsComponent extends React.Component {
                 <div class='content'>
                     
                     <div class='important' style={{ display: (this.calculateDays() ? 'block' : 'none') }}>
-                        {chrome.i18n.getMessage('stats_such_tempo')} <span class='value'>{ this.calculateDays() } {chrome.i18n.getMessage('stats_days')}</span>
+                        {chrome.i18n.getMessage('stats_such_tempo')} <span class='value'>{ this.calculateDays() } {this.pluralize()}</span>
                     </div>
 
                     <div class='important' style={{ display: (this.getPercentage() ? 'block' : 'none') }} >

@@ -23,6 +23,8 @@ export default class ConversationComponent extends React.Component {
 
     onSendClick(e) {
         if (e) e.preventDefault();
+        if (this.state.locked) return;
+
         this.setState({locked: true});
 
         this.props.sendMessage({
@@ -30,8 +32,6 @@ export default class ConversationComponent extends React.Component {
             'fromEmail':    this.refs.userEmail.value,
             'text':         this.refs.text.value,
         }, () => {
-            // unlock send button
-            this.setState({locked: false});
 
             // reset inputs
             this.refs.userEmail.value = '';
@@ -45,6 +45,7 @@ export default class ConversationComponent extends React.Component {
                 .delay(1500)
                 .fadeOut();
         });
+        
     }
 
     onTextChange(e) {

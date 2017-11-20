@@ -1,3 +1,4 @@
+import { setHourFormat } from '../actions/GlobalActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -99,14 +100,14 @@ class Steps extends React.Component {
     }
 
     render() {
-        const { step, foldersIds, stepPhase } = this.props.global;
-        const { setUsername, saveFolders, createCustomFolder, setSchedule } = this.props.globalActions;
+        const { step, foldersIds, stepPhase, hourFormat } = this.props.global;
+        const { setUsername, saveFolders, createCustomFolder, setSchedule, setHourFormat } = this.props.globalActions;
             
         return (
             <div class= { step == -1 ? 'hidden' :'steps' } >
                 <StepsBoxes
-                    ref='stepsBoxes'
-                    step={step}             
+                    ref  = 'stepsBoxes'
+                    step = {step}   
                 ></StepsBoxes>
 
                 <Step1
@@ -138,7 +139,9 @@ class Steps extends React.Component {
                     
                     nextStep = {this.nextStep}
                     previousStep = {this.previousStep}
-                    handleStepChange = {this.handleStepChange}            
+                    handleStepChange = {this.handleStepChange}
+                    setHourFormat = {setHourFormat}
+                    hourFormat = {hourFormat}
                 ></Step3>
             </div>
         )

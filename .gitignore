@@ -5,4 +5,5 @@ backend/node_modules
 extension/bundle.js
 extension.nex
 extension.pem
+extension.crx
 gulpfile.js

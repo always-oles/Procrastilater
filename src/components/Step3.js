@@ -1,3 +1,4 @@
+import { setHourFormat } from '../actions/GlobalActions';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SCHEDULE } from '../constants';
@@ -6,11 +7,12 @@ import Check from '../assets/images/check.svg';
 export default class Steps extends React.Component {
     constructor() {
         super();
-        this.onNextClick = this.onNextClick.bind(this);
-        this.onPreviousClick = this.onPreviousClick.bind(this);
-        this.onFrequencyChange = this.onFrequencyChange.bind(this);
-        this.onPeriodChange = this.onPeriodChange.bind(this);
-        this.onTimesChange = this.onTimesChange.bind(this);
+        this.onNextClick        = this.onNextClick.bind(this);
+        this.onPreviousClick    = this.onPreviousClick.bind(this);
+        this.onFrequencyChange  = this.onFrequencyChange.bind(this);
+        this.onPeriodChange     = this.onPeriodChange.bind(this);
+        this.onTimesChange      = this.onTimesChange.bind(this);
+        this.onInputClick       = this.onInputClick.bind(this);
 
         this.state = {
             frequency: SCHEDULE.FREQUENCY.MANUAL,
@@ -64,6 +66,16 @@ export default class Steps extends React.Component {
         this.setState({ times : +e.target.value });
     }
 
+    // make radio checked unpon input click
+    onInputClick() {
+        this.setState({ frequency : SCHEDULE.FREQUENCY.FEW_TIMES });
+    }
+
+    onFormatClick(e, format) {
+        e.preventDefault();
+        this.props.setHourFormat(format);
+    }
+
     render() {
         return (
             <div class='step step-3 schedule' ref='step3' style={{display: this.props.step == 3 ? 'block' : 'none' }}>
@@ -77,7 +89,7 @@ export default class Steps extends React.Component {
                         <label for={ SCHEDULE.FREQUENCY.MANUAL } >{chrome.i18n.getMessage('schedule_manually')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
-                        <input type='text' onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
+                        <input type='text'  onClick={this.onInputClick} onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
                         <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >{chrome.i18n.getMessage('schedule_times')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
@@ -88,18 +100,33 @@ export default class Steps extends React.Component {
                     </div>
     
                     <div class='list'>
-                        <div class='title'>{chrome.i18n.getMessage('schedule_period')}:</div>
+                        <div class='title'> {chrome.i18n.getMessage('schedule_period')}: </div>
+
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.RANDOM } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.RANDOM } /> 
                         <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label><br/>
     
+                        <div class='format'>
+                            <label class='format-label'>{chrome.i18n.getMessage('schedule_format')}:</label>
+                            <div class='format-buttons'>
+                                <a href='#' class={this.props.hourFormat == 24 ? 'active':''} onClick={(e) => this.onFormatClick(e,24)}>24</a>
+                                <a href='#' class={this.props.hourFormat == 12 ? 'active':''} onClick={(e) => this.onFormatClick(e,12)}>12</a>
+                            </div>
+                        </div><br/>
+
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.MORNING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.MORNING } /> 
-                        <label for={ SCHEDULE.PERIOD.MORNING } >6:00 - 12:00</label><br/>
+                        <label for={ SCHEDULE.PERIOD.MORNING } >
+                            {chrome.i18n.getMessage('schedule_morning_'+this.props.hourFormat)}
+                        </label><br/>
     
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.NOON } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.NOON } />  
-                        <label for={ SCHEDULE.PERIOD.NOON } >12:00 - 18:00</label><br/>
+                        <label for={ SCHEDULE.PERIOD.NOON } >
+                            {chrome.i18n.getMessage('schedule_noon_'+this.props.hourFormat)}
+                        </label><br/>
     
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.EVENING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.EVENING } />
-                        <label for={ SCHEDULE.PERIOD.EVENING } >18:00 - 0:00</label>
+                        <label for={ SCHEDULE.PERIOD.EVENING } >
+                            {chrome.i18n.getMessage('schedule_evening_'+this.props.hourFormat)}
+                        </label>
                     </div>
                 </form>
 
@@ -124,5 +151,7 @@ Steps.propTypes = {
     nextStep: PropTypes.func.isRequired,
     previousStep: PropTypes.func.isRequired,
     handleStepChange: PropTypes.func.isRequired,
-    setSchedule: PropTypes.func.isRequired
+    setSchedule: PropTypes.func.isRequired,
+    setHourFormat: PropTypes.func.isRequired,
+    hourFormat: PropTypes.number.isRequired
 }

@@ -1,9 +1,365 @@
 {
   "context_menu_main": {
-    "message": "ProcrastiLater"
+    "message": "Procrastilater"
+  }
+  ,"description": {
+    "message": "Перестаньте откладывать на потом! Я напомню об отложенных и забытых закладках."
+  }
+  ,"popup_header_1": {
+    "message": "Настал тот момент!"
+  }
+  ,"popup_header_2": {
+    "message": "Хватит откладывать" 
+  }
+  ,"popup_header_3": {
+    "message": "Может уже пора?" 
+  }
+  ,"popup_suggests": {
+    "message": "Магическая случайность предлагает вам открыть" 
+  }
+  ,"popup_agree": {
+    "message": "Вы согласны?" 
+  }
+  ,"popup_button_yes": {
+    "message": "Да, открыть" 
+  }
+  ,"popup_button_shuffle": {
+    "message": "Нет, другую" 
+  }
+  ,"popup_button_postpone": {
+    "message": "Нет, отложить" 
   }
 
-  ,"description": {
-    "message": "В первую очередь - это приложение..."
+
+  ,"global_back": {
+    "message": "Назад" 
   }
+  ,"global_next": {
+    "message": "Продолжить" 
+  }
+  ,"global_here": {
+    "message": "сюда" 
+  }
+  ,"global_done": {
+    "message": "Закончить" 
+  }
+  ,"global_achievements": {
+    "message": "Достижения" 
+  }
+  ,"global_send": {
+    "message": "Отправить" 
+  }
+  ,"global_folders": {
+    "message": "Папки" 
+  }
+  ,"global_close": {
+    "message": "Закрыть"
+  }
+
+
+  ,"steps_title_1": {
+    "message": "Базовая информация" 
+  }
+  ,"steps_title_2": {
+    "message": "Рабочая область" 
+  }
+  ,"steps_title_3": {
+    "message": "Расписание" 
+  }
+
+
+  ,"step1_type_your_name": {
+    "message": "Ваше имя" 
+  }
+  ,"step1_or_click": {
+    "message": "или нажмите" 
+  }
+  ,"step1_to_stay": {
+    "message": "чтобы остаться анонимом" 
+  }
+
+
+  
+  ,"step2_description": {
+    "message": "Выберите папки, откуда я буду брать закладки"
+  }
+  ,"step2_I": {
+    "message": "Я"
+  }
+  ,"step2_recommend": {
+    "message": "рекомендую"
+  }
+  ,"step2_you_to": {
+    "message": "вам"
+  }
+  ,"step2_click_here": {
+    "message": "нажать сюда"
+  }
+  ,"step2_it_will": {
+    "message": "это создаст новую папку, где я буду хранить новые закладки"
+  }
+  ,"step2_nofolders": {
+    "message": "Выберите хотя бы 1 папку чтобы продолжить"
+  }
+
+  ,"schedule_reminder_will_appear": {
+    "message": "Напоминать"
+  }
+  ,"schedule_manually": {
+    "message": "Я буду открывать вручную"
+  }
+  ,"schedule_times": {
+    "message": "раз в день"
+  }
+  ,"schedule_every_day": {
+    "message": "каждый день"
+  }
+  ,"schedule_every_2_days": {
+    "message": "через день"
+  }
+  ,"schedule_period": {
+    "message": "Время напоминания"
+  }
+  ,"schedule_random": {
+    "message": "случайно"
+  }
+  ,"schedule_max_value": {
+    "message": "Максимальное значение"
+  }
+  ,"schedule_saved": {
+    "message": "Новое расписание сохранено"
+  }
+  ,"schedule_format": {
+    "message": "Формат"
+  }
+  ,"schedule_morning_24": {
+    "message": "6:00 - 12:00"
+  }
+  ,"schedule_morning_12": {
+    "message": "6 AM - 12 PM"
+  }
+  ,"schedule_noon_24": {
+    "message": "12:00 - 18:00"
+  }
+  ,"schedule_noon_12": {
+    "message": "12 PM - 6 PM"
+  }
+  ,"schedule_evening_24": {
+    "message": "18:00 - 0:00"
+  }
+  ,"schedule_evening_12": {
+    "message": "6 PM - 12 AM"
+  }
+
+  ,"achievements_grats": {
+    "message": "Поздравляю! Вы открыли новое достижение! Продолжайте в том же духе!"
+  }
+  ,"achievements_addedLots_unlocked": {
+    "message": "Вы добавили больше 40 закладок в общий пул!"
+  }
+  ,"achievements_addedLots_locked": {
+    "message": "Заблокировано: добавьте больше 40 закладок в общий пул, чтобы разблокировать"
+  }
+  ,"achievements_social_unlocked": {
+    "message": "Вы поделились Прокрастилейтором более чем в двух соц. сетях!"
+  }
+  ,"achievements_social_locked": {
+    "message": "Заблокировано: поделитесь расширением в двух или больше соц. сетях, чтобы разблокировать"
+  }
+  ,"achievements_reviewer_unlocked": {
+    "message": "Вы отправили сообщение разработчику!"
+  }
+  ,"achievements_reviewer_locked": {
+    "message": "Заблокировано: отправьте свои мысли/идеи/отзыв разработчику, чтобы разблокировать"
+  }
+  ,"achievements_visitor_unlocked": {
+    "message": "Так держать! Вы уже просмотрели больше 20 закладок!"
+  }
+  ,"achievements_visitor_locked": {
+    "message": "Заблокировано: посмотрите больше 20 закладок, чтобы разблокировать"
+  }
+  ,"achievements_postponer_unlocked": {
+    "message": "Может хватит? Вы отложили на потом больше 10 закладок"
+  }
+  ,"achievements_postponer_locked": {
+    "message": "Заблокировано: отложите больше 10 закладок, чтобы разблокировать"
+  }
+  ,"achievements_manualOpener_unlocked": {
+    "message": "Вау, вот это самоотдача! Вы открыли больше 15 закладок вручную!"
+  }
+  ,"achievements_manualOpener_locked": {
+    "message": "Заблокировано: откройте больше 15 закладок вручную, чтобы разблокировать"
+  }
+
+
+  ,"conversation_title": {
+    "message": "Давайте пообщаемся"
+  }
+  ,"conversation_description": {
+    "message": "Мы бы хотели узнать как улучшить приложение. Пишите нам о своих идеях и проблемах при работе с ним!"
+  }
+  ,"conversation_from": {
+    "message": "Письмо от"
+  }
+  ,"conversation_answer": {
+    "message": "Куда вам ответить?"
+  }
+  ,"conversation_uhm_whacha_say": {
+    "message": "Что вы думаете, что предлагаете?"
+  }
+  ,"conversation_is_sent": {
+    "message": "Сообщение отправлено."
+  }
+  ,"conversation_we_will_read": {
+    "message": "Мы очень скоро его прочтем!"
+  }
+  ,"conversation_can_be_blank": {
+    "message": "Может быть пустым"
+  }
+  
+
+  ,"folders_0_bookmarks": {
+    "message": "У вас нет закладок в выбранных папках"
+  }
+  ,"folders_no_folders": {
+    "message": "Вы не выбрали ни одной папки"
+  }
+  ,"folders_where_from": {
+    "message": "Вы можете выбрать папки, откуда я буду брать закладки"
+  }
+
+
+  ,"main_hello": {
+    "message": "Привет"
+  }
+  ,"main_next_bookmark_appear": {
+    "message": "Следующее напоминание через"
+  }
+  ,"main_if_u_like": {
+    "message": "Если вам нравится расширение - поделитесь им с друзьями!"
+  }
+  ,"main_you_will_get": {
+    "message": "Вы получите достижение, если поделитесь приложением минимум в 2-х соц. сетях!"
+  }
+  ,"main_itsa": {
+    "message": "Это"
+  }
+  ,"main_free_open_source": {
+    "message": "бесплатный проект с открытым исходным кодом"
+  }
+
+  ,"progress_done": {
+    "message": "Вы молодец! Все закладки из выбранных папок посещены!"
+  }
+  ,"progress_youve_dealt": {
+    "message": "Вы справились с"
+  }
+  ,"progress_postponed_bookmarks_1": {
+    "message": "отложенной закладки"
+  }
+  ,"progress_postponed_bookmarks_2": {
+    "message": "отложенных закладок"
+  }
+  ,"progress_no_bookmarks": {
+    "message": "У вас нет новых закладок в выбранных папках"
+  }
+  ,"progress_overall_progress": {
+    "message": "Ваш общий прогресс"
+  }
+  ,"progress_your_progressbar": {
+    "message": "Ползунок прогресса"
+  }
+
+
+  ,"stats_header": {
+    "message": "Статистика"
+  }
+  ,"stats_such_tempo": {
+    "message": "если вы продолжите с таким же темпом - вы просмотрите все закладки за"
+  }
+  ,"stats_day": {
+    "message": "день"
+  }
+  ,"stats_days_sm": {
+    "message": "дня"
+  }
+  ,"stats_days": {
+    "message": "дней"
+  }
+  ,"stats_you_have": {
+    "message": "У вас"
+  }
+  ,"stats_of_all_users": {
+    "message": "закладок всех пользователей"
+  }
+  ,"stats_bookmarks": {
+    "message": "закладок"
+  }
+  ,"stats_visited_of_them": {
+    "message": "пройдено"
+  }
+  ,"stats_visited_all_time": {
+    "message": "всего пройдено"
+  }
+  ,"stats_postponed": {
+    "message": "отложено"
+  }
+  ,"stats_achievements": {
+    "message": "достижений"
+  }
+  ,"stats_total_users": {
+    "message": "всего пользователей"
+  }
+  ,"stats_total_visited": {
+    "message": "всего просмотрено"
+  }
+  ,"stats_total_bookmarks": {
+    "message": "всего закладок"
+  }
+  ,"stats_average": {
+    "message": "в среднем на чел."
+  }
+  ,"stats_all_users": {
+    "message": "Статистика всех пользователей"
+  }
+
+
+  ,"timer_disabled": {
+    "message": "таймер отключен, если вы выбрали открытие вручную"
+  }
+  ,"timer_click_to_generate": {
+    "message": "Нажмите, чтобы сгенерировать новое время"
+  }
+
+
+  ,"browserAction_done": {
+    "message": "Вы посетили все закладки в выбранных папках!"
+  }
+  ,"browserAction_select_other": {
+    "message": "Выберите другие папки или добавьте новые закладки, чтобы продолжить"
+  }
+  ,"browserAction_open_now": {
+    "message": "Открыть случайную закладку"
+  }
+  ,"browserAction_add_this": {
+    "message": "Добавить сайт в закладки"
+  }
+  ,"browserAction_open_settings": {
+    "message": "Открыть настройки"
+  }
+
+
+  ,"background_success": {
+    "message": "Успех!"
+  }
+  ,"background_is_added_to": {
+    "message": "добавлено"
+  }
+  ,"background_folder": {
+    "message": "папку"
+  }
+  ,"background_because": {
+    "message": "потому что она выбрана в списке папок"
+  }
+
 }

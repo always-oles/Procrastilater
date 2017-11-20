@@ -54,7 +54,7 @@ export default class AchievementsComponent extends React.Component {
 
     render() {
         return (
-            <div class='panel achievements panel--blue'>
+            <div class='panel achievements'>
                 <div class='header'>{chrome.i18n.getMessage('global_achievements')}</div>
                 <div class='list'>
                     <img 

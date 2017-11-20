@@ -9,10 +9,13 @@ import {
     GIVE_ACHIEVEMENT,
     RESET_RECEIVED_ACHIEVEMENT,
     UPDATE_BOOKMARKS_STATS,
-    UPDATE_ENTIRE_STATE
+    UPDATE_ENTIRE_STATE,
+    SET_HOUR_FORMAT
 } from '../constants';
 
 export default function global(state = {}, action) {
+    let cleanArray;
+
     switch (action.type) {
         case SET_STEP:
             return { ...state, step: action.payload }      
@@ -23,7 +26,8 @@ export default function global(state = {}, action) {
         case SET_USERNAME:
             return { ...state, userName: action.payload }
         case SAVE_FOLDERS:
-            return { ...state, foldersIds: action.payload }
+            cleanArray = action.payload.filter(n => n !== null);
+            return { ...state, foldersIds: cleanArray }
         case CREATE_CUSTOM_FOLDER:
             return { ...state, customFolder: action.payload }
         case SET_SCHEDULE:
@@ -46,6 +50,11 @@ export default function global(state = {}, action) {
                 visitedIds: (action.payload.visitedIds && (action.payload.visitedIds > state.visitedIds )) 
                             ? action.payload.visitedIds
                             : state.visitedIds
+            }
+        case SET_HOUR_FORMAT:
+            return {
+                ...state,
+                hourFormat: action.payload
             }
         default:
             return state;

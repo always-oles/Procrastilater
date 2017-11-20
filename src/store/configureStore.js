@@ -19,6 +19,7 @@ const defaultInitialState = {
         visitedIds: [],
         allVisitedIds: [],
         customFolder: null,
+        hourFormat: 24,
     
         scheduleFrequency: 'EVERY_DAY',
         schedulePeriod: 'RANDOM',

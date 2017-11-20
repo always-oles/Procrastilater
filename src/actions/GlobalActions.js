@@ -25,7 +25,8 @@ import {
     UPDATE_ENTIRE_STATE,
     UPDATE_TOTAL_STATS,
     VISITOR_LIMIT,
-    MAX_BOOKMARKS_DAILY
+    MAX_BOOKMARKS_DAILY,
+    SET_HOUR_FORMAT
 } from '../constants';
 
 
@@ -33,6 +34,13 @@ export function setStep(step) {
     return {
         type: SET_STEP,
         payload: step
+    }
+}
+
+export function setHourFormat(format) {
+    return {
+        type: SET_HOUR_FORMAT,
+        payload: format
     }
 }
 

@@ -94,13 +94,19 @@ export default class ScheduleComponent extends React.Component {
                         <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label><br/>
 
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.MORNING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.MORNING } /> 
-                        <label for={ SCHEDULE.PERIOD.MORNING } >6:00 - 12:00</label><br/>
+                        <label for={ SCHEDULE.PERIOD.MORNING } >
+                            {chrome.i18n.getMessage('schedule_morning_'+this.props.hourFormat)}
+                        </label><br/>
 
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.NOON } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.NOON } />  
-                        <label for={ SCHEDULE.PERIOD.NOON } >12:00 - 18:00</label><br/>
+                        <label for={ SCHEDULE.PERIOD.NOON } >
+                            {chrome.i18n.getMessage('schedule_noon_'+this.props.hourFormat)}
+                        </label><br/>
 
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.EVENING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.EVENING } />
-                        <label for={ SCHEDULE.PERIOD.EVENING } >18:00 - 0:00</label>
+                        <label for={ SCHEDULE.PERIOD.EVENING } >
+                            {chrome.i18n.getMessage('schedule_evening_'+this.props.hourFormat)}
+                        </label>
                     </div>
                 </form>
             </div>
@@ -112,5 +118,6 @@ ScheduleComponent.propTypes = {
     scheduleFrequency: PropTypes.string,
     schedulePeriod: PropTypes.string,
     scheduleTimes: PropTypes.number,
-    setSchedule: PropTypes.func.isRequired
+    setSchedule: PropTypes.func.isRequired,
+    hourFormat: PropTypes.number.isRequired
 }

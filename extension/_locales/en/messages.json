@@ -1,15 +1,15 @@
 {
   "context_menu_main": {
-    "message": "ProcrastiLater"
+    "message": "Procrastilater"
   }
   ,"description": {
     "message": "Stop procrastinating! I will remind you about postponed bookmarks."
   }
   ,"popup_header_1": {
-    "message": "The time has come" 
+    "message": "The time has come!" 
   }
   ,"popup_header_2": {
-    "message": "Stop postponing" 
+    "message": "Stop postponing!" 
   }
   ,"popup_header_3": {
     "message": "Hey, make a break" 
@@ -25,9 +25,6 @@
   }
   ,"popup_button_shuffle": {
     "message": "No, reshuffle" 
-  }
-  ,"popup_button_postpone": {
-    "message": "No, postpone" 
   }
   ,"popup_button_postpone": {
     "message": "No, postpone" 
@@ -86,25 +83,24 @@
   ,"step2_description": {
     "message": "You have to select folders where I should take bookmarks from"
   }
-  ,"step2_we": {
-    "message": "We"
+  ,"step2_I": {
+    "message": "I"
   }
-  ,"step2_suggest": {
-    "message": "suggest"
+  ,"step2_recommend": {
+    "message": "recommend"
   }
-  ,"step2_creating": {
-    "message": "you creating a custom folder where you can store your new bookmarks for reminding."
+  ,"step2_you_to": {
+    "message": "you to"
   }
-  ,"step2_click": {
-    "message": "Click"
+  ,"step2_click_here": {
+    "message": "click here"
   }
-  ,"step2_to_create_it": {
-    "message": "to create it"
+  ,"step2_it_will": {
+    "message": "It will create a new folder where I will store new bookmarks"
   }
   ,"step2_nofolders": {
-    "message": "Please choose at least 1 folder or create one"
+    "message": "Choose at least 1 folder to continue"
   }
-
 
   ,"schedule_reminder_will_appear": {
     "message": "Reminder will appear"
@@ -122,7 +118,7 @@
     "message": "every 2 days"
   }
   ,"schedule_period": {
-    "message": "Period"
+    "message": "Reminder time period"
   }
   ,"schedule_random": {
     "message": "totally random"
@@ -133,7 +129,27 @@
   ,"schedule_saved": {
     "message": "Saved new schedule"
   }
-
+  ,"schedule_format": {
+    "message": "Format"
+  }
+  ,"schedule_morning_24": {
+    "message": "6:00 - 12:00"
+  }
+  ,"schedule_morning_12": {
+    "message": "6 AM - 12 PM"
+  }
+  ,"schedule_noon_24": {
+    "message": "12:00 - 18:00"
+  }
+  ,"schedule_noon_12": {
+    "message": "12 PM - 6 PM"
+  }
+  ,"schedule_evening_24": {
+    "message": "18:00 - 0:00"
+  }
+  ,"schedule_evening_12": {
+    "message": "6 PM - 12 AM"
+  }
 
   ,"achievements_grats": {
     "message": "Congratulations! You've just unlocked an achievement! Keep the good work!"
@@ -154,7 +170,7 @@
     "message": "You've sent a message to developer!"
   }
   ,"achievements_reviewer_locked": {
-    "message": "Locked: send your review/thoughts to developer to unlock"
+    "message": "Locked: share your ideas/review/thoughts to developer to unlock"
   }
   ,"achievements_visitor_unlocked": {
     "message": "Good job! You've visited more than 20 postponed bookmarks already!"
@@ -172,7 +188,7 @@
     "message": "Wow, what a dedication! You've opened more than 15 bookmarks manually!"
   }
   ,"achievements_manualOpener_locked": {
-    "message": "Locked: open 15+ bookmarks manually to unlockT"
+    "message": "Locked: open 15+ bookmarks manually to unlock"
   }
 
 
@@ -209,7 +225,7 @@
     "message": "You have no folders selected"
   }
   ,"folders_where_from": {
-    "message": "Change folders where I should take bookmarks from"
+    "message": "You can change folders where I will take bookmarks from"
   }
 
 
@@ -229,12 +245,8 @@
     "message": "It is a"
   }
   ,"main_free_open_source": {
-    "message": "free open source"
+    "message": "free open source project"
   }
-  ,"main_project": {
-    "message": "project"
-  }
-
 
   ,"progress_done": {
     "message": "Well done! You've visited all postponed bookmarks!"
@@ -242,7 +254,10 @@
   ,"progress_youve_dealt": {
     "message": "You’ve dealt with"
   }
-  ,"progress_postponed_bookmarks": {
+  ,"progress_postponed_bookmarks_1": {
+    "message": "postponed bookmark"
+  }
+  ,"progress_postponed_bookmarks_2": {
     "message": "postponed bookmarks"
   }
   ,"progress_no_bookmarks": {
@@ -261,6 +276,12 @@
   }
   ,"stats_such_tempo": {
     "message": "if you continue with such tempo - you will deal with all bookmarks in"
+  }
+  ,"stats_day": {
+    "message": "day"
+  }
+  ,"stats_days_sm": {
+    "message": "days"
   }
   ,"stats_days": {
     "message": "days"
@@ -299,7 +320,7 @@
     "message": "average per user"
   }
   ,"stats_all_users": {
-    "message": "all_users_statistics"
+    "message": "All users statistics"
   }
 
 
@@ -338,26 +359,7 @@
     "message": "folder"
   }
   ,"background_because": {
-    "message": "because it's currently in our pool!"
+    "message": "because it's currently in our folders pool"
   }
-  ,"background_success": {
-    "message": "Success!"
-  }
-  ,"background_success": {
-    "message": "Success!"
-  }
-  ,"background_success": {
-    "message": "Success!"
-  }
-  ,"background_success": {
-    "message": "Success!"
-  }
-  ,"background_success": {
-    "message": "Success!"
-  }
-  ,"background_success": {
-    "message": "Success!"
-  }
-
 
 }
