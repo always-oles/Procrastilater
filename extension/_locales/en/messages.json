@@ -41,7 +41,7 @@
     "message": "here" 
   }
   ,"global_done": {
-    "message": "Done" 
+    "message": "Done"
   }
   ,"global_achievements": {
     "message": "Achievements" 
@@ -106,9 +106,15 @@
     "message": "Reminder will appear"
   }
   ,"schedule_manually": {
-    "message": "I will open bookmarks manually"
+    "message": "Open manually"
   }
-  ,"schedule_times": {
+  ,"schedule_times_1": {
+    "message": "time a day"
+  }
+  ,"schedule_times_2": {
+    "message": "times a day"
+  }
+  ,"schedule_times_5": {
     "message": "times a day"
   }
   ,"schedule_every_day": {
@@ -161,10 +167,10 @@
     "message": "Locked: add 40+ bookmarks to shuffle to unlock"
   }
   ,"achievements_social_unlocked": {
-    "message": "You've shared Procrastilater in 2 social networks!"
+    "message": "You've shared Procrastilater in more than 1 social networks!"
   }
   ,"achievements_social_locked": {
-    "message": "Locked: share Procrastilater in 2 social networks to unlock"
+    "message": "Locked: share Procrastilater in 2+ social networks to unlock"
   }
   ,"achievements_reviewer_unlocked": {
     "message": "You've sent a message to developer!"
@@ -225,7 +231,7 @@
     "message": "You have no folders selected"
   }
   ,"folders_where_from": {
-    "message": "You can change folders where I will take bookmarks from"
+    "message": "Change folders where I will take bookmarks from"
   }
   ,"folders_saved": {
     "message": "Saved new folders selection"
@@ -270,7 +276,7 @@
     "message": "You have no bookmarks in selected folders yet"
   }
   ,"progress_overall_progress": {
-    "message": "Your overall progress"
+    "message": "Overall progress"
   }
   ,"progress_your_progressbar": {
     "message": "Your progress bar"
@@ -281,7 +287,7 @@
     "message": "Stats"
   }
   ,"stats_such_tempo": {
-    "message": "if you continue with such tempo - you will deal with all bookmarks in"
+    "message": "If you continue with such tempo - you will deal with all bookmarks in"
   }
   ,"stats_day": {
     "message": "day"

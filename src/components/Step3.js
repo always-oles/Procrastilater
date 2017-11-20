@@ -1,8 +1,8 @@
-import { setHourFormat } from '../actions/GlobalActions';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SCHEDULE } from '../constants';
 import Check from '../assets/images/check.svg';
+import API from '../api';
 
 export default class Steps extends React.Component {
     constructor() {
@@ -76,6 +76,15 @@ export default class Steps extends React.Component {
         this.props.setHourFormat(format);
     }
 
+    pluralizeTimes() {
+        let number  = this.state.times || 0,
+            one     = chrome.i18n.getMessage('schedule_times_1'),
+            two     = chrome.i18n.getMessage('schedule_times_2'),
+            five    = chrome.i18n.getMessage('schedule_times_5');
+            
+        return API.pluralize(number, one, two, five);
+    }
+
     render() {
         return (
             <div class='step step-3 schedule' ref='step3' style={{display: this.props.step == 3 ? 'block' : 'none' }}>
@@ -90,7 +99,7 @@ export default class Steps extends React.Component {
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
                         <input type='text'  onClick={this.onInputClick} onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
-                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >{chrome.i18n.getMessage('schedule_times')}</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } > {this.pluralizeTimes()} </label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
                         <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >{chrome.i18n.getMessage('schedule_every_day')}</label><br/>

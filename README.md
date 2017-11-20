@@ -16,6 +16,7 @@ He will remind you about forgotten bookmarks by popping them out in random time 
   
 ## Languages
 TBA
+**Feel free to add new translations or make changes to existing ones if you want to.**
 
 ## Downloads  
 **Chrome webstore**: TBA

@@ -1,4 +1,4 @@
-/* global toastr */
+/* global toastr, chrome */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -6,6 +6,7 @@ import {
     SCHEDULE,
     MAX_BOOKMARKS_DAILY
 } from '../constants';
+import API from '../api';
 
 export default class ScheduleComponent extends React.Component {
     constructor(props) {
@@ -66,6 +67,15 @@ export default class ScheduleComponent extends React.Component {
         }, () => this.save());
     }
 
+    pluralizeTimes() {
+        let number  = this.state.times || 0,
+            one     = chrome.i18n.getMessage('schedule_times_1'),
+            two     = chrome.i18n.getMessage('schedule_times_2'),
+            five    = chrome.i18n.getMessage('schedule_times_5');
+        
+        return API.pluralize(number, one, two, five);
+    }
+
     render() {
         return (
             <div class='panel schedule' ref='container'>
@@ -79,7 +89,7 @@ export default class ScheduleComponent extends React.Component {
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
                         <input type='text'  onChange={ this.onTimesChange } class='blue-input' title={chrome.i18n.getMessage('schedule_max_value') + ' ' + MAX_BOOKMARKS_DAILY} placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
-                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } >{chrome.i18n.getMessage('schedule_times')}</label><br/>
+                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } > {this.pluralizeTimes()} </label><br/>
 
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
                         <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >{chrome.i18n.getMessage('schedule_every_day')}</label><br/>
