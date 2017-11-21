@@ -161,6 +161,9 @@
       margin: 7px 0px;
       display: inline-block;
     }
+    .pl-popup-container .pl-popup .pl-checkbox-container #pl-checkbox {
+      appearance: checkbox !important;
+    }
     .pl-popup-container .pl-popup .pl-buttons {
       -webkit-border-bottom-right-radius: 7px;
       -webkit-border-bottom-left-radius: 7px;

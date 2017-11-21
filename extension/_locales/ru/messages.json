@@ -30,7 +30,6 @@
     "message": "Нет, отложить" 
   }
 
-
   ,"global_back": {
     "message": "Назад" 
   }
@@ -239,6 +238,9 @@
   ,"folders_at_least_one": {
     "message": "У вас должна оставаться хотя бы 1 выбранная папка"
   }
+  ,"folders_completed": {
+    "message": "все просмотрены"
+  }
 
   ,"main_hello": {
     "message": "Привет"
@@ -364,10 +366,10 @@
     "message": "Успех!"
   }
   ,"background_is_added_to": {
-    "message": "добавлено"
+    "message": "добавлено в папку"
   }
   ,"background_folder": {
-    "message": "папку"
+    "message": ""
   }
   ,"background_because": {
     "message": "потому что она выбрана в списке папок"

@@ -130,6 +130,7 @@ html
   padding: 0
   
   li
+    position: relative
     display: block
     cursor: pointer
     padding-left: 10px
@@ -142,6 +143,16 @@ html
       background: #9ccbec
       &:hover
         color: inherit
+    
+    .completed
+      position: absolute
+      top: 4px
+      right: 10px
+      font-size: 1.1rem
+      opacity: 0.5
+    &.selected
+      .completed
+        opacity: 0.9
 
   [data-type='folder']
     cursor: pointer

@@ -1025,12 +1025,22 @@ template {
   .main-page header .header-panel {
     margin-top: 100px; }
     .main-page header .header-panel .greeting {
+      position: relative;
       text-align: center;
-      font-size: 3.3rem;
+      font-size: 3rem;
       font-weight: bold; }
+      .main-page header .header-panel .greeting.smaller {
+        font-size: 2.2rem; }
+        .main-page header .header-panel .greeting.smaller .help-button {
+          top: -13px;
+          right: -11px; }
+      .main-page header .header-panel .greeting img {
+        width: 60px;
+        height: 25px; }
       .main-page header .header-panel .greeting .help-button {
-        position: relative;
-        top: -30px;
+        position: absolute;
+        top: 0;
+        right: 15px;
         cursor: pointer; }
     .main-page header .header-panel .timer-container {
       text-align: center; }
@@ -1076,7 +1086,8 @@ template {
         -webkit-border-radius: 8px;
         -moz-border-radius: 8px;
         -ms-border-radius: 8px;
-        border-radius: 8px; }
+        border-radius: 8px;
+        max-width: 500px; }
         .main-page header .header-panel .progress-container .progress-bar-full.onepercent {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0; }
@@ -1626,6 +1637,7 @@ html {
   list-style: none;
   padding: 0; }
   .bookmarks-list li {
+    position: relative;
     display: block;
     cursor: pointer;
     padding-left: 10px;
@@ -1638,6 +1650,14 @@ html {
       background: #9ccbec; }
       .bookmarks-list li.selected:hover {
         color: inherit; }
+    .bookmarks-list li .completed {
+      position: absolute;
+      top: 4px;
+      right: 10px;
+      font-size: 1.1rem;
+      opacity: 0.5; }
+    .bookmarks-list li.selected .completed {
+      opacity: 0.9; }
   .bookmarks-list [data-type='folder'] {
     cursor: pointer;
     font-size: 1.2rem;

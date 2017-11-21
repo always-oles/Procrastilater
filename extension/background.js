@@ -9,7 +9,9 @@ var TOKEN = null,
 	nextPopup = null,
 	updateTimer,
 	injectedPopup = false,
-	injectedRemoval = false;
+	injectedRemoval = false,
+	injectedRemovalList = [],
+	injectedPopupList = [];
 
 chrome.storage.local.get(null, result => {
 	console.warn('all storage now is:', result);
@@ -217,7 +219,7 @@ function addNewBookmark() {
 		chrome.storage.local.set({ needsFoldersUpdate: moment().format('X')	});
 
 		// notification message
-		let message = pageTitle + chrome.i18n.getMessage('background_is_added_to') + folderTitle + ' ' + chrome.i18n.getMessage('background_folder');
+		let message = `${pageTitle} ${chrome.i18n.getMessage('background_is_added_to')} ${folderTitle}${chrome.i18n.getMessage('background_folder')}`;
 
 		// add explanation
 		if (!custom) {
@@ -240,6 +242,7 @@ function addNewBookmark() {
  * @param {Object} data contains id and url of currently opening bookmark
  */
 function accept(data) {
+	//chrome.bookmarks.remove(string id, function callback)
 	removeListeners();
 
 	// open page
@@ -425,11 +428,12 @@ function addListeners() {
 function removeListeners() {
 	if (injectedRemoval) return console.warn('already injected removal');
 
-	console.warn('[removing listeners]');
 	chrome.tabs.onActivated.addListener(removePopupsScript);
 	chrome.tabs.onUpdated.addListener(removePopupsScript);
 	injectedRemoval = true;
-	
+	injectedRemovalList = [];
+
+	console.warn('[removing listeners]');
 	chrome.tabs.onActivated.removeListener(injectScript);
 	chrome.tabs.onUpdated.removeListener(injectScript);
 	injectedPopup = false;
@@ -453,8 +457,23 @@ function injectScript(tabId) {
 	});
 }
 function removePopupsScript(tabId) {
-	if (!tabId) { tabId = null }
-	if (tabId.tabId) { tabId = tabId.tabId }
+	// check if tabid is passed
+	if (tabId) {
+		// if object is passed
+		if (tabId.tabId) { 
+			tabId = tabId.tabId 
+		}
+
+		// check if already injected into this page
+		if (injectedRemovalList.indexOf(tabId) !== -1) {
+			console.warn('injected removal already, returning');
+			return;
+		} else {
+			injectedRemovalList.push(tabId);
+		}
+	} else {
+		tabId = null;
+	}
 
 	console.warn('injecting removal of popup!');
 	chrome.tabs.executeScript(tabId, {

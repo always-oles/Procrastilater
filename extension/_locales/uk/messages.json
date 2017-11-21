@@ -30,7 +30,6 @@
     "message": "Ні, відкласти" 
   }
 
-
   ,"global_back": {
     "message": "Назад" 
   }
@@ -99,6 +98,9 @@
   }
   ,"step2_nofolders": {
     "message": "Виберіть хоча б 1 папку щоб продовжити"
+  }  
+  ,"folders_completed": {
+    "message": "всі відвідані"
   }
 
   ,"schedule_reminder_will_appear": {
@@ -285,7 +287,7 @@
     "message": "Статистика"
   }
   ,"stats_such_tempo": {
-    "message": "Якщо ви продовжуватимете з таким темпом - ви переглянете всі закладки за"
+    "message": "Якщо продовжуватимете з таким темпом - ви переглянете всі закладки за"
   }
   ,"stats_day": {
     "message": "день"
@@ -363,10 +365,10 @@
     "message": "Успіх!"
   }
   ,"background_is_added_to": {
-    "message": "додано"
+    "message": "додано до папки"
   }
   ,"background_folder": {
-    "message": "папку"
+    "message": ""
   }
   ,"background_because": {
     "message": "тому що вона в списку обраних папок"

@@ -19,9 +19,10 @@ export default class FolderSelectionComponent extends React.Component {
                 <div class='content'>
                     {chrome.i18n.getMessage('folders_where_from')}
                     <BookmarksList 
-                        foldersIds  = { this.props.foldersIds }
-                        saveFolders = { this.props.saveFolders }
-                        notify      = { true }
+                        foldersIds    = { this.props.foldersIds }
+                        saveFolders   = { this.props.saveFolders }
+                        notify        = { true }
+                        allVisitedIds = { this.props.allVisitedIds }
                     ></BookmarksList>
                 </div>                 
             </div>
@@ -32,5 +33,6 @@ export default class FolderSelectionComponent extends React.Component {
 FolderSelectionComponent.propTypes = {
     foldersIds: PropTypes.array,
     saveFolders: PropTypes.func.isRequired,
-    emptyFolders: PropTypes.bool.isRequired
+    emptyFolders: PropTypes.bool.isRequired,
+    allVisitedIds: PropTypes.array.isRequired
 }

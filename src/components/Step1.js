@@ -72,7 +72,7 @@ export default class Steps extends React.Component {
                 <div class='header'>{chrome.i18n.getMessage('steps_title_1')}</div>
 
                 <div class='name-container'>
-                    {chrome.i18n.getMessage('step1_type_your_name')}: <input type='text' class='name-input' ref='nameInput' onChange = { this.nameChanged } onKeyPress = {this.handleKeyPress} />
+                    {chrome.i18n.getMessage('step1_type_your_name')}: <input type='text' class='name-input' ref='nameInput' onChange = { this.nameChanged } onKeyPress = {this.handleKeyPress} maxLength='15' />
                     <div class='br'></div>
                     {chrome.i18n.getMessage('step1_or_click')} <a href='#' onClick = { () => this.prepareName('Incognito') } class='incognito'>{chrome.i18n.getMessage('global_here')}</a> {chrome.i18n.getMessage('step1_to_stay')}
                 </div>

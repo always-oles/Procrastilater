@@ -120,9 +120,11 @@ export default class FoldersList extends React.Component {
         paddingLeft: level * levelPadding // will skip 0,1 levels
       };
 
-      let folderIcon = '',
-          type = '',
-          selected = '';
+      let folderIcon    = '',
+          type          = '',
+          selected      = '',
+          completedText = '',
+          allVisited    = true;
 
       // if we have selected folder already - check if it's it
       if ( this.selectedFoldersSet.has(item.id) ) {
@@ -135,10 +137,33 @@ export default class FoldersList extends React.Component {
         folderIcon = <div class='folder-icon'/>;
       }
 
-      this.list.push( 
+      // check if folder contains all visited ids
+      if (item.children && item.children.length && this.props.allVisitedIds.length) {
+
+        for (let i=0; i<item.children.length; i++) {
+          // if its a folder - continue
+          if (item.children[i].children) 
+            continue;
+
+          // if current item id in all visited ids folder - exit
+          if ( this.props.allVisitedIds.indexOf(item.children[i].id) == -1 ) {
+            allVisited = false;
+            break;
+          }
+        }
+
+        if (allVisited == true) {
+          completedText = chrome.i18n.getMessage('folders_completed') + ' ✓';
+        }
+      }
+
+      this.list.push(
         <li style={divStyle} id={item.id} data-id={item.id} data-type={type} className={ 'parent-'+item.parentId + ' ' + selected } key={item.id} onClick={ this.handleClick }>
           { folderIcon }
           {item.title}
+          <span class='completed' style={{ display: completedText.length ? 'inline-block':'none' }}>
+            {completedText}
+          </span>
         </li>
       );
 

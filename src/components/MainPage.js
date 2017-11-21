@@ -49,7 +49,12 @@ class MainPage extends React.Component {
                     <img class='logo' src={Logo}/> 
 
                     <div class='header-panel'>
-                        <div class='col-sm-4 greeting'>{chrome.i18n.getMessage('main_hello')}, {this.props.global.userName} <HelpComponent/> </div>
+
+                        <div class={'col-sm-4 greeting ' + (this.props.global.userName.length > 11 ? 'smaller':'')}>
+                            {chrome.i18n.getMessage('main_hello')}, {this.props.global.userName} 
+                            <HelpComponent/> 
+                        </div>
+
                         <div class='col-sm-4 timer-container'>
                             <div class='title'>{chrome.i18n.getMessage('main_next_bookmark_appear')}:</div>
                             <Timer 
@@ -72,9 +77,10 @@ class MainPage extends React.Component {
                     <div class='col-sm-12'>
                         <div class='col-sm-4'>
                             <FolderSelectionComponent
-                                foldersIds   = { this.props.global.foldersIds }
-                                saveFolders  = { this.props.globalActions.saveFolders }
-                                emptyFolders = { this.props.stats.bookmarksCount == 0 }
+                                foldersIds    = { this.props.global.foldersIds }
+                                saveFolders   = { this.props.globalActions.saveFolders }
+                                emptyFolders  = { this.props.stats.bookmarksCount == 0 }
+                                allVisitedIds = { this.props.global.allVisitedIds }
                             />
                         </div>
 

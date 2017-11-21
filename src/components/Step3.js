@@ -15,7 +15,7 @@ export default class Steps extends React.Component {
         this.onInputClick       = this.onInputClick.bind(this);
 
         this.state = {
-            frequency: SCHEDULE.FREQUENCY.MANUAL,
+            frequency: SCHEDULE.FREQUENCY.EVERY_DAY,
             period: SCHEDULE.PERIOD.RANDOM,
             times: null
         }
@@ -93,19 +93,19 @@ export default class Steps extends React.Component {
                 
                     <div class='list'>
                         <div class='title'>{chrome.i18n.getMessage('schedule_reminder_will_appear')}:</div>
-    
-                        <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.MANUAL } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.MANUAL }/>
-                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >{chrome.i18n.getMessage('schedule_manually')}</label><br/>
-    
-                        <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
-                        <input type='text'  onClick={this.onInputClick} onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
-                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } > {this.pluralizeTimes()} </label><br/>
-    
+
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_DAY } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_DAY }/> 
                         <label for={ SCHEDULE.FREQUENCY.EVERY_DAY } >{chrome.i18n.getMessage('schedule_every_day')}</label><br/>
     
                         <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.EVERY_2_DAYS } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.EVERY_2_DAYS }/> 
-                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >{chrome.i18n.getMessage('schedule_every_2_days')}</label>
+                        <label for={ SCHEDULE.FREQUENCY.EVERY_2_DAYS } >{chrome.i18n.getMessage('schedule_every_2_days')}</label><br/>
+
+                        <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.FEW_TIMES } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.FEW_TIMES } /> 
+                        <input type='text'  onClick={this.onInputClick} onChange={ this.onTimesChange } class='blue-input' placeholder='N' value={this.state.times || ''} name='times' maxLength='2' /> 
+                        <label for={ SCHEDULE.FREQUENCY.FEW_TIMES } > {this.pluralizeTimes()} </label><br/>
+
+                        <input type='radio' checked={ this.state.frequency == SCHEDULE.FREQUENCY.MANUAL } onChange={this.onFrequencyChange} name='schedule' id={ SCHEDULE.FREQUENCY.MANUAL }/>
+                        <label for={ SCHEDULE.FREQUENCY.MANUAL } >{chrome.i18n.getMessage('schedule_manually')}</label>
                     </div>
     
                     <div class='list'>

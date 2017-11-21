@@ -30,7 +30,6 @@
     "message": "No, postpone" 
   }
 
-
   ,"global_back": {
     "message": "Back" 
   }
@@ -239,7 +238,9 @@
   ,"folders_at_least_one": {
     "message": "You must have at least 1 folder with bookmarks selected"
   }
-
+  ,"folders_completed": {
+    "message": "all visited"
+  }
   
   ,"main_hello": {
     "message": "Hello"
@@ -368,7 +369,7 @@
     "message": "is added to"
   }
   ,"background_folder": {
-    "message": "folder"
+    "message": " folder"
   }
   ,"background_because": {
     "message": "because it's currently in our folders pool"

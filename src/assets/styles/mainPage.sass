@@ -26,13 +26,25 @@
 
       // Greeting section
       .greeting
+        position: relative
         text-align: center
-        font-size: 3.3rem
+        font-size: 3rem
         font-weight: bold
 
+        &.smaller
+          font-size: 2.2rem
+          .help-button
+            top: -13px
+            right: -11px
+
+        img 
+          width: 60px
+          height: 25px
+
         .help-button
-          position: relative
-          top: -30px
+          position: absolute
+          top: 0
+          right: 15px
           cursor: pointer
 
       // Timer section
@@ -86,6 +98,7 @@
           height: 30px     
           width: 80%
           +border-radius(8px)
+          max-width: 500px
 
           &.onepercent
             border-top-left-radius: 0
