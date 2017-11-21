@@ -133,7 +133,7 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
             // it's a bookmark
             else {
                 // is in our array
-                if ( foldersIds.indexOf(items[i].parentId) >= 0 ) {
+                if ( foldersIds.indexOf(items[i].parentId) !== -1 ) {
                     bookmarks.push(items[i]);
                 }
             }

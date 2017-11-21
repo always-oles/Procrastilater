@@ -309,6 +309,7 @@ var sharedAPI = {
         /**
          * When timer ran out of time
          * Let's create a popup it's not a crime
+         * yo
          * p.s. proud of this function
          * @param {Array} allVisitedIds 
          * @param {Array} foldersIds 
@@ -341,10 +342,13 @@ var sharedAPI = {
             let safeItems = [];
 
             for (let i in allBookmarks) {
-                if ( allVisitedIds.indexOf( allBookmarks[i].id ) === -1 ) {
+                // check if it's not visited AND not a folder
+                if ( allVisitedIds.indexOf( allBookmarks[i].id ) === -1 && !allBookmarks[i].dateGroupModified ) {
                     safeItems.push(allBookmarks[i]);
                 } 
             }
+
+            console.warn('safe items', safeItems);
             
             let randomBookmark = safeItems[Math.floor(Math.random() * safeItems.length)];
 

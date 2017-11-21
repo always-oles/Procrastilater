@@ -1027,16 +1027,13 @@ template {
     .main-page header .header-panel .greeting {
       position: relative;
       text-align: center;
-      font-size: 3rem;
+      font-size: 3.3rem;
       font-weight: bold; }
       .main-page header .header-panel .greeting.smaller {
         font-size: 2.2rem; }
         .main-page header .header-panel .greeting.smaller .help-button {
-          top: -13px;
-          right: -11px; }
-      .main-page header .header-panel .greeting img {
-        width: 60px;
-        height: 25px; }
+          top: -15px;
+          right: -13px; }
       .main-page header .header-panel .greeting .help-button {
         position: absolute;
         top: 0;

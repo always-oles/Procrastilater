@@ -409,7 +409,7 @@
       try {
         var myAudio = new Audio();
         myAudio.src = chrome.extension.getURL('assets/shake_2.mp3');
-        myAudio.volume = 0.5;
+        myAudio.volume = 0.4;
         myAudio.play();
       } catch(e) {}
     });

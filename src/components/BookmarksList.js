@@ -138,7 +138,7 @@ export default class FoldersList extends React.Component {
       }
 
       // check if folder contains all visited ids
-      if (item.children && item.children.length && this.props.allVisitedIds.length) {
+      if (item.children && item.children.length && this.props.allVisitedIds && this.props.allVisitedIds.length) {
 
         for (let i=0; i<item.children.length; i++) {
           // if its a folder - continue
