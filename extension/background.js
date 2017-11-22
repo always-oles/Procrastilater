@@ -159,45 +159,56 @@ function addNewBookmark() {
 			return;
 		}
 
-		// get selected folders from state
-		chrome.storage.local.get('state', result => {
-			if (result.state) {
-				let currentState = result.state;
+		// check if user has this bookmark already
+		chrome.bookmarks.search({
+			url: URL
+		}, result => {
+			// already in bookmarks
+			if (result.length) {
+				return;
+			} 
+			else {
+				// get selected folders from state
+				chrome.storage.local.get('state', result => {
+					if (result.state) {
+						let currentState = result.state;
 
-				// check if user had all bookmarks visited
-				if (currentState.global.visitedIds.length == currentState.stats.bookmarksCount) {
-					console.warn('User had all bookmarks visited, generating new timer');
-					generateNewTimer(currentState);
-				}
+						// check if user had all bookmarks visited
+						if (currentState.global.visitedIds.length == currentState.stats.bookmarksCount) {
+							console.warn('User had all bookmarks visited, generating new timer');
+							generateNewTimer(currentState);
+						}
 
-				// if user has custom PL folder lets try to get it first
-				if (currentState.global.customFolder !== null && 
-					currentState.global.foldersIds.indexOf(currentState.global.customFolder.id) !== -1 ) {
-					targetFolder = currentState.global.customFolder.id;
-					custom = true
-				} else {
-					targetFolder = currentState.global.foldersIds;
-				}
-				
-				// get actual bookmarks by id/ids to make sure they exist
-				chrome.bookmarks.get(targetFolder, folders => {
-					if (folders.length) {
-						// add bookmark
-						chrome.bookmarks.create({
-							parentId: folders[0].id,
-							url: URL,
-							title: title
-						}, () => {
-							notifyUser(title, folders[0].title);
-							incrementBookmarksCount(currentState);
-						});
-					} else {
-						chrome.bookmarks.create({
-							url: URL,
-							title: title
-						}, () => {
-							notifyUser(title, 'Others');
-							incrementBookmarksCount(currentState);
+						// if user has custom PL folder lets try to get it first
+						if (currentState.global.customFolder !== null && 
+							currentState.global.foldersIds.indexOf(currentState.global.customFolder.id) !== -1 ) {
+							targetFolder = currentState.global.customFolder.id;
+							custom = true
+						} else {
+							targetFolder = currentState.global.foldersIds;
+						}
+						
+						// get actual bookmarks by id/ids to make sure they exist
+						chrome.bookmarks.get(targetFolder, folders => {
+							if (folders.length) {
+								// add bookmark
+								chrome.bookmarks.create({
+									parentId: folders[0].id,
+									url: URL,
+									title: title
+								}, () => {
+									notifyUser(title, folders[0].title);
+									incrementBookmarksCount(currentState);
+								});
+							} else {
+								chrome.bookmarks.create({
+									url: URL,
+									title: title
+								}, () => {
+									notifyUser(title, 'Others');
+									incrementBookmarksCount(currentState);
+								});
+							}
 						});
 					}
 				});

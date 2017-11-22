@@ -129,7 +129,8 @@ export default class FoldersList extends React.Component {
           type          = '',
           selected      = '',
           completedText = '',
-          allVisited    = true;
+          allVisited    = true,
+          hasBookmarks  = false;
 
       // if we have selected folder already - check if it's it
       if ( this.selectedFoldersSet.has(item.id) ) {
@@ -155,9 +156,14 @@ export default class FoldersList extends React.Component {
             allVisited = false;
             break;
           }
+
+          // if at least one of children is a bookmark
+          if (!item.children[i].children) {
+            hasBookmarks = true;
+          }
         }
 
-        if (allVisited == true) {
+        if (allVisited == true && hasBookmarks == true) {
           completedText = chrome.i18n.getMessage('folders_completed') + ' ✓';
         }
       }

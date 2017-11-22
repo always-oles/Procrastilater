@@ -100,7 +100,7 @@ $(() => {
         chrome.bookmarks.search({
             url: tab.url
         }, result => {
-            // exists in bookmarks - hide add to bkmrks button
+            // already in bookmarks - hide add to bkmrks button
             if (result.length) {
                 disabledAdding = true;
                 $('.add-to-bookmarks').addClass('locked');
