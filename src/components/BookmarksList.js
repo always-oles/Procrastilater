@@ -116,6 +116,11 @@ export default class FoldersList extends React.Component {
         return;
       }
 
+      // skip bin folder
+      if (item.parentId == 0 && item.id == '25') {
+        return;
+      }
+
       let divStyle = {
         paddingLeft: level * levelPadding // will skip 0,1 levels
       };
