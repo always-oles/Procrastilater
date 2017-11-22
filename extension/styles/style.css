@@ -1030,14 +1030,14 @@ template {
       font-size: 3.3rem;
       font-weight: bold; }
       .main-page header .header-panel .greeting.smaller {
-        font-size: 2.2rem; }
+        font-size: 2.4rem; }
         .main-page header .header-panel .greeting.smaller .help-button {
-          top: -15px;
-          right: -13px; }
+          top: -25px;
+          right: -5px; }
       .main-page header .header-panel .greeting .help-button {
-        position: absolute;
-        top: 0;
-        right: 15px;
+        position: relative;
+        top: -25px;
+        right: -5px;
         cursor: pointer; }
     .main-page header .header-panel .timer-container {
       text-align: center; }
