@@ -374,6 +374,15 @@
   ,"background_because": {
     "message": "because it's currently in our folders pool"
   }
+  ,"background_error": {
+    "message": "Error"
+  }
+  ,"background_page_already_in": {
+    "message": "Can't add this page to bookmarks, because it already exists in folder:"
+  }
+  ,"background_cant_open_popup": {
+    "message": "Can't open popup with bookmark right now. It will be opened when you will visit any website."
+  }
 
   ,"privacy_policy": {
     "message": "Privacy policy"

@@ -165,7 +165,20 @@ function addNewBookmark() {
 		}, result => {
 			// already in bookmarks
 			if (result.length) {
-				return;
+				// find parent folder
+				chrome.bookmarks.get(result[0].parentId, parentFolder => {
+					if (parentFolder.length) {
+						// notify user where this bookmark located at
+						chrome.notifications.create('2', {
+							type: 'basic',
+							title: chrome.i18n.getMessage('background_error'),
+							iconUrl: '/icons/icon48.png',
+							message: chrome.i18n.getMessage('background_page_already_in') + ' ' + parentFolder[0].title
+						}, id => {
+							setTimeout(() => chrome.notifications.clear(id), 5000);
+						});
+					}
+				});
 			} 
 			else {
 				// get selected folders from state
@@ -385,11 +398,12 @@ function openPopup(bookmark, manualCall, lastPopup) {
 	bookmark.lastPopup  = lastPopup;
 
 	// put data to storage to share with injected script
-	bookmark.soundEnabled = true; /////////////////////////////////////////////// remove after debug
+	bookmark.soundEnabled = true; //////////////////////////// TODO: add turning off feature in future
 	chrome.storage.local.set({'popupData': bookmark});
 
 	console.warn('data for popup: ', bookmark);
-	addListeners();
+	console.warn('clearing interval');
+	clearInterval(intervalHolder);
 
 	// check active tab if it's not a service url
 	chrome.tabs.query({
@@ -398,29 +412,57 @@ function openPopup(bookmark, manualCall, lastPopup) {
 		if ( tabs[0].url.includes('chrome-extension://') || tabs[0].url.includes('chrome://')) {
 			console.warn('service tab is active');
 
-			// get all tabs
-			chrome.tabs.getAllInWindow(null, (tabs) => {
-				// remove service urls from array
-				let safeTabs = [];
+			let lastNormalTab = null;
 
-				for (let i in tabs) {
-					if (!tabs[i].url.includes('chrome-extension://') && !tabs[i].url.includes('chrome://')) {
-						safeTabs.push(tabs[i]);
+			// get last focused window
+			chrome.windows.getLastFocused({
+				populate: true,
+				windowTypes: ['normal']
+			}, window => {
+				// if it has tabs
+				if (window && window.tabs && window.tabs.length) {
+					for (let i in window.tabs) {
+						// save normal, non-service tabs
+						if ( !isServiceURL(window.tabs[i].url) ) {
+							lastNormalTab = window.tabs[i];
+						}
 					}
+
+					if (lastNormalTab) {
+						//switch to last non-service tab
+						chrome.tabs.update(lastNormalTab.id, {selected: true});
+						// inject popup
+						injectScript(lastNormalTab.id);
+						return addListeners();
+					} else {
+						notifyFailure();
+					}
+				} else {
+					notifyFailure();
 				}
-
-				let lastTabId = safeTabs[safeTabs.length-1].id;
-
-				// switch to last non-service tab
-				chrome.tabs.update(lastTabId, {selected: true});
-				// inject popup into it
-				injectScript(lastTabId);
 			});
-
 		} else {
 			injectScript(tabs[0].id);
+			return addListeners();
 		}
+
+		// if not returned and at this point
+		addListeners();
 	});
+
+	/**
+	 * Notify user that we're not able to open popup now
+	 */
+	function notifyFailure() {
+		chrome.notifications.create('3', {
+			type: 'basic',
+			title: chrome.i18n.getMessage('background_error'),
+			iconUrl: '/icons/icon48.png',
+			message: chrome.i18n.getMessage('background_cant_open_popup')
+		}, id => {
+			setTimeout(() => chrome.notifications.clear(id), 5000);
+		});
+	}
 }
 
 function addListeners() {
@@ -495,9 +537,15 @@ function removePopupsScript(tabId) {
 	});
 }
 
-
-
-
+/**
+ * Checks if URL is a servie page or normal
+ * @param {String} url 
+ */
+function isServiceURL(url) {
+	if (url.includes('chrome-extension://') || url.includes('chrome://'))
+		return true;
+	return false;
+}
 
 /**
  * Generate new token for user
