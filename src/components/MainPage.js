@@ -115,11 +115,17 @@ class MainPage extends React.Component {
                         <div class='text'>{chrome.i18n.getMessage('main_if_u_like')}</div>
                         <div class='note'>
                             {chrome.i18n.getMessage('main_you_will_get')}<br/>
-                            {chrome.i18n.getMessage('main_itsa')} <a href='https://github.com/always-oles/Procrastilater' target='_blank'>{chrome.i18n.getMessage('main_free_open_source')}</a>.
                         </div>
                         <ShareComponent
                             sharedInSocial = { this.props.globalActions.sharedInSocial }
                         />
+                        <div class='copyright'>
+                            {chrome.i18n.getMessage('main_itsa')} <a href='https://github.com/always-oles/Procrastilater' target='_blank'>{chrome.i18n.getMessage('main_free_open_source')}</a>.
+                            <br/>
+                            <a href='privacy_policy.html' class='privacy-policy' target='_blank'>{chrome.i18n.getMessage('privacy_policy')}</a>                        
+                            <br/>
+                            © Procrastilater {moment().format('YYYY')}
+                        </div>
                     </footer>
                 </div>
 

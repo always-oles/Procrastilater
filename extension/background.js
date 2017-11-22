@@ -4,14 +4,13 @@
  * Global variables
  */
 const API = 'http://95.85.45.32/pl/';
-var TOKEN = null,
+var token = null,
 	intervalHolder = null,
 	nextPopup = null,
 	updateTimer,
 	injectedPopup = false,
 	injectedRemoval = false,
-	injectedRemovalList = [],
-	injectedPopupList = [];
+	injectedRemovalList = [];
 
 chrome.storage.local.get(null, result => {
 	console.warn('all storage now is:', result);
@@ -509,15 +508,19 @@ function getRandomToken() {
  */
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason == 'install') {
-		TOKEN = getRandomToken();
-		chrome.storage.local.set({ 'token' : TOKEN});
-		saveTokenInCookies(TOKEN);
+		// generate and save token
+		token = getRandomToken();
+		chrome.storage.local.set({ 'token' : token});
+		saveTokenInCookies(token);
+
+		// try to open the options page
+		chrome.runtime.openOptionsPage();
     } else {
 		chrome.storage.local.get( 'token', (result) => {
 			if ( !result.token ) {
-				TOKEN = getRandomToken();
-				chrome.storage.local.set({ 'token' : TOKEN});
-				saveTokenInCookies(TOKEN);
+				token = getRandomToken();
+				chrome.storage.local.set({ 'token' : token});
+				saveTokenInCookies(token);
 			}
 		});
 	}
