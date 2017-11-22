@@ -111,9 +111,6 @@ export default class Steps extends React.Component {
                     <div class='list'>
                         <div class='title'> {chrome.i18n.getMessage('schedule_period')}: </div>
 
-                        <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.RANDOM } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.RANDOM } /> 
-                        <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label><br/>
-    
                         <div class='format'>
                             <label class='format-label'>{chrome.i18n.getMessage('schedule_format')}:</label>
                             <div class='format-buttons'>
@@ -135,7 +132,10 @@ export default class Steps extends React.Component {
                         <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.EVENING } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.EVENING } />
                         <label for={ SCHEDULE.PERIOD.EVENING } >
                             {chrome.i18n.getMessage('schedule_evening_'+this.props.hourFormat)}
-                        </label>
+                        </label><br/>
+
+                        <input type='radio' checked={ this.state.period == SCHEDULE.PERIOD.RANDOM } onChange={this.onPeriodChange} name='period' id={ SCHEDULE.PERIOD.RANDOM } /> 
+                        <label for={ SCHEDULE.PERIOD.RANDOM } >{chrome.i18n.getMessage('schedule_random')}</label>
                     </div>
                 </form>
 

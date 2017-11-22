@@ -321,9 +321,12 @@ var sharedAPI = {
         
         // open each of passed folders ids and get bookmarks
         (function fetchFolder(id) {
-            chrome.bookmarks.getChildren(id, (items) => {
+            chrome.bookmarks.getChildren(id, items => {
+                
                 // add items to main array
-                allBookmarks.push(...items);
+                if (items) {
+                    allBookmarks.push(...items);
+                }
     
                 if (foldersIds.length) {
                     // prevent freeze

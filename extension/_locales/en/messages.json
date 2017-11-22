@@ -135,7 +135,7 @@
     "message": "Saved new schedule"
   }
   ,"schedule_format": {
-    "message": "Format"
+    "message": "Time format"
   }
   ,"schedule_morning_24": {
     "message": "6:00 - 12:00"
@@ -346,7 +346,7 @@
 
 
   ,"browserAction_done": {
-    "message": "You've visited all bookmarks in selected folders!"
+    "message": "You have no new bookmarks in selected folders."
   }
   ,"browserAction_select_other": {
     "message": "Select other folders or add new bookmarks to continue"
