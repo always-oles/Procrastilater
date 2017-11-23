@@ -1,8 +1,6 @@
-/* global $:jQuery, chrome */
+/* global chrome */
 import API from '../api';
 import sharedAPI from '../../extension/sharedAPI';
-let debounceTimeout = null;
-
 import {
     ADDED_LOTS_ACHIEVEMENT_NUMBER,
     CREATE_CUSTOM_FOLDER,
@@ -29,7 +27,12 @@ import {
     SET_HOUR_FORMAT
 } from '../constants';
 
+// variable for debouncing backend calls
+var debounceTimeout = null;
 
+/**
+ * Simple action creators
+ */
 export function setStep(step) {
     return {
         type: SET_STEP,
@@ -239,6 +242,9 @@ export function setSchedule(schedule) {
     }
 }
 
+/**
+ * Calculate tempo - how fast will user finish all bookmarks
+ */
 function calculateTempo(dispatch, state) {
     switch (state.global.scheduleFrequency) {
         case 'EVERY_DAY': 

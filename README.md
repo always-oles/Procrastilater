@@ -3,7 +3,7 @@
 
 ## Slogan  
 Stop procrastinating and overcome yourself.  
-Get over your postponed bookmarks with tasks/knowledge/fun!  
+Get over your postponed tasks/knowledge/fun in bookmarks!  
   
 ## Idea
 I am a procrastinator. I postpone some of my tasks/goals to the future.  

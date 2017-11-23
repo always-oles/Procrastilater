@@ -2,6 +2,9 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import API from '../api';
+import {
+    SCHEDULE
+} from '../constants';
 
 // reducers
 import global from '../reducers/globalReducer';
@@ -21,8 +24,8 @@ const defaultInitialState = {
         customFolder: null,
         hourFormat: 24,
     
-        scheduleFrequency: 'EVERY_DAY',
-        schedulePeriod: 'RANDOM',
+        scheduleFrequency: SCHEDULE.FREQUENCY.EVERY_DAY,
+        schedulePeriod: SCHEDULE.PERIOD.RANDOM,
         scheduleTimes: null,
         tempo: null,
         justReceived: false
@@ -43,20 +46,20 @@ const defaultInitialState = {
     },
 
     stats: {
-        bookmarksCount: 0, 
-        bookmarksVisited: 0, 
+        bookmarksCount:           0, 
+        bookmarksVisited:         0, 
         bookmarksVisitedManually: 0,
-        bookmarksPostponed: 0,
-        shared: 0,
-        totalBookmarks: 0, 
-        totalUsers: 1,
-        totalVisited: 0
+        bookmarksPostponed:       0,
+        shared:                   0,
+        totalBookmarks:           0, 
+        totalUsers:               1,
+        totalVisited:             0
     }
 }
 
 /**
  * Configure store and try to get values from storage if they exist, otherwise take defaults
- * @param {func} callback 
+ * @param {Function} callback 
  */
 export default function configureStore(callback) {
 
