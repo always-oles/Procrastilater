@@ -78,7 +78,6 @@
   }
 
 
-  
   ,"step2_description": {
     "message": "You have to select folders where I should take bookmarks from"
   }
@@ -100,6 +99,10 @@
   ,"step2_nofolders": {
     "message": "Choose at least 1 folder to continue"
   }
+  ,"step2_created_folder": {
+    "message": "Added Procrastilater folder to "
+  }
+
 
   ,"schedule_reminder_will_appear": {
     "message": "Reminder will appear"
@@ -155,6 +158,7 @@
   ,"schedule_evening_12": {
     "message": "6 PM - 12 AM"
   }
+
 
   ,"achievements_grats": {
     "message": "Congratulations! You've just unlocked an achievement! Keep the good work!"
@@ -242,6 +246,7 @@
     "message": "all visited"
   }
   
+
   ,"main_hello": {
     "message": "Hello"
   }
@@ -261,6 +266,7 @@
     "message": "free open source project"
   }
 
+  
   ,"progress_done": {
     "message": "Well done! You've visited all postponed bookmarks!"
   }
@@ -325,6 +331,9 @@
   }
   ,"stats_total_visited": {
     "message": "total visited"
+  }
+  ,"stats_total_postponed": {
+    "message": "total postponed"
   }
   ,"stats_total_bookmarks": {
     "message": "total bookmarks"

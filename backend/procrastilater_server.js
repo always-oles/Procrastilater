@@ -35,6 +35,9 @@ const aggregateAndReturnStats = (response) => {
                 totalBookmarks: { 
                     $sum: '$stats.bookmarksCount' 
                 },
+                totalPostponed: { 
+                    $sum: '$stats.bookmarksPostponed' 
+                },
                 totalVisited: {
                     $sum: '$stats.bookmarksVisited'
                 },

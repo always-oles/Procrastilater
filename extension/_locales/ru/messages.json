@@ -78,7 +78,6 @@
   }
 
 
-  
   ,"step2_description": {
     "message": "Выберите папки, откуда я буду брать закладки"
   }
@@ -100,6 +99,10 @@
   ,"step2_nofolders": {
     "message": "Выберите хотя бы 1 папку, чтобы продолжить"
   }
+  ,"step2_created_folder": {
+    "message": "Создана папка Procrastilater внутри "
+  }
+
 
   ,"schedule_reminder_will_appear": {
     "message": "Напоминать"
@@ -155,6 +158,7 @@
   ,"schedule_evening_12": {
     "message": "6 PM - 12 AM"
   }
+
 
   ,"achievements_grats": {
     "message": "Поздравляем! Вы открыли новое достижение! Продолжайте в том же духе!"
@@ -242,6 +246,7 @@
     "message": "все просмотрены"
   }
 
+
   ,"main_hello": {
     "message": "Привет"
   }
@@ -260,6 +265,7 @@
   ,"main_free_open_source": {
     "message": "бесплатный проект с открытым исходным кодом"
   }
+
 
   ,"progress_done": {
     "message": "Вы молодец! Все закладки из выбранных папок посещены!"
@@ -325,6 +331,9 @@
   }
   ,"stats_total_visited": {
     "message": "всего просмотрено"
+  }
+  ,"stats_total_postponed": {
+    "message": "всего отложено"
   }
   ,"stats_total_bookmarks": {
     "message": "всего закладок"

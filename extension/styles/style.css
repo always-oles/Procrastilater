@@ -1223,7 +1223,8 @@ template {
       clear: both;
       color: #666;
       border-bottom: 1px solid #ddd;
-      padding: 5px 0; }
+      padding: 5px 0;
+      margin-bottom: 5px; }
     .main-page .body .stats .content .value {
       color: #00BF79;
       font-weight: 600; }
@@ -1231,7 +1232,7 @@ template {
       display: inline-block;
       box-sizing: border-box;
       vertical-align: top;
-      margin: 10px 10px 0 0;
+      margin: 0 10px 0 0;
       width: 47%;
       font-size: 1.15rem; }
       .main-page .body .stats .content .group:nth-child(3) {

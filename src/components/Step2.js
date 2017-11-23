@@ -58,10 +58,13 @@ export default class Steps extends React.Component {
         this.setState({ createdCustom: true});
 
         // create folder
-        this.props.createCustomFolder( (newId) => {
+        this.props.createCustomFolder((newFolder, parentFolder)  => {
 
             // rebuild folders tree
-            this.refs.bookmarksListComponent.rebuildTree(newId);
+            this.refs.bookmarksListComponent.rebuildTree(newFolder.id);
+
+            // notify user about success
+            toastr.success(chrome.i18n.getMessage('step2_created_folder') + parentFolder.title);
         });
     }
 

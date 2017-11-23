@@ -195,14 +195,14 @@ function prepareStats(dispatch, foldersIds, allVisitedIds, saveFoldersCallback) 
  */
 export function createCustomFolder(callback) {
     return dispatch => {
-        API.createCustomFolder((folder) => {
+        API.createCustomFolder((newFolder, parentFolder) => {
             dispatch({
                 type: CREATE_CUSTOM_FOLDER,
-                payload: folder
+                payload: newFolder
             });
 
             // rebuild tree when folder is created
-            callback(folder.id);
+            callback(newFolder, parentFolder);
         });
     }
 }
@@ -314,7 +314,15 @@ function checkAchievements(dispatch, state, action) {
     }
 
     // check for achievement if user added >=ADDED_LOTS_ACHIEVEMENT_NUMBER(40) bookmarks to shuffle
-    if ( action == 'foldersChanged' && state >= ADDED_LOTS_ACHIEVEMENT_NUMBER && hasFoldersAchievement == false ) {
+    if ( action == 'foldersChanged' && !isNaN(state) && state >= ADDED_LOTS_ACHIEVEMENT_NUMBER && hasFoldersAchievement == false ) {
+        dispatch({
+            type: GIVE_ACHIEVEMENT,
+            payload: { 'addedLots' : true }
+        });
+    }
+    
+    // same as previous but if state as object is passed as argument
+    if ( state.achievements && state.achievements.addedLots == false && state.stats.bookmarksCount >= ADDED_LOTS_ACHIEVEMENT_NUMBER) {
         dispatch({
             type: GIVE_ACHIEVEMENT,
             payload: { 'addedLots' : true }

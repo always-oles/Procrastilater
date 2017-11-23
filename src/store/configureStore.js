@@ -53,7 +53,8 @@ const defaultInitialState = {
         shared:                   0,
         totalBookmarks:           0, 
         totalUsers:               1,
-        totalVisited:             0
+        totalVisited:             0,
+        totalPostponed:           0
     }
 }
 

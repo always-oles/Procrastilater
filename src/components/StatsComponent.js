@@ -105,6 +105,13 @@ export default class StatsComponent extends React.Component {
 
                         <div class='item'>
                             <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
+                                {chrome.i18n.getMessage('stats_total_postponed')}:
+                            </div>
+                            <div class='value'>{ this.props.stats.totalPostponed }</div>
+                        </div>
+
+                        <div class='item'>
+                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
                                 {chrome.i18n.getMessage('stats_total_bookmarks')}:
                             </div>
                             <div class='value'>{ this.props.stats.totalBookmarks }</div>

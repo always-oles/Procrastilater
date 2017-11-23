@@ -18,10 +18,12 @@ export default {
         chrome.bookmarks.create(
             {
                 'parentId': '1', 
-                'title': 'ProcrastiLater'
+                'title': 'Procrastilater'
             },
-            (newFolder) => {
-                callback(newFolder);
+            newFolder => {
+                chrome.bookmarks.get('1', parentFolder => {
+                    callback(newFolder, parentFolder[0]);
+                });
             }
         );
     },

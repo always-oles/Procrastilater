@@ -99,10 +99,11 @@
   ,"step2_nofolders": {
     "message": "Виберіть хоча б 1 папку, щоб продовжити"
   }  
-  ,"folders_completed": {
-    "message": "всі відвідані"
+  ,"step2_created_folder": {
+    "message": "Створена папка Procrastilater всередині "
   }
 
+  
   ,"schedule_reminder_will_appear": {
     "message": "Нагадувати"
   }
@@ -157,6 +158,7 @@
   ,"schedule_evening_12": {
     "message": "6 PM - 12 AM"
   }
+
 
   ,"achievements_grats": {
     "message": "Вітаємо! Ви відкрили нове досягнення! Продовжуйте у тому ж дусі!"
@@ -240,6 +242,10 @@
   ,"folders_at_least_one": {
     "message": "У вас має залишатись хоча б 1 вибрана папка"
   }
+  ,"folders_completed": {
+    "message": "всі відвідані"
+  }
+
 
   ,"main_hello": {
     "message": "Привіт"
@@ -259,6 +265,7 @@
   ,"main_free_open_source": {
     "message": "безкоштовний проект з відкритим кодом"
   }
+
 
   ,"progress_done": {
     "message": "Ви молодець! Всі закладки з вибраних папок відвідані!"
@@ -324,6 +331,9 @@
   }
   ,"stats_total_visited": {
     "message": "всього пройдено"
+  }
+  ,"stats_total_postponed": {
+    "message": "всього відкладено"
   }
   ,"stats_total_bookmarks": {
     "message": "всього закладок"

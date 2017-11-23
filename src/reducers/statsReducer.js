@@ -22,7 +22,8 @@ export default function stats(state = {}, action) {
                 ...state,
                 totalBookmarks: action.payload.totalBookmarks,
                 totalUsers:     action.payload.count,
-                totalVisited:   action.payload.totalVisited + action.payload.totalVisitedManually
+                totalVisited:   action.payload.totalVisited + action.payload.totalVisitedManually,
+                totalPostponed: action.payload.totalPostponed
             }
         case UPDATE_ENTIRE_STATE:
             return {
@@ -35,7 +36,10 @@ export default function stats(state = {}, action) {
                                 : state.bookmarksVisitedManually,
                 bookmarksPostponed: (action.payload.bookmarksPostponed && (action.payload.bookmarksPostponed > state.bookmarksPostponed )) 
                                 ? action.payload.bookmarksPostponed
-                                : state.bookmarksPostponed
+                                : state.bookmarksPostponed,
+                totalPostponed: (action.payload.bookmarksPostponed && (action.payload.bookmarksPostponed > state.bookmarksPostponed )) 
+                                ? state.totalPostponed + (action.payload.bookmarksPostponed - state.bookmarksPostponed)
+                                : state.totalPostponed
             }
         default:
             return state;
