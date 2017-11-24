@@ -15,6 +15,7 @@ export default class Steps extends React.Component {
         this.container = this.refs.step1;
         this.nextStep = this.props.nextStep.bind(this);
         this.handleStepChange = this.props.handleStepChange.bind(this);
+        this.refs.nameInput.focus();
     }
     
     /**

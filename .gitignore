@@ -3,7 +3,8 @@ bower_components
 public
 backend/node_modules
 extension/bundle.js
-extension.nex
-extension.pem
-extension.crx
 gulpfile.js
+*.zip
+*.pem
+*.crx
+*.nex

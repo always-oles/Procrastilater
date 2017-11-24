@@ -393,7 +393,11 @@
     "message": "Can't open popup with bookmark right now. It will be opened when you will visit any website."
   }
 
+  
   ,"privacy_policy": {
     "message": "Privacy policy"
+  }
+  ,"share_link_name": {
+    "message": "I%20started%20fighting%20procrastination%20with%20this%20extension%2C%20you%20should%20check%20it%20out"
   }
 }

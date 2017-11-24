@@ -868,8 +868,9 @@ template {
       height: 15px; }
     .steps .step.step-1 .name-container .name-input {
       width: 120px;
+      margin-left: 10px;
       font-size: 1.5rem;
-      text-align: center;
+      text-align: left;
       text-transform: capitalize; }
       .steps .step.step-1 .name-container .name-input:active, .steps .step.step-1 .name-container .name-input:focus {
         border: 0; }
@@ -1202,17 +1203,19 @@ template {
       font-size: 1.2rem;
       font-weight: 400;
       padding: 10px 0 0; }
-  .main-page .body .achievements .list .item {
-    margin: 7px 0 0 20px;
-    width: 100px;
-    height: 100px; }
-    .main-page .body .achievements .list .item.locked {
-      -webkit-filter: grayscale(100%);
-      filter: grayscale(100%); }
-      .main-page .body .achievements .list .item.locked.opacity-06 {
-        opacity: 0.6; }
-      .main-page .body .achievements .list .item.locked.opacity-05 {
-        opacity: 0.5; }
+  .main-page .body .achievements .list {
+    text-align: center; }
+    .main-page .body .achievements .list .item {
+      margin: 7px 10px 0 10px;
+      width: 100px;
+      height: 100px; }
+      .main-page .body .achievements .list .item.locked {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%); }
+        .main-page .body .achievements .list .item.locked.opacity-06 {
+          opacity: 0.6; }
+        .main-page .body .achievements .list .item.locked.opacity-05 {
+          opacity: 0.5; }
   .main-page .body .stats .content {
     font-size: 1.3rem;
     font-weight: 500;
@@ -1558,6 +1561,7 @@ template {
   display: inline-block; }
 
 .clear-button {
+  display: none;
   width: 40px;
   height: 40px;
   position: fixed;
@@ -1572,6 +1576,7 @@ template {
   border-radius: 5px; }
 
 .log-button {
+  display: none;
   width: 40px;
   height: 40px;
   position: fixed;
