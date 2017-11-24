@@ -13,11 +13,11 @@ var token = null,
 	injectedRemovalList = [];
 
 chrome.storage.local.get(null, result => {
-	console.warn('all storage now is:', result);
+	console.log('all storage now is:', result);
 
 	// discovered some popup in storage
 	if (result.popupData) {
-		console.warn('there is a popup in storage! call it');
+		console.log('there is a popup in storage! call it');
 		addListeners();
 	}
 });
@@ -27,7 +27,7 @@ chrome.storage.local.get(null, result => {
  */
 chrome.runtime.onMessage.addListener(
 	(request, sender, sendResponse) => {
-		console.warn('background received message: ', request);
+		console.log('background received message: ', request);
 		switch (request.action) {
 			case 'accept':
 				accept(request.data);
@@ -102,7 +102,7 @@ function checkTime(manualCall) {
 
 	// time is out
 	if (now >= nextPopup || manualCall == true) {
-		console.warn('timer is expired');
+		console.log('timer is expired');
 
 		// stop timer
 		clearInterval(intervalHolder);
@@ -112,13 +112,13 @@ function checkTime(manualCall) {
 
 			// if manual call is set in settings - dont call popup at all
 			if (result.state && result.state.global.scheduleFrequency == 'MANUAL' && manualCall !== true) {
-				console.warn('but manual call set in settings, so return');
+				console.log('but manual call set in settings, so return');
 				return removePopupFromStorage();
 			}
 
 			// if user went through all bookmarks
 			if (result.state && result.state.global.visitedIds.length == result.state.stats.bookmarksCount) {
-				console.warn('all bookmarks visited!');
+				console.log('all bookmarks visited!');
 				return removePopupFromStorage();
 			}
 
@@ -127,13 +127,13 @@ function checkTime(manualCall) {
 			let foldersIds      = result.state.global.foldersIds.slice();
 			let allVisitedIds   = result.state.global.allVisitedIds.slice();
 
-			console.warn('generating new popup');
+			console.log('generating new popup');
 			sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
 				openPopup(bookmark, manualCall, lastPopup);
 			});
 		});
 	} else {
-		console.warn(now-nextPopup, 'left');
+		console.log(now-nextPopup, 'left');
 	}
 
 	function removePopupFromStorage() {
@@ -188,7 +188,7 @@ function addNewBookmark() {
 
 						// check if user had all bookmarks visited
 						if (currentState.global.visitedIds.length == currentState.stats.bookmarksCount) {
-							console.warn('User had all bookmarks visited, generating new timer');
+							console.log('User had all bookmarks visited, generating new timer');
 							generateNewTimer(currentState);
 						}
 
@@ -326,7 +326,7 @@ function shuffle(data) {
 
 		sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
 			bookmark.manualCall = data.manualCall;
-			console.warn('setting bookmark in storage to', bookmark);
+			console.log('setting bookmark in storage to', bookmark);
 			chrome.storage.local.set({'popupData': bookmark});
 		});
 	});
@@ -401,8 +401,8 @@ function openPopup(bookmark, manualCall, lastPopup) {
 	bookmark.soundEnabled = true; //////////////////////////// TODO: add turning off feature in future
 	chrome.storage.local.set({'popupData': bookmark});
 
-	console.warn('data for popup: ', bookmark);
-	console.warn('clearing interval');
+	console.log('data for popup: ', bookmark);
+	console.log('clearing interval');
 	clearInterval(intervalHolder);
 
 	// check active tab if it's not a service url
@@ -410,7 +410,7 @@ function openPopup(bookmark, manualCall, lastPopup) {
 		active: true
 	}, function(tabs) {
 		if ( tabs[0].url.includes('chrome-extension://') || tabs[0].url.includes('chrome://')) {
-			console.warn('service tab is active');
+			console.log('service tab is active');
 
 			let lastNormalTab = null;
 
@@ -466,9 +466,12 @@ function openPopup(bookmark, manualCall, lastPopup) {
 }
 
 function addListeners() {
-	if (injectedPopup) return console.warn('already injected popup');
+	if (injectedPopup) {
+		console.log('already injected popup');
+		return;
+	}
 
-	console.warn('[adding listeners]');
+	console.log('[adding listeners]');
 	chrome.tabs.onActivated.addListener(injectScript);
 	chrome.tabs.onUpdated.addListener(injectScript);
 	injectedPopup = true;
@@ -478,14 +481,17 @@ function addListeners() {
 	injectedRemoval = false;
 }
 function removeListeners() {
-	if (injectedRemoval) return console.warn('already injected removal');
+	if (injectedRemoval) {
+		console.log('already injected removal');
+		return;
+	}
 
 	chrome.tabs.onActivated.addListener(removePopupsScript);
 	chrome.tabs.onUpdated.addListener(removePopupsScript);
 	injectedRemoval = true;
 	injectedRemovalList = [];
 
-	console.warn('[removing listeners]');
+	console.log('[removing listeners]');
 	chrome.tabs.onActivated.removeListener(injectScript);
 	chrome.tabs.onUpdated.removeListener(injectScript);
 	injectedPopup = false;
@@ -503,7 +509,7 @@ function injectScript(tabId) {
 	if (!tabId) { tabId = null }
 	if (tabId.tabId) { tabId = tabId.tabId }
 
-	console.warn('injecting popup!');
+	console.log('injecting popup!');
 	chrome.tabs.executeScript(tabId, {
 		file: 'inject.js'
 	});
@@ -518,7 +524,7 @@ function removePopupsScript(tabId) {
 
 		// check if already injected into this page
 		if (injectedRemovalList.indexOf(tabId) !== -1) {
-			console.warn('injected removal already, returning');
+			console.log('injected removal already, returning');
 			return;
 		} else {
 			injectedRemovalList.push(tabId);
@@ -527,7 +533,7 @@ function removePopupsScript(tabId) {
 		tabId = null;
 	}
 
-	console.warn('injecting removal of popup!');
+	console.log('injecting removal of popup!');
 	chrome.tabs.executeScript(tabId, {
 		code: `
 			if (document.getElementById("pl-popup-container")) {

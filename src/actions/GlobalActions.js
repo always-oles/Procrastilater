@@ -490,7 +490,7 @@ export function listenForVisibilityChange() {
 
             API.checkForFoldersUpdates(currentState, needToUpdate => {
                 if (needToUpdate) {
-                    console.warn('Something changed with folders...');
+                    console.log('Something changed with folders...');
                     prepareStats(dispatch, currentState.global.foldersIds, currentState.global.allVisitedIds, () => {
                         getStatsFromBackend(dispatch, getState);
                     });
@@ -509,7 +509,7 @@ export function listenForVisibilityChange() {
                     return;
                 }
                 
-                console.warn('Something changed...');
+                console.log('Something changed...');
 
                 // dispatch difference
                 dispatch({

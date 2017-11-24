@@ -337,7 +337,7 @@
      * Called upon shuffle button click to wait for new popup data
      */
     function waitForNewPopup() {
-      console.warn('started waiting for new data');
+      console.log('started waiting for new data');
       intervalHolder = setInterval(() => {
         comparePopupData();
       }, 100);
@@ -349,7 +349,7 @@
     function comparePopupData() {
       chrome.storage.local.get('popupData', (result) => {
         if (result.popupData.id !== id) {
-          console.warn('received new data');
+          console.log('received new data');
           savePopupData(result, true);
           inProgress = false;
           clearInterval(intervalHolder);

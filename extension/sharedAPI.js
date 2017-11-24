@@ -77,25 +77,25 @@ var sharedAPI = {
                 case SCHEDULE.FREQUENCY.EVERY_2_DAYS:
                     // if timer was shown today already
                     if ( nextPopupTime.diff(now) <=0 && nextPopupTime.diff(todayStart) >=0 ) {
-                        console.warn('was shown today, go after tomorrow');
+                        console.log('was shown today, go after tomorrow');
                         prepareTimer('afterTomorrow', period);
                     }
                     // was shown yesterday
                     else if ( nextPopupTime.diff(todayStart) <= 0 && nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) >=0 ) {
                         // generate for tomorrow
-                        console.warn('was shown yesterday, go tomorrow');
+                        console.log('was shown yesterday, go tomorrow');
                         resetPopupsToday = true;
                         prepareTimer('tomorrow', period);
                     }
                     // was shown before yesterday
                     else if ( nextPopupTime.diff(moment().subtract(1,'d').startOf('day')) <= 0) {
-                        console.warn('was shown long time ago');
+                        console.log('was shown long time ago');
                         resetPopupsToday = true;
                         prepareTimer('today', period);
                     } else {
                         // everything is ok and we have next timer
                         // but if invoked manually - generate new anyway
-                        console.warn('ok next timer is in future, regenerate if called manually');
+                        console.log('ok next timer is in future, regenerate if called manually');
                         if (manualInvoke) {
                             // if it had to show today
                             if (nextPopupTime.isBetween(todayStart, todayEnd)) {
@@ -115,22 +115,22 @@ var sharedAPI = {
                 case SCHEDULE.FREQUENCY.FEW_TIMES:
                     // if timer was yesterday or earlier
                     if ( nextPopupTime.diff(todayStart) <= 0 ) {
-                        console.warn('was shown yesterday or earlier');
+                        console.log('was shown yesterday or earlier');
                         resetPopupsToday = true;                    
                         prepareTimer('today', period, scheduleTimes, popupsToday);
                     }
                     // if timer was shown today
                     else if ( nextPopupTime.isBetween(todayStart, todayEnd) ) {
-                        console.warn('was shown today');
+                        console.log('was shown today');
     
                         // if shown enough
                         if ( popupsToday >= scheduleTimes ) {
-                            console.warn('had enough');
+                            console.log('had enough');
                             prepareTimer('tomorrow', period, scheduleTimes, popupsToday);
                         }
                         // if still can show more
                         else {
-                            console.warn('can show more');              
+                            console.log('can show more');              
                             prepareTimer('today', period, scheduleTimes, popupsToday);
                         }
                     } else {
@@ -139,7 +139,7 @@ var sharedAPI = {
                 break;
     
                 default: 
-                    console.warn('manual');
+                    console.log('manual');
             }
         }
     
@@ -151,7 +151,7 @@ var sharedAPI = {
          * @param {Int} popupsToday shown already today
          */
         function prepareTimer(when, period, timesPerDay = 1, popupsToday = 0) {
-            console.warn('going to generate timer:', when, period);
+            console.log('going to generate timer:', when, period);
     
             let periodStart, periodEnd;
         
@@ -275,9 +275,9 @@ var sharedAPI = {
             }
     
             let result = +periodStart.format('X') + self.getRandomInt(0, diff);
-            console.warn('now:', now.format('ddd MMMM Do YYYY, HH:mm:ss'));
-            console.warn('generated time between\n', periodStart.format('ddd MMMM Do YYYY, HH:mm:ss'), '\n', periodEnd.format('ddd MMMM Do YYYY, HH:mm:ss'));
-            console.warn('random between in normal time: ', moment.unix(result).format('ddd MMMM Do YYYY, HH:mm:ss'));
+            console.log('now:', now.format('ddd MMMM Do YYYY, HH:mm:ss'));
+            console.log('generated time between\n', periodStart.format('ddd MMMM Do YYYY, HH:mm:ss'), '\n', periodEnd.format('ddd MMMM Do YYYY, HH:mm:ss'));
+            console.log('random between in normal time: ', moment.unix(result).format('ddd MMMM Do YYYY, HH:mm:ss'));
     
             // call the main callback to action creator
             return callback(result, resetPopupsToday);
@@ -288,7 +288,7 @@ var sharedAPI = {
              * @param {Array} args 
              */
             function callSelfTomorrow(args) {
-                console.warn('calling self with tomorrow date');
+                console.log('calling self with tomorrow date');
     
                 // lets say that we should generate timer for tomorrow
                 let newArguments = args;
@@ -301,7 +301,7 @@ var sharedAPI = {
 
         // if no condition was met - just call a callback
         if (callback) {
-            console.warn('no condition was met');
+            console.log('no condition was met');
             return callback();
         }
     },
@@ -351,7 +351,7 @@ var sharedAPI = {
                 } 
             }
 
-            console.warn('safe items', safeItems);
+            console.log('safe items', safeItems);
             
             let randomBookmark = safeItems[Math.floor(Math.random() * safeItems.length)];
 

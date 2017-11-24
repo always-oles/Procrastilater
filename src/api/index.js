@@ -1,13 +1,9 @@
-/* global chrome, $: jQuery, Promise, moment */
+/* global chrome, $: jQuery, Promise */
 
 import {
     SERVER_API,
     API_STATS
 } from '../constants';
-
-/**
- * TODO: remove consoles
- */
 
 export default {
     notifyBackground: data => {
@@ -30,11 +26,11 @@ export default {
 
     clearData: callback => {
         // chrome.storage.local.clear( () => {
-        //     console.warn('storage is clear');
+        //     console.log('storage is clear');
         //     if (callback) callback();
         // });
         chrome.storage.local.remove('state', () => {
-            console.warn('storage is clear');
+            console.log('storage is clear');
             if (callback) callback();
         });
     },
@@ -70,7 +66,7 @@ export default {
                     if (data.status == true) {
                         resolve();
                     } else {
-                        console.warn(data);
+                        console.log(data);
                         reject(data);
                     }
                 });
@@ -138,7 +134,7 @@ export default {
                     summary.popupsToday        = storage.popups.popupsToday;
                 }
 
-                //console.warn('RESULT OF CONCATENATION:', summary);
+                //console.log('RESULT OF CONCATENATION:', summary);
 
                 // remove need for update from storage
                 chrome.storage.local.remove('needUpdate');
