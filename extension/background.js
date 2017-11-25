@@ -157,7 +157,7 @@ function addNewBookmark() {
 		title 	= tabs[0].title;
 
 		// nope
-		if (URL.includes('chrome-extension://') || URL.includes('chrome://')) {
+		if (isServiceURL(URL)) {
 			return;
 		}
 
@@ -430,7 +430,7 @@ function openPopup(bookmark, manualCall, lastPopup) {
 	chrome.tabs.query({
 		active: true
 	}, function(tabs) {
-		if ( tabs[0].url.includes('chrome-extension://') || tabs[0].url.includes('chrome://')) {
+		if (isServiceURL(tabs[0].url)) {
 			console.log('service tab is active');
 
 			let lastNormalTab = null;
@@ -569,7 +569,7 @@ function removePopupsScript(tabId) {
  * @param {String} url 
  */
 function isServiceURL(url) {
-	if (url.includes('chrome-extension://') || url.includes('chrome://'))
+	if (url.includes('chrome-extension://') || url.includes('chrome://') || url.includes('chrome.google.com/webstore'))
 		return true;
 	return false;
 }
