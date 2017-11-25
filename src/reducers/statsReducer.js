@@ -6,6 +6,8 @@ import {
 } from '../constants';
 
 export default function stats(state = {}, action) {
+    let totalVisited;
+
     switch (action.type) {
         case SHARED_IN_SOCIAL:
             return { 
@@ -26,6 +28,16 @@ export default function stats(state = {}, action) {
                 totalPostponed: action.payload.totalPostponed
             }
         case UPDATE_ENTIRE_STATE:
+            totalVisited = state.totalVisited;
+
+            // update total visited temporary, before its fetched from backend
+            if (action.payload.bookmarksVisited && (action.payload.bookmarksVisited > state.bookmarksVisited )) {
+                totalVisited = state.totalVisited + (action.payload.bookmarksVisited - state.bookmarksVisited);
+            }
+            if (action.payload.bookmarksVisitedManually && (action.payload.bookmarksVisitedManually > state.bookmarksVisitedManually )) {
+                totalVisited = state.totalVisited + (action.payload.bookmarksVisitedManually - state.bookmarksVisitedManually);
+            }
+
             return {
                 ...state,
                 bookmarksVisited: (action.payload.bookmarksVisited && (action.payload.bookmarksVisited > state.bookmarksVisited )) 
@@ -37,6 +49,7 @@ export default function stats(state = {}, action) {
                 bookmarksPostponed: (action.payload.bookmarksPostponed && (action.payload.bookmarksPostponed > state.bookmarksPostponed )) 
                                 ? action.payload.bookmarksPostponed
                                 : state.bookmarksPostponed,
+                totalVisited: totalVisited,
                 totalPostponed: (action.payload.bookmarksPostponed && (action.payload.bookmarksPostponed > state.bookmarksPostponed )) 
                                 ? state.totalPostponed + (action.payload.bookmarksPostponed - state.bookmarksPostponed)
                                 : state.totalPostponed

@@ -400,4 +400,10 @@
   ,"share_link_name": {
     "message": "I%20started%20fighting%20procrastination%20with%20this%20extension%2C%20you%20should%20check%20it%20out"
   }
+  ,"oops": {
+    "message": "Oops"
+  }
+  ,"smth_went_wrong": {
+    "message": "Something went wrong, try again"
+  }
 }

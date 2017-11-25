@@ -351,6 +351,12 @@ var sharedAPI = {
                 } 
             }
 
+            // if something went wrong
+            if (safeItems.length == 0) {
+                chrome.storage.local.remove('popupData');
+                return callback(null);
+            }
+
             console.log('safe items', safeItems);
             
             let randomBookmark = safeItems[Math.floor(Math.random() * safeItems.length)];

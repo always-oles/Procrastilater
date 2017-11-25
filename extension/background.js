@@ -123,9 +123,11 @@ function checkTime(manualCall) {
 			}
 
 			// if this popup is the one in shuffle
-			let lastPopup = (result.state.stats.bookmarksCount - result.state.global.visitedIds.length) <= 1;
+			let lastPopup 		= (result.state.stats.bookmarksCount - result.state.global.visitedIds.length) <= 1;
 			let foldersIds      = result.state.global.foldersIds.slice();
 			let allVisitedIds   = result.state.global.allVisitedIds.slice();
+
+			console.warn('yo', result.state);
 
 			console.log('generating new popup');
 			sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
@@ -325,10 +327,29 @@ function shuffle(data) {
 		allVisitedIds.push(data.id);
 
 		sharedAPI.createPopup(allVisitedIds, foldersIds, bookmark => {
+			if (bookmark === null) {
+				removeListeners();
+				return oops();
+			}
+
 			bookmark.manualCall = data.manualCall;
 			console.log('setting bookmark in storage to', bookmark);
 			chrome.storage.local.set({'popupData': bookmark});
 		});
+	});
+}
+
+/**
+ * When something goes wrong
+ */
+function oops() {
+	chrome.notifications.create('4', {
+		type: 'basic',
+		title: chrome.i18n.getMessage('oops'),
+		iconUrl: '/icons/icon48.png',
+		message: chrome.i18n.getMessage('smth_went_wrong')
+	}, id => {
+		setTimeout(() => chrome.notifications.clear(id), 3000);
 	});
 }
 

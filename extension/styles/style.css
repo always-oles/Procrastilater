@@ -774,7 +774,7 @@ template {
     animation: slideUp 3s ease 1s;
     animation-fill-mode: forwards; }
   .steps .steps-boxes .item {
-    width: 100px;
+    width: 120px;
     text-align: center; }
     .steps .steps-boxes .item .box {
       -webkit-border-radius: 4px;
@@ -1132,6 +1132,7 @@ template {
           font-size: 1.4rem;
           font-weight: 600; }
       .main-page header .header-panel .progress-container .note {
+        margin-top: 5px;
         text-align: center;
         color: #aaa;
         font-size: 1.1rem;
@@ -1722,4 +1723,4 @@ html {
 .clickable {
   cursor: pointer; }
 
-/*# sourceMappingURL=style.css.map*/
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZXMvc3R5bGUuY3NzIiwic291cmNlUm9vdCI6IiJ9*/

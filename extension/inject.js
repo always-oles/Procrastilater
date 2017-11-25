@@ -136,6 +136,7 @@
     .pl-popup-container .pl-popup .pl-main-content .pl-icon {
       padding: 10px 0;
       text-align: center;
+      margin: auto;
     }
     .pl-popup-container .pl-popup .pl-main-content .pl-icon img {
       width: 100px;
@@ -173,6 +174,7 @@
       border-bottom-left-radius: 7px;
       display: flex;
       align-items: flex-end;
+      flex-direction: row !important;
       justify-content: space-evenly;
       height: 60px;
       position: relative;
@@ -347,7 +349,12 @@
      * Compare old data with current data, if changed - save new
      */
     function comparePopupData() {
-      chrome.storage.local.get('popupData', (result) => {
+      chrome.storage.local.get('popupData', result => {
+        if (!result.popupData) {
+          clearInterval(intervalHolder);
+          return unmountPopup();
+        }
+
         if (result.popupData.id !== id) {
           console.log('received new data');
           savePopupData(result, true);
@@ -366,7 +373,7 @@
     /**
      * Accept click handler
      */
-    accept.addEventListener('click', (e) => {
+    accept.addEventListener('click', e => {
       playSound('accept');
       unmountPopup(false);
       chrome.runtime.sendMessage({ action: 'accept', data: { id, url, manualCall } });
@@ -375,7 +382,7 @@
     /**
      * Postpone click handler
      */
-    postpone.addEventListener('click', (e) => {
+    postpone.addEventListener('click', e => {
       playSound('postpone');
       unmountPopup();
       chrome.runtime.sendMessage({ action: 'postpone' });
@@ -384,7 +391,7 @@
     /**
      * Reshuffle click handler
      */
-    reshuffle.addEventListener('click', (e) => {
+    reshuffle.addEventListener('click', e => {
 
       // currently waiting for new data
       if (inProgress) return;
@@ -424,7 +431,11 @@
         popupContainer.classList.add('fadeOut');   
         
         // remove from page
-        setTimeout(() => div.parentElement.removeChild(div), 1000);
+        setTimeout(() => {
+          if (div.parentElement) {
+            div.parentElement.removeChild(div);
+          }
+        }, 1000);
       } else {
         // just remove
         div.parentElement.removeChild(div);

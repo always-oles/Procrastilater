@@ -63,9 +63,12 @@ const defaultInitialState = {
  * @param {Function} callback 
  */
 export default function configureStore(callback) {
+    let middlewares = [thunk];
 
     // dev redux logger
-    const logger = createLogger();
+    if (process.env.NODE_ENV === 'development') {
+        middlewares.push(createLogger());        
+    }
 
     let store = null;
     
@@ -86,7 +89,7 @@ export default function configureStore(callback) {
                 popups
             }), 
             state,
-            applyMiddleware(thunk, logger)
+            applyMiddleware(...middlewares)
         );
 
         // we are ready, return store
