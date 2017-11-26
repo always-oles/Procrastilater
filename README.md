@@ -15,24 +15,29 @@ Meet the **Procrastilater**!
 He will remind you about forgotten bookmarks by popping them out in random time and track your progress to make you feel like you are achieving something. 
   
 ## Languages
-TBA
+- English
+- Ukrainian
+- Russian
+
 **Feel free to add new translations or make changes to existing ones if you want to.**
 
 ## Downloads  
-**Chrome webstore**: TBA
+**Chrome webstore**: 
+https://chrome.google.com/webstore/detail/procrastilater/bmoajoielkomndjlojhcnibkehhkkaao
+
 **Opera webstore**: TBA
 
-## Tutorials
+## Tutorial
 TBA
 
 ## FAQ
-**Q:** 
+**Q:**  
 **A:**
 
 ## Credits
 ### Thanks  
-#### https://www.flaticon.com/ for some of the icons  
-#### https://www.zapsplat.com/ for sounds  
+#### https://www.flaticon.com/ for some of the icons.  
+#### https://www.zapsplat.com/ for sounds.  
 #### and many-many thanks to my friends for testing and ideas <b style='color:red'>❤</b>
 
 ## Get in touch
