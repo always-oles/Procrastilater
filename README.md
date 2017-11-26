@@ -19,7 +19,7 @@ He will remind you about forgotten bookmarks by popping them out in random time 
 - Ukrainian
 - Russian
 
-__Feel free to add new translations or make changes to existing ones if you want to by pull requests.__
+*Feel free to add new translations or make changes to existing ones if you want to by pull requests.*
 
 ## Downloads  
 **Chrome webstore**: 
