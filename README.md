@@ -22,7 +22,7 @@ He will remind you about forgotten bookmarks by popping them out in random time 
 __Feel free to add new translations or make changes to existing ones if you want to by pull requests.__
 
 ## Downloads  
-**Chrome webstore**: 
+**Chrome webstore**:  
 https://chrome.google.com/webstore/detail/procrastilater/bmoajoielkomndjlojhcnibkehhkkaao
 
 **Opera webstore**: TBA
