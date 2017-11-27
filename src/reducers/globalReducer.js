@@ -10,7 +10,8 @@ import {
     RESET_RECEIVED_ACHIEVEMENT,
     UPDATE_BOOKMARKS_STATS,
     UPDATE_ENTIRE_STATE,
-    SET_HOUR_FORMAT
+    SET_HOUR_FORMAT,
+    SHOWN_MANUAL_TUTORIAL
 } from '../constants';
 
 export default function global(state = {}, action) {
@@ -56,6 +57,8 @@ export default function global(state = {}, action) {
                 ...state,
                 hourFormat: action.payload
             }
+        case SHOWN_MANUAL_TUTORIAL:
+            return {...state, shownManualTutorial: action.payload }
         default:
             return state;
     }

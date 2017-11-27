@@ -738,30 +738,32 @@ template {
     transform: translateY(1px); }
 
 .add-to-bookmarks {
-  background: #65c56d;
-  color: #11331f; }
+  background: #86d68c;
+  color: #11331f;
+  border: 1px solid #60c968; }
   .add-to-bookmarks:hover {
-    background: #74cb7b; }
+    background: #95db9a; }
   .add-to-bookmarks:active {
-    border: #56bf5f;
-    background: #56bf5f;
+    border: #77d17e;
+    background: #77d17e;
     transform: translateY(1px); }
   .add-to-bookmarks.locked {
     opacity: 0.3; }
     .add-to-bookmarks.locked:hover {
-      background: #65c56d; }
+      background: #86d68c; }
     .add-to-bookmarks.locked:active {
-      background: #65c56d;
+      background: #86d68c;
       transform: none; }
 
 .open-settings {
-  background: #585858;
-  color: #e0e0e0; }
+  background: #dbdbdb;
+  color: #111111;
+  border: 1px solid #ccc; }
   .open-settings:hover {
-    background: #626262; }
+    background: #e5e5e5; }
   .open-settings:active {
-    border: #4e4e4e;
-    background: #4e4e4e;
+    border: #d1d1d1;
+    background: #d1d1d1;
     transform: translateY(1px); }
 
 .steps .steps-boxes {
@@ -1421,7 +1423,7 @@ template {
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   width: 100vw;
   height: 100vh;
   z-index: 3000; }
@@ -1531,6 +1533,33 @@ template {
     color: #777;
     text-decoration: none; }
 
+.manual-tutorial-container {
+  display: none;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2500;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); }
+  .manual-tutorial-container .text {
+    position: absolute;
+    max-width: 550px;
+    top: 1%;
+    right: 11%;
+    display: inline-block;
+    text-align: right;
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: #eee; }
+    .manual-tutorial-container .text span {
+      color: #e6005b; }
+  .manual-tutorial-container .arrow {
+    position: absolute;
+    right: 4%;
+    top: 1%; }
+
 .browser-action {
   background: #ffffff;
   font-size: 12px;
@@ -1599,6 +1628,9 @@ template {
 
 .hidden {
   display: none; }
+
+#toast-container {
+  z-index: 2400 !important; }
 
 .toast {
   width: auto !important;
@@ -1723,4 +1755,4 @@ html {
 .clickable {
   cursor: pointer; }
 
-/*# sourceMappingURL=style.css.map*/
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZXMvc3R5bGUuY3NzIiwic291cmNlUm9vdCI6IiJ9*/

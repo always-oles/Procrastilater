@@ -253,7 +253,7 @@
     document.getElementsByTagName('head')[0].appendChild(style);
 
     // 3 random headers
-    var randomHeader = Math.floor(Math.random() * 3) + 1;
+    var randomHeader = Math.floor(Math.random() * 4) + 1;
 
     /**
      * Inject PL popup div

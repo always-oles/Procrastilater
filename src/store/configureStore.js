@@ -28,7 +28,8 @@ const defaultInitialState = {
         schedulePeriod: SCHEDULE.PERIOD.RANDOM,
         scheduleTimes: null,
         tempo: null,
-        justReceived: false
+        justReceived: false,
+        shownManualTutorial: false
     },
 
     achievements: {       

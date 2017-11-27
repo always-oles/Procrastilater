@@ -33,7 +33,7 @@ export default class AchievementsComponent extends React.Component {
             setTimeout(() => {
                 // show gratz popup
                 $('.achievement-gained').fadeIn();
-            }, 1500);
+            }, 2000);
         }
     }
 

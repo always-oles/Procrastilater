@@ -1,4 +1,5 @@
-/* global chrome */
+/* global chrome, moment */
+
 import API from '../api';
 import sharedAPI from '../../extension/sharedAPI';
 import {
@@ -24,7 +25,8 @@ import {
     UPDATE_TOTAL_STATS,
     VISITOR_LIMIT,
     MAX_BOOKMARKS_DAILY,
-    SET_HOUR_FORMAT
+    SET_HOUR_FORMAT,
+    SHOWN_MANUAL_TUTORIAL
 } from '../constants';
 
 // variable for debouncing backend calls
@@ -58,6 +60,13 @@ export function setUsername(name) {
     return {
         type: SET_USERNAME,
         payload: name
+    }
+}
+
+export function showedManualTutorial() {
+    return {
+        type: SHOWN_MANUAL_TUTORIAL,
+        payload: true
     }
 }
 

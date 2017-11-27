@@ -7,6 +7,7 @@ import {
     MAX_BOOKMARKS_DAILY
 } from '../constants';
 import API from '../api';
+import Arrow from '../assets/images/arrow.svg';
 
 export default class ScheduleComponent extends React.Component {
     constructor(props) {
@@ -16,10 +17,12 @@ export default class ScheduleComponent extends React.Component {
             frequency: this.props.scheduleFrequency,
             period: this.props.schedulePeriod,
             times: this.props.scheduleTimes,
-            changed: false
+            changed: false,
+            shownTutorial: false
         }
 
         this.onFrequencyChange = this.onFrequencyChange.bind(this);
+        this.onTutorialClick = this.onTutorialClick.bind(this);
         this.onPeriodChange = this.onPeriodChange.bind(this);
         this.onTimesChange = this.onTimesChange.bind(this);
         this.save = this.save.bind(this);
@@ -53,6 +56,13 @@ export default class ScheduleComponent extends React.Component {
                 frequency : e.target.id
              }, () => this.save());
         }
+
+        // if user chosen a manual opening
+        // show him a small hint and set as shown
+        if (e.target.id == SCHEDULE.FREQUENCY.MANUAL && this.props.shownManualTutorial === false) {
+            this.showTutorial();
+            this.setState({ shownTutorial: true });
+        }
     }
 
     onPeriodChange(e) {
@@ -76,9 +86,42 @@ export default class ScheduleComponent extends React.Component {
         return API.pluralize(number, one, two, five);
     }
 
+    componentDidMount() {
+        // if havent shown tutorial yet
+        if (!this.state.shownTutorial) {
+            // if should show now
+            if (this.props.scheduleFrequency === SCHEDULE.FREQUENCY.MANUAL && this.props.shownManualTutorial === false) {
+                setTimeout(() => {
+                    this.showTutorial();
+                    this.setState({ shownTutorial: true });
+                }, 1000);
+            }
+        }
+    }
+
+    showTutorial() {
+        // flag as showed to user
+        this.props.showedManualTutorial();
+        
+        $(this.refs.manualTutorial).fadeIn();
+    }
+
+    onTutorialClick() {
+        $(this.refs.manualTutorial).fadeOut();
+    }
+
     render() {
         return (
             <div class='panel schedule' ref='container'>
+
+                <div class='manual-tutorial-container' ref='manualTutorial' onClick = {this.onTutorialClick}>
+                    <div class='text'>
+                        { chrome.i18n.getMessage('manual_hint_1') } <br/>
+                        { chrome.i18n.getMessage('manual_hint_2') } <span>{chrome.i18n.getMessage('browserAction_open_now')}</span> {chrome.i18n.getMessage('manual_hint_button')} 
+                    </div>
+                    <div class='arrow'> <img src={Arrow}/> </div>
+                </div>
+                
                 <div class='header'>{chrome.i18n.getMessage('steps_title_3')}</div>
                 <form>
                     <div class='list'>
@@ -125,9 +168,11 @@ export default class ScheduleComponent extends React.Component {
 }
 
 ScheduleComponent.propTypes = {
-    scheduleFrequency: PropTypes.string,
-    schedulePeriod: PropTypes.string,
-    scheduleTimes: PropTypes.number,
-    setSchedule: PropTypes.func.isRequired,
-    hourFormat: PropTypes.number.isRequired
+    scheduleFrequency:      PropTypes.string,
+    schedulePeriod:         PropTypes.string,
+    scheduleTimes:          PropTypes.number,
+    setSchedule:            PropTypes.func.isRequired,
+    hourFormat:             PropTypes.number.isRequired,
+    shownManualTutorial:    PropTypes.bool.isRequired,
+    showedManualTutorial:   PropTypes.func.isRequired
 }

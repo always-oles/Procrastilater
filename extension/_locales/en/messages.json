@@ -14,6 +14,9 @@
   ,"popup_header_3": {
     "message": "Hey, make a break" 
   }
+  ,"popup_header_4": {
+    "message": "Stop making excuses!"
+  }
   ,"popup_suggests": {
     "message": "The magic shuffle suggests you to open" 
   }
@@ -108,7 +111,7 @@
     "message": "Reminder will appear"
   }
   ,"schedule_manually": {
-    "message": "Open manually"
+    "message": "open manually"
   }
   ,"schedule_times_1": {
     "message": "time a day"
@@ -405,5 +408,16 @@
   }
   ,"smth_went_wrong": {
     "message": "Something went wrong, try again"
+  }
+
+  
+  ,"manual_hint_1": {
+    "message": "If you selected a manual bookmark opening - you will have to click on extension icon"
+  }
+  ,"manual_hint_2": {
+    "message": "then click on"
+  }
+  ,"manual_hint_button": {
+    "message": "button"
   }
 }

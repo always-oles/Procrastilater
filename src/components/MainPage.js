@@ -1,4 +1,4 @@
-import { setHourFormat } from '../actions/GlobalActions';
+import { setHourFormat, showedManualTutorial } from '../actions/GlobalActions';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -92,6 +92,8 @@ class MainPage extends React.Component {
                                 scheduleTimes       = { this.props.global.scheduleTimes }
                                 setSchedule         = { this.props.globalActions.setSchedule }
                                 hourFormat          = { this.props.global.hourFormat}
+                                showedManualTutorial= { this.props.globalActions.showedManualTutorial }
+                                shownManualTutorial = { this.props.global.shownManualTutorial  }
                             />
                         </div>
 
