@@ -8,7 +8,11 @@ var UserSchema   = new Schema({
     },
     name: 'String',
     achievements: 'Object',
-    stats: 'Object'
+    stats: 'Object',
+    lastUpdate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

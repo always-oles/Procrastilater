@@ -79,9 +79,10 @@ router.route('/stats')
                 
                 // if user has been found - update the model
                 if (user) {
-                    user.name =         request.body.name;
+                    user.name         = request.body.name;
                     user.achievements = request.body.achievements;
-                    user.stats =        request.body.stats;
+                    user.stats        = request.body.stats;
+                    user.lastUpdate   = Date.now();
 
                     // save updated user
                     user.save(() => {

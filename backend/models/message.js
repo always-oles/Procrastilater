@@ -14,6 +14,10 @@ var MessageSchema   = new Schema({
     text: {
         type: 'String',
         required: true
+    },
+    received: {
+        type: Date,
+        default: Date.now
     }
 });
 
