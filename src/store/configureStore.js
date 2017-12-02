@@ -43,7 +43,7 @@ const defaultInitialState = {
     },
 
     popups: {
-        lastPopupTime: null,
+        lastPopupTime: Math.floor(Date.now() / 1000),
         nextPopupTime: null,
         popupsToday: 0
     },

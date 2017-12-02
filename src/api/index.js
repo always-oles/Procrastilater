@@ -127,6 +127,7 @@ export default {
 
                 // timer renew
                 summary.nextPopupTime = storage.popups.nextPopupTime;
+                summary.lastPopupTime = storage.popups.lastPopupTime;
 
                 // stats changed
                 if ( currentState.stats.bookmarksPostponed < storage.stats.bookmarksPostponed ) {

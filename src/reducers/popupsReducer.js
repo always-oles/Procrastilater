@@ -22,7 +22,10 @@ export default function popups(state = {}, action) {
                             : state.popupsToday,
                 nextPopupTime: action.payload.nextPopupTime
                             ? action.payload.nextPopupTime
-                            : state.nextPopupTime
+                            : state.nextPopupTime,
+                lastPopupTime: action.payload.lastPopupTime
+                            ? action.payload.lastPopupTime
+                            : state.lastPopupTime
             }
         default:
             return state;

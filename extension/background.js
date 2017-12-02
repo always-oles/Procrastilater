@@ -20,6 +20,34 @@ chrome.storage.local.get(null, result => {
 		console.log('there is a popup in storage! call it');
 		addListeners();
 	}
+
+	// check if user chosen a manual call and didnt call popups for few days
+	if (result.state) {
+		if (result.state.global.scheduleFrequency == 'MANUAL' &&
+			result.state.global.visitedIds.length < result.state.stats.bookmarksCount) {
+
+			// remind after 56 hours 
+			let maxDifference = 56 * 3600;
+
+			if ( Math.floor(moment().diff(moment.unix(result.state.popups.lastPopupTime)) / 1000) > maxDifference ) {
+
+				// mutate the storage state
+				let updatedState = result.state;
+
+				// show user a reminder
+				chrome.notifications.create('5', {
+					type: 'basic',
+					title: chrome.i18n.getMessage('reminder_title'),
+					iconUrl: '/icons/icon48.png',
+					message: chrome.i18n.getMessage('reminder_text')
+				});
+
+				// update shown time
+				updatedState.popups.lastPopupTime = +moment().format('X');
+				chrome.storage.local.set({ state: updatedState });
+			}
+		}
+	}
 });
 
 /**
@@ -287,6 +315,7 @@ function accept(data) {
 			newState.stats.bookmarksVisited += 1;
 		}
 
+		newState.popups.lastPopupTime = +moment().format('X');
 		newState.popups.popupsToday += 1;
 		newState.global.visitedIds.push(data.id);
 		newState.global.allVisitedIds.push(data.id);
@@ -367,6 +396,7 @@ function postpone() {
 		// make some changes before generating new timer
 		newState.stats.bookmarksPostponed 	+= 1;		
 		newState.popups.popupsToday 		+= 1;
+		newState.popups.lastPopupTime 		= +moment().format('X');
 		
 		generateNewTimer(newState);
 	});

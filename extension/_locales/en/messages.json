@@ -420,4 +420,11 @@
   ,"manual_hint_button": {
     "message": "button"
   }
+
+  ,"reminder_title": {
+    "message": "Just a friendly reminder"
+  }
+  ,"reminder_text": {
+    "message": "You have selected a manual opening of postponed bookmarks and didn't do it for several days..."
+  }
 }
