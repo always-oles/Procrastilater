@@ -1565,7 +1565,7 @@ template {
   font-size: 12px;
   color: #333; }
   .browser-action .main-container {
-    padding: 0 10px 10px 10px;
+    padding: 0 10px 5px 10px;
     width: 250px; }
     .browser-action .main-container .visited-all {
       display: none;
@@ -1606,7 +1606,6 @@ template {
   border-radius: 5px; }
 
 .log-button {
-  display: none;
   width: 40px;
   height: 40px;
   position: fixed;
@@ -1755,4 +1754,4 @@ html {
 .clickable {
   cursor: pointer; }
 
-/*# sourceMappingURL=style.css.map*/
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZXMvc3R5bGUuY3NzIiwic291cmNlUm9vdCI6IiJ9*/

@@ -170,5 +170,40 @@ export default {
             return two;
         }
         return five;
+    }, 
+
+    // checks if current state in storage has to be updates
+    checkStorage: (defaultStorage, callback) => {
+        chrome.storage.local.get(null, result => {
+            // if update flag is present
+            if (result && result.checkDefaultStore && result.state && defaultStorage) {
+                let updatedState = result.state,
+                    dirty = false;
+
+                // deep check the state object in storage
+                for (let i in defaultStorage) {
+                    for (let j in defaultStorage[i]) {
+                        if ( !result.state[i].hasOwnProperty(j)) {
+                            result.state[i][j] = defaultStorage[i][j];
+                            dirty = true;
+                        } 
+                    }
+                }
+
+                if (dirty === true) {
+                    // save new state in storage
+                    chrome.storage.local.set({'state': updatedState}, () => {
+                        callback();
+                    });                    
+                } else {
+                    callback();
+                }
+
+                // remove the flag and prevent further checks
+                chrome.storage.local.remove('checkDefaultStore');
+            }
+
+            return callback();
+        });
     }
 }

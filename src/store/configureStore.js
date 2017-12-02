@@ -1,10 +1,8 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
+import { SCHEDULE } from '../constants';
 import thunk from 'redux-thunk';
 import API from '../api';
-import {
-    SCHEDULE
-} from '../constants';
 
 // reducers
 import global from '../reducers/globalReducer';
@@ -12,6 +10,9 @@ import stats from '../reducers/statsReducer';
 import achievements from '../reducers/achievementsReducer';
 import popups from '../reducers/popupsReducer';
 
+/**
+ * Default application dataset
+ */
 const defaultInitialState = {
     global: {
         step: 1,
@@ -42,6 +43,7 @@ const defaultInitialState = {
     },
 
     popups: {
+        lastPopupTime: null,
         nextPopupTime: null,
         popupsToday: 0
     },
@@ -72,31 +74,33 @@ export default function configureStore(callback) {
     }
 
     let store = null;
+
+    // if app was updated - check if storage state has to be updates
+    API.checkStorage(defaultInitialState, () => {
+        // get state from storage
+        API.getState( state => {
+            // if its empty or undefined - set default
+            if ( !state ) {
+                state = defaultInitialState;
+            }
     
-    // get state from storage
-    API.getState( state => {
+            // create actual store
+            store = createStore(
+                combineReducers({
+                    global,
+                    stats,
+                    achievements,
+                    popups
+                }), 
+                state,
+                applyMiddleware(...middlewares)
+            );
+    
+            // we are ready, return store
+            callback(store);
 
-        // if its empty or undefined - set default
-        if ( !state ) {
-            state = defaultInitialState;
-        }
-
-        // create actual store
-        store = createStore(
-            combineReducers({
-                global,
-                stats,
-                achievements,
-                popups
-            }), 
-            state,
-            applyMiddleware(...middlewares)
-        );
-
-        // we are ready, return store
-        callback(store);
+            return store;
+        });
     });
-    
-    return store;
 }
 

@@ -602,6 +602,9 @@ chrome.runtime.onInstalled.addListener((details) => {
 		// try to open the options page
 		chrome.runtime.openOptionsPage();
     } else {
+		// app is updated
+		chrome.storage.local.set({ checkDefaultStore: true	});		
+
 		chrome.storage.local.get( 'token', (result) => {
 			if ( !result.token ) {
 				token = getRandomToken();
