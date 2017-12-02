@@ -96,6 +96,14 @@ export default class StatsComponent extends React.Component {
 
                 
                     <div class='group'>
+
+                        <div class='item'>
+                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
+                                {chrome.i18n.getMessage('stats_total_users')}:
+                            </div>
+                            <div class='value'>{ this.props.stats.totalUsers }</div>
+                        </div>
+
                         <div class='item'>
                             <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
                                 {chrome.i18n.getMessage('stats_total_visited')}:
@@ -115,13 +123,6 @@ export default class StatsComponent extends React.Component {
                                 {chrome.i18n.getMessage('stats_total_bookmarks')}:
                             </div>
                             <div class='value'>{ this.props.stats.totalBookmarks }</div>
-                        </div>
-
-                        <div class='item'>
-                            <div class='name' title={chrome.i18n.getMessage('stats_all_users')}>
-                                {chrome.i18n.getMessage('stats_total_users')}:
-                            </div>
-                            <div class='value'>{ this.props.stats.totalUsers }</div>
                         </div>
 
                         <div class='item'>
