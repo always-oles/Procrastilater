@@ -29,6 +29,7 @@ let router = express.Router();
  */
 const aggregateAndReturnStats = (response) => {
     User.aggregate([
+        { $match: { deleted: {$ne: 1 } }},
         {
             $group: { 
                 _id: null, 
@@ -122,10 +123,12 @@ app.use('/pl/api', router);
  * If user decided to uninstall the extension - he is directed to this page
  */
 app.get('/pl/uninstall', (request, response) => {
-    // let's remove user from db to ignore his statistics
-    User.remove({ token: request.cookies.token }, () => {
+    User.findOne({ token: request.cookies.token }, (error, user) => {
+        if (user) {
+            user.deleted = 1;
+            user.save();            
+        }
 
-        // and send a farewell html page
         response.sendFile(path.join(__dirname, 'public', 'uninstall.html'));
     });
 });

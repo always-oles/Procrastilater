@@ -3,15 +3,19 @@ var Schema       = mongoose.Schema;
 
 var UserSchema   = new Schema({
     token: {
-        type: 'String',
+        type: String,
         index: { unique: true }
     },
-    name: 'String',
-    achievements: 'Object',
-    stats: 'Object',
+    name: String,
+    achievements: Object,
+    stats: Object,
     lastUpdate: {
         type: Date,
         default: Date.now
+    },
+    deleted: {
+        type: Number,
+        default: 0
     }
 });
 
