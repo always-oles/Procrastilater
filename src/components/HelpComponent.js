@@ -1,20 +1,29 @@
 import React from 'react';
 import HelpButton from '../assets/images/help-button.svg';
-import { YT_LINK } from '../constants';
+import { YT_EN_LINK, YT_RU_LINK } from '../constants';
+import API from '../api';
 
 export default class HelpComponent extends React.Component {
     constructor() {
         super();     
         this.onClick     = this.onClick.bind(this);
         this.close       = this.close.bind(this);
-        this.videoSource = YT_LINK + '&enablejsapi=1';
         this.state       = { loaded: false }
+        this.language    = API.getBrowserLanguage();
+    }
+
+    getVideoByLang() {
+        if (this.language == 'ru' || this.language == 'uk') {
+            return YT_RU_LINK;
+        } else {
+            return YT_EN_LINK;
+        }
     }
 
     onClick() {
         // load upon demand
         if (!this.state.loaded) {
-            $('#yt-iframe').attr('src', this.videoSource);       
+            $('#yt-iframe').attr('src', this.getVideoByLang());       
             this.setState({ loaded: true });     
         }
 
@@ -36,8 +45,8 @@ export default class HelpComponent extends React.Component {
                 <img class='help-button' src={HelpButton} onClick = { this.onClick } />
                 <div class='help-container'>
                     <div class='video-container'>
-                        <iframe width="560" height="315" id="yt-iframe" src="" frameBorder="0" allowFullScreen></iframe>
-                        <a 
+                        <iframe width="560" id="yt-iframe"  height="315" src="" frameBorder="0" allowFullScreen></iframe>
+                        <a
                             href='#' 
                             class='close-button' 
                             title={chrome.i18n.getMessage('global_close')} 

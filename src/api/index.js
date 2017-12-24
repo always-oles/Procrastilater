@@ -206,5 +206,9 @@ export default {
 
             return callback();
         });
+    },
+
+    getBrowserLanguage: () => {
+        return chrome.i18n.getUILanguage();
     }
 }

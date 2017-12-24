@@ -321,14 +321,6 @@ function checkAchievements(dispatch, state, action) {
             payload: { 'reviewer' : true }
         });
     }
-
-    // check for achievement if user added >=ADDED_LOTS_ACHIEVEMENT_NUMBER(40) bookmarks to shuffle
-    if ( action == 'foldersChanged' && !isNaN(state) && state >= ADDED_LOTS_ACHIEVEMENT_NUMBER && hasFoldersAchievement == false ) {
-        dispatch({
-            type: GIVE_ACHIEVEMENT,
-            payload: { 'addedLots' : true }
-        });
-    }
     
     // same as previous but if state as object is passed as argument
     if ( state.achievements && state.achievements.addedLots == false && state.stats.bookmarksCount >= ADDED_LOTS_ACHIEVEMENT_NUMBER) {
