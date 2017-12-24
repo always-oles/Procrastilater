@@ -27,12 +27,16 @@ https://chrome.google.com/webstore/detail/procrastilater/bmoajoielkomndjlojhcnib
 
 **Opera webstore**: TBA
 
-## Tutorial
-TBA
+## Tutorials/Promo videos
+[Procrastilater English tutorial](https://www.youtube.com/watch?v=VmlTbb5m8WA)  
+[Procrastilater Russian tutorial](https://www.youtube.com/watch?v=65G4pQpl8fU)
 
 ## FAQ
 **Q:**  
-**A:**
+Something went wrong, I want to change my name, got some issues with folders or my progress isn't moving.  
+**A:**  
+If you have not much progress - just delete and install app again.  
+If you have some achievements already - write us a letter with details here: procrastilater.app@gmail.com  
 
 ## Credits
 ### Thanks  
