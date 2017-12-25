@@ -46,6 +46,6 @@ export const API_SEND_MESSAGE = 'sendMessage';
 export const API_STATS = 'stats'; 
 
 export const YT_EN_LINK = 'https://www.youtube.com/embed/VmlTbb5m8WA?rel=0&amp;start=69&enablejsapi=1';
-export const YT_RU_LINK = 'https://www.youtube.com/embed/65G4pQpl8fU?rel=0&amp;start=65&enablejsapi=1';
+export const YT_RU_LINK = 'https://www.youtube.com/embed/Xak1m8qhSSY?rel=0&amp;start=65&enablejsapi=1';
 
 export const SHARE_LINK = 'https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fbmoajoielkomndjlojhcnibkehhkkaao%2F&linkname=' + chrome.i18n.getMessage('share_link_name');
