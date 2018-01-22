@@ -29,7 +29,7 @@ https://chrome.google.com/webstore/detail/procrastilater/bmoajoielkomndjlojhcnib
 
 ## Tutorials/Promo videos
 [Procrastilater English tutorial](https://www.youtube.com/watch?v=VmlTbb5m8WA)  
-[Procrastilater Russian tutorial](https://www.youtube.com/watch?v=65G4pQpl8fU)
+[Procrastilater Russian tutorial](https://www.youtube.com/watch?v=Xak1m8qhSSY)
 
 ## FAQ
 **Q:**  
